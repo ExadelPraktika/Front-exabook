@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
+import axios from "axios";
 
 const styles = {
   card: {
@@ -41,8 +42,23 @@ class SignUp extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
+    const newUser = {
+      name: this.state.userName,
+      email: this.state.email,
+      password: this.state.password
+    };
     this.setState({ newUser: "test" });
+
+    axios
+      .post("api/users/register", {
+        newUser
+      })
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   render() {
