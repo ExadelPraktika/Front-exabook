@@ -1,82 +1,126 @@
 import React, { Component } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
 import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import axios from 'axios';
 
-class LogIn extends Component {
-  constructor() {
-    super();
+const styles = {
+  card: {
+    minWidth: 275,
+    maxWidth: 350,
+    textAlign: "center"
+  },
+  button: {
+    minWidth: 200,
+    maxWidth: 300,
+    margin: 20
+  }
+};
 
+
+class LoginForm extends Component {
+  constructor (props) {
+    super(props);
     this.state = {
       email: '',
       password: '',
-      message: ''
-    }
+      formErrors: {email: '', password: ''},
+      emailValid: false,
+      passwordValid: false,
+      formValid: false
+    };
 
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
-  handleChange(event) {
-    this.setState({
-        [event.target.name]: event.target.value
-    })
+  validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.formErrors;
+    let emailValid = this.state.emailValid;
+    let passwordValid = this.state.passwordValid;
+    switch(fieldName) {
+      case 'email':
+        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+        break;
+      case 'password':
+        passwordValid = value.length >= 6;
+        fieldValidationErrors.password = passwordValid ? '': ' is too short';
+        break;
+      default:
+        break;
+    }
+
+    this.setState({formErrors: fieldValidationErrors,
+                    emailValid: emailValid,
+                    passwordValid: passwordValid
+                  }, this.validateForm);
+  }
+  
+  validateForm() {
+    this.setState({formValid: this.state.emailValid && this.state.passwordValid});
+  }
+
+  handleChange (evt) {
+    const name = evt.target.name;
+    const value = evt.target.value;
+
+    this.setState({ [name]:value }, () => { this.validateField(name, value) });
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    //event.preventDefault()
+    axios
+        .post('http://localhost:5000/api/users/login', {
+            email: this.state.email,
+            password: this.state.password
+        })
+        .then(response => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error.response.data);
+        })
+}
 
-    console.log('login-form email')
-    console.log(this.state.email);
-
-    axios.post('/login', {
-      email: this.state.email,
-      password: this.state.password
-    })
-    .then(response => {
-      console.log('login response: ')
-      console.log(response)
-    
-    })
-
-  }
-
-  render() {
-    return(
+  render () {
+    return (
       <div>
-        <Card className="container">
-          <form action="/" onSubmit={this.handleSubmit}>
-            <h2 className="card-heading">Login</h2>
-
-            <div className="field-line">
-              <TextField
+        <Card className="login-card" style={styles.card}>
+          <CardContent>
+            <FormControl component="fieldset">
+            <FormLabel>Login</FormLabel>
+              <Input 
                 name="email"
+                placeholder="Email"
                 onChange={this.handleChange}
-                value={this.state.email}
               />
-            </div>
-
-            <div className="field-line">
-              <TextField
-                type="password"
+          
+              <Input 
                 name="password"
+                placeholder="Password"
                 onChange={this.handleChange}
-                value={this.state.password}
+                type="password"
               />
-            </div>
 
-            <div className="button-line">
-            <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-              Login
-            </Button>
-            </div>
-          </form>
+              <Button 
+                style={styles.button}
+                variant="contained"
+                onClick={this.handleSubmit}
+                type="submit"
+                disabled={!this.state.formValid}
+              >
+                Login
+              </Button>
+            </FormControl>
+          </CardContent>
         </Card>
-
       </div>
-    )
+    );
   }
 }
 
-export default LogIn;
+export default LoginForm;
