@@ -20,7 +20,6 @@ class SignUp extends Component {
       email: "",
       password: "",
       confirmPassword: "",
-      confirmationCode: "",
       newUser: null
     };
     this.handleChange = this.handleChange.bind(this);
