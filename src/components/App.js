@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LogIn from './LogIn';
+import SignUp from './SignUp';
 
 class App extends Component {
   render() {
@@ -10,6 +11,5 @@ class App extends Component {
     </div>
     )
   }
-}
 
 export default App;
