@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import LogIn from './LogIn';
-import SignUp from './SignUp';
+import React, { Component } from "react";
+import LogIn from "./LogIn";
+import SignUp from "./SignUp";
+import SideBar from "./sidebar/SideBar";
 
 class App extends Component {
   render() {
-    return(
+    return (
       <div>
-      <h1>Exabook!</h1>
-      <LogIn />
-    </div>
-    )
+        <SideBar />
+      </div>
+    );
   }
 }
 export default App;
