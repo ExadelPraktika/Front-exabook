@@ -8,8 +8,9 @@ import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import axios from "axios";
+import PropTypes from 'prop-types';
 import {setCurrent} from '../actions/authActions'
-
+import setAuthToken from '../utils/setAuthToken'
 
 
 const styles = {
@@ -54,8 +55,6 @@ class SignUp extends Component {
       email: this.state.email,
       password: this.state.password
     };
-    this.setState({ newUser: "test" });
-    
     axios
       .post('http://localhost:3001/users/signup', {
         newUser
@@ -68,7 +67,7 @@ class SignUp extends Component {
       });
   }
 
-  responseFacebook(response) {
+  responseFacebook = (response) => {
     console.log(response);
     const access_token = response.accessToken
     
@@ -77,9 +76,13 @@ class SignUp extends Component {
         access_token
       })
       .then((response) => {
+        // Save to localStorage
+        localStorage.setItem('jwtToken', response.data.token);
         console.log(response);
+        // Set token to Auth header
+        setAuthToken(token);
         const decoded = jwt_decode(response.data.token);
-        //this.props.setCurrent(decoded)
+        this.props.setCurrent(decoded)
         console.log(decoded);
       })
       .catch(function (error) {
@@ -87,7 +90,7 @@ class SignUp extends Component {
       });
   }
 
-  responseGoogle(response) {
+  responseGoogle = (response) => {
     console.log('google', response);
     const access_token = response.Zi.access_token;
     axios
@@ -96,6 +99,10 @@ class SignUp extends Component {
       })
       .then((response) =>{
         console.log('google', response);
+        // Save to localStorage
+        localStorage.setItem('jwtToken', response.data.token);
+        // Set token to Auth header
+        setAuthToken(token);
         const decoded = jwt_decode(response.data.token);
         this.props.setCurrent(decoded);
         console.log(decoded);
@@ -107,24 +114,23 @@ class SignUp extends Component {
 
 
   render() {
-
-
+    const { user } = this.props.auth;
     return (
-
       <Card className="container" style={styles.card}>
+      {user ? user.sub : null}
         <form onSubmit={this.handleSubmit}>
           <GoogleLogin
             clientId="890644813294-bvuq6cf7lsilohneqvov28oi60sfdmig.apps.googleusercontent.com"
             buttonText="Login"
-            onSuccess={this.responseGoogle}
-            onFailure={this.responseGoogle}
+            onSuccess={response => this.responseGoogle(response)}
+            onFailure={response => this.responseGoogle(response)}
           />
           <FacebookLogin
             appId="485850475180066"
             autoLoad={true}
             fields="name,email,picture"
             //onClick={componentClicked}
-            callback={this.responseFacebook}
+            callback={response => this.responseFacebook(response)}
           />
           <Input
             id="userName"
@@ -169,5 +175,12 @@ class SignUp extends Component {
     );
   }
 }
+SignUp.propTypes = {
+  setCurrent: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+const mapStateToProps = (state) => ({
+  auth: state.auth
+});
 
-export default connect(null, { setCurrent })(SignUp);
+export default connect(mapStateToProps, { setCurrent })(SignUp);
