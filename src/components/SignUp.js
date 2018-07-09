@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
 import jwt_decode from 'jwt-decode';
@@ -7,6 +8,7 @@ import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import axios from "axios";
+import { registerUser } from '../actions/authActions';
 
 const styles = {
   card: {
@@ -55,64 +57,69 @@ class SignUp extends Component {
       .post('http://localhost:3001/users/signup', {
         newUser
       })
-      .then(function(response) {
+      .then(function (response) {
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
-  
 
-  render() {
-    const responseGoogle = (response) => {
-      console.log('google', response);
-      const access_token = response.Zi.access_token;
-      axios
-      .post('http://localhost:3001/users/oauth/google', {
-        access_token
-      })
-      .then(function(response) {
-        console.log('google',response);
-        const decoded = jwt_decode(response.data.token);
-        console.log(decoded);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    }
-    const responseFacebook = (response) => {
-      console.log(response);
-      const access_token = response.accessToken
-      axios
+  responseFacebook(response) {
+    console.log(response);
+    const access_token = response.accessToken
+    axios
       .post('http://localhost:3001/users/oauth/facebook', {
         access_token
       })
-      .then(function(response) {
+      .then(function (response) {
         console.log(response);
+        const decoded = jwt_decode(response.data.token);
+        this.props.registerUser(decoded)
+        console.log(decoded);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  responseGoogle(response) {
+    console.log('google', response);
+    const access_token = response.Zi.access_token;
+    axios
+      .post('http://localhost:3001/users/oauth/google', {
+        access_token
+      })
+      .then(function (response) {
+        console.log('google', response);
         const decoded = jwt_decode(response.data.token);
         console.log(decoded);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
-    }
+  }
+
+
+  render() {
+
+
     return (
-      
+
       <Card className="container" style={styles.card}>
         <form onSubmit={this.handleSubmit}>
           <GoogleLogin
-              clientId="890644813294-bvuq6cf7lsilohneqvov28oi60sfdmig.apps.googleusercontent.com"
-              buttonText="Login"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
+            clientId="890644813294-bvuq6cf7lsilohneqvov28oi60sfdmig.apps.googleusercontent.com"
+            buttonText="Login"
+            onSuccess={this.responseGoogle}
+            onFailure={this.responseGoogle}
           />
           <FacebookLogin
             appId="485850475180066"
             autoLoad={true}
             fields="name,email,picture"
             //onClick={componentClicked}
-            callback={responseFacebook} 
+            callback={this.responseFacebook}
           />
           <Input
             id="userName"
@@ -158,4 +165,4 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+export default connect(null, { registerUser })(SignUp);
