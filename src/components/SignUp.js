@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import ReactDOM from 'react-dom';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
+import jwt_decode from 'jwt-decode';
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -42,14 +46,13 @@ class SignUp extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const newUser = {
-      name: this.state.userName,
       email: this.state.email,
       password: this.state.password
     };
     this.setState({ newUser: "test" });
 
     axios
-      .post("api/users/register", {
+      .post('http://localhost:3001/users/signup', {
         newUser
       })
       .then(function(response) {
@@ -59,11 +62,58 @@ class SignUp extends Component {
         console.log(error);
       });
   }
+  
 
   render() {
+    const responseGoogle = (response) => {
+      console.log('google', response);
+      const access_token = response.Zi.access_token;
+      axios
+      .post('http://localhost:3001/users/oauth/google', {
+        access_token
+      })
+      .then(function(response) {
+        console.log('google',response);
+        const decoded = jwt_decode(response.data.token);
+        console.log(decoded);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    }
+    const responseFacebook = (response) => {
+      console.log(response);
+      const access_token = response.accessToken
+      axios
+      .post('http://localhost:3001/users/oauth/facebook', {
+        access_token
+      })
+      .then(function(response) {
+        console.log(response);
+        const decoded = jwt_decode(response.data.token);
+        console.log(decoded);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    }
     return (
+      
       <Card className="container" style={styles.card}>
         <form onSubmit={this.handleSubmit}>
+          <GoogleLogin
+              clientId="890644813294-bvuq6cf7lsilohneqvov28oi60sfdmig.apps.googleusercontent.com"
+              buttonText="Login"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+          />
+          <FacebookLogin
+            appId="485850475180066"
+            autoLoad={true}
+            fields="name,email,picture"
+            //onClick={componentClicked}
+            callback={responseFacebook} 
+          />
           <Input
             id="userName"
             label="User Name"
