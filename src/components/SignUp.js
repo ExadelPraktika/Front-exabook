@@ -8,7 +8,9 @@ import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import axios from "axios";
-import { registerUser } from '../actions/authActions';
+import {setCurrent} from '../actions/authActions'
+
+
 
 const styles = {
   card: {
@@ -30,6 +32,7 @@ class SignUp extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
   }
   validateForm() {
     return (
@@ -52,7 +55,7 @@ class SignUp extends Component {
       password: this.state.password
     };
     this.setState({ newUser: "test" });
-
+    
     axios
       .post('http://localhost:3001/users/signup', {
         newUser
@@ -68,14 +71,15 @@ class SignUp extends Component {
   responseFacebook(response) {
     console.log(response);
     const access_token = response.accessToken
+    
     axios
       .post('http://localhost:3001/users/oauth/facebook', {
         access_token
       })
-      .then(function (response) {
+      .then((response) => {
         console.log(response);
         const decoded = jwt_decode(response.data.token);
-        this.props.registerUser(decoded)
+        //this.props.setCurrent(decoded)
         console.log(decoded);
       })
       .catch(function (error) {
@@ -90,9 +94,10 @@ class SignUp extends Component {
       .post('http://localhost:3001/users/oauth/google', {
         access_token
       })
-      .then(function (response) {
+      .then((response) =>{
         console.log('google', response);
         const decoded = jwt_decode(response.data.token);
+        this.props.setCurrent(decoded);
         console.log(decoded);
       })
       .catch(function (error) {
@@ -165,4 +170,4 @@ class SignUp extends Component {
   }
 }
 
-export default connect(null, { registerUser })(SignUp);
+export default connect(null, { setCurrent })(SignUp);
