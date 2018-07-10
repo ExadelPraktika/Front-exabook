@@ -35,6 +35,13 @@ class SignUp extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 
   }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.auth.isAuthenticated) {
+      // if isauth true which means user is loged in redirect
+      // this.props.history.push('/dashboard')
+    }
+  }
+
   validateForm() {
     return (
       this.state.email.length > 0 &&
@@ -57,8 +64,7 @@ class SignUp extends Component {
     };
     axios
       .post('http://localhost:3001/users/signup', {
-        email: this.state.email,
-        password: this.state.password
+        newUser
       })
       .then(function (response) {
         console.log(response);
@@ -83,7 +89,7 @@ class SignUp extends Component {
         // Set token to Auth header
         setAuthToken(response.data.token);
         const decoded = jwt_decode(response.data.token);
-        this.props.setCurrent(decoded)
+        this.props.setCurrent(response.data.token)
         console.log(decoded);
       })
       .catch(function (error) {
@@ -105,7 +111,7 @@ class SignUp extends Component {
         // Set token to Auth header
         setAuthToken(response.data.token);
         const decoded = jwt_decode(response.data.token);
-        this.props.setCurrent(decoded);
+        this.props.setCurrent(response.data.token);
         console.log(decoded);
       })
       .catch(function (error) {
