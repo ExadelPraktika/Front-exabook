@@ -57,7 +57,8 @@ class SignUp extends Component {
     };
     axios
       .post('http://localhost:3001/users/signup', {
-        newUser
+        email: this.state.email,
+        password: this.state.password
       })
       .then(function (response) {
         console.log(response);
@@ -80,7 +81,7 @@ class SignUp extends Component {
         localStorage.setItem('jwtToken', response.data.token);
         console.log(response);
         // Set token to Auth header
-        setAuthToken(token);
+        setAuthToken(response.data.token);
         const decoded = jwt_decode(response.data.token);
         this.props.setCurrent(decoded)
         console.log(decoded);
@@ -102,7 +103,7 @@ class SignUp extends Component {
         // Save to localStorage
         localStorage.setItem('jwtToken', response.data.token);
         // Set token to Auth header
-        setAuthToken(token);
+        setAuthToken(response.data.token);
         const decoded = jwt_decode(response.data.token);
         this.props.setCurrent(decoded);
         console.log(decoded);
