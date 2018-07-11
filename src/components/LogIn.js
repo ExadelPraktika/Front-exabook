@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Input from '@material-ui/core/Input';
 import Card from '@material-ui/core/Card';
 import { connect } from 'react-redux';
@@ -8,7 +9,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import axios from 'axios';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormGroup from '@material-ui/core/FormGroup';
 import PropTypes from 'prop-types';
 import { setCurrent, logoutUser } from '../actions/authActions'
 
@@ -25,7 +28,6 @@ const styles = {
   }
 };
 
-
 class LoginForm extends Component {
   constructor(props) {
     super(props);
@@ -35,12 +37,13 @@ class LoginForm extends Component {
       formErrors: { email: '', password: '' },
       emailValid: false,
       passwordValid: false,
-      formValid: false
+      formValid: false,
+      errorText: ''
+
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,14 +57,15 @@ class LoginForm extends Component {
     let fieldValidationErrors = this.state.formErrors;
     let emailValid = this.state.emailValid;
     let passwordValid = this.state.passwordValid;
-    switch (fieldName) {
+
+    switch(fieldName) {
       case 'email':
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+        fieldValidationErrors.email = emailValid ? '' : 'Email is invalid';
         break;
       case 'password':
         passwordValid = value.length >= 6;
-        fieldValidationErrors.password = passwordValid ? '' : ' is too short';
+        fieldValidationErrors.password = passwordValid ? '': 'Password is too short';
         break;
       default:
         break;
@@ -86,7 +90,6 @@ class LoginForm extends Component {
   }
 
   handleSubmit(event) {
-    //event.preventDefault()
     axios
       .post('http://localhost:3001/users/signin', {
         email: this.state.email,
@@ -137,22 +140,30 @@ class LoginForm extends Component {
       <div>
         <Card className="login-card" style={styles.card}>
           <CardContent>
-            <FormControl component="fieldset">
+            <FormGroup>
               <FormLabel>Login</FormLabel>
-              <Input
-                name="email"
-                placeholder="Email"
-                onChange={this.handleChange}
-              />
+              <FormControl>
+                <InputLabel>Email</InputLabel>
+                <Input 
+                  name="email"
+                  onChange={this.handleChange}
+                />
+                <FormHelperText error id="name-helper-text">{this.state.formErrors.email}</FormHelperText>
+              </FormControl>
 
-              <Input
+              <FormControl> 
+              <InputLabel>Password</InputLabel>
+
+              <Input 
                 name="password"
                 placeholder="Password"
                 onChange={this.handleChange}
-                type="password"
+                type="password"  
               />
-
-              <Button
+              <FormHelperText error id="name-helper-text">{this.state.formErrors.password}</FormHelperText>
+              </FormControl>
+              
+              <Button 
                 style={styles.button}
                 variant="contained"
                 onClick={this.handleSubmit}
@@ -176,8 +187,9 @@ class LoginForm extends Component {
               />
               <Button onClick={this.onLogoutClick.bind(this)} >
                 Logout
-          </Button>
-            </FormControl>
+            </Button>
+          </FormGroup>
+
           </CardContent>
         </Card>
       </div>
