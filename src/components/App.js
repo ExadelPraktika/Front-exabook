@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import jwt_decode from 'jwt-decode';
@@ -7,6 +8,7 @@ import store from '../store';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
 
+
 if(localStorage.jwtToken) {
   // Set auth token header auth
   setAuthToken(localStorage.jwtToken);
@@ -15,6 +17,7 @@ if(localStorage.jwtToken) {
 }
 class App extends Component {
   render() {
+
     return(
       <Provider store={ store }>
       <div>
@@ -23,6 +26,7 @@ class App extends Component {
     </div>
     </Provider>
     )
+
   }
 }
 
