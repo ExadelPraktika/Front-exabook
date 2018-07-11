@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import axios from "axios";
 import PropTypes from 'prop-types';
-import { setCurrent, logoutUser } from '../actions/authActions'
+import { setCurrent } from '../actions/authActions'
 
 
 const styles = {
@@ -107,10 +107,6 @@ class SignUp extends Component {
       });
   }
 
-  onLogoutClick(e) {
-    e.preventDefault();
-    this.props.logoutUser();
-  }
 
   render() {
     return (
@@ -168,9 +164,6 @@ class SignUp extends Component {
             //onClick={componentClicked}
             callback={response => this.responseFacebook(response)}
           />
-          <Button onClick={this.onLogoutClick.bind(this)} >
-            Logout
-          </Button>
         </form>
       </Card>
     );
@@ -178,11 +171,10 @@ class SignUp extends Component {
 }
 SignUp.propTypes = {
   setCurrent: PropTypes.func.isRequired,
-  logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 const mapStateToProps = (state) => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { setCurrent, logoutUser })(SignUp);
+export default connect(mapStateToProps, { setCurrent })(SignUp);

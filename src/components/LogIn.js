@@ -174,8 +174,8 @@ class LoginForm extends Component {
                 //onClick={componentClicked}
                 callback={response => this.responseFacebook(response)}
               />
-            <Button onClick={this.onLogoutClick.bind(this)} >
-            Logout
+              <Button onClick={this.onLogoutClick.bind(this)} >
+                Logout
           </Button>
             </FormControl>
           </CardContent>
