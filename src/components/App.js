@@ -7,6 +7,8 @@ import { setCurrent } from '../actions/authActions';
 import store from '../store';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
+import SideBar from "./sidebar/SideBar";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 
 if(localStorage.jwtToken) {
@@ -20,10 +22,13 @@ class App extends Component {
 
     return(
       <Provider store={ store }>
-      <div>
-      <h1>SignUp!</h1>
-      <SignUp />
-    </div>
+      <Router>
+          <div>
+            <Route exact path="/" component={LogIn} />
+            <Route exact path="/register" component={SignUp} />
+            <Route exact path="/main" component={SideBar} />
+          </div>
+          </Router>
     </Provider>
     )
 
