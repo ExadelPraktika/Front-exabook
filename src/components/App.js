@@ -10,9 +10,9 @@ import SignUp from './SignUp';
 import TopBar from './Topbar/Topbar';
 import SideBar from "./sidebar/SideBar";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import Layout from '../hoc/Layout'
 
-
-if(localStorage.jwtToken) {
+if (localStorage.jwtToken) {
   // Set auth token header auth
   setAuthToken(localStorage.jwtToken);
   //Decode token and get user info 
@@ -21,16 +21,17 @@ if(localStorage.jwtToken) {
 class App extends Component {
   render() {
 
-    return(
-      <Provider store={ store }>
-      <Router>
-          <div>
+    return (
+      <Provider store={store}>
+
+        <Router>
+          <Layout>
             <Route exact path="/" component={LogIn} />
             <Route exact path="/register" component={SignUp} />
             <Route exact path="/main" component={SideBar} />
-          </div>
-          </Router>
-    </Provider>
+          </Layout>
+        </Router>
+      </Provider>
     )
 
   }
