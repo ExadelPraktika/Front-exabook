@@ -7,6 +7,7 @@ import { setCurrent } from '../actions/authActions';
 import store from '../store';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
+import TopBar from './Topbar/Topbar';
 import SideBar from "./sidebar/SideBar";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
