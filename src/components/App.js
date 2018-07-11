@@ -9,7 +9,7 @@ import LogIn from './LogIn';
 import SignUp from './SignUp';
 import TopBar from './Topbar/Topbar';
 import SideBar from "./sidebar/SideBar";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Layout from '../hoc/Layout'
 
 if (localStorage.jwtToken) {
@@ -25,11 +25,16 @@ class App extends Component {
       <Provider store={store}>
 
         <Router>
+          <Switch>
+          <Route exact path="/" component={LogIn} />
           <Layout>
-            <Route exact path="/" component={LogIn} />
+            <Switch>
+            <Route exact path="/ssss" component={LogIn} />
             <Route exact path="/register" component={SignUp} />
             <Route exact path="/main" component={SideBar} />
+            </Switch>
           </Layout>
+          </Switch>
         </Router>
       </Provider>
     )
