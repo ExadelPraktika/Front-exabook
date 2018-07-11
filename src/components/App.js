@@ -1,15 +1,35 @@
-import React, { Component } from "react";
-import LogIn from "./LogIn";
-import SignUp from "./SignUp";
-import SideBar from "./sidebar/SideBar";
 
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import jwt_decode from 'jwt-decode';
+import setAuthToken from '../utils/setAuthToken';
+import { setCurrent } from '../actions/authActions';
+import store from '../store';
+import LogIn from './LogIn';
+import SignUp from './SignUp';
+
+
+if(localStorage.jwtToken) {
+  // Set auth token header auth
+  setAuthToken(localStorage.jwtToken);
+  //Decode token and get user info 
+  store.dispatch(setCurrent(localStorage.jwtToken))
+}
 class App extends Component {
   render() {
-    return (
+
+    return(
+      <Provider store={ store }>
       <div>
-        <SideBar />
-      </div>
-    );
+      <h1>SignUp!</h1>
+      <SignUp />
+    </div>
+    </Provider>
+    )
+
   }
 }
+
+
 export default App;
+
