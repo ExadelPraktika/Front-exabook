@@ -19,7 +19,7 @@ class App extends Component {
       <Provider store={ store }>
       <div>
       <h1>SignUp!</h1>
-      <LogIn />
+      <SignUp />
     </div>
     </Provider>
     )

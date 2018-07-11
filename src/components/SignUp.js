@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import axios from "axios";
 import PropTypes from 'prop-types';
-import {setCurrent, logoutUser} from '../actions/authActions'
+import { setCurrent, logoutUser } from '../actions/authActions'
 
 
 const styles = {
@@ -17,13 +17,14 @@ const styles = {
     maxWidth: 300,
     textAlign: "center"
   }
+  
 };
 
 class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: "",
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -34,7 +35,7 @@ class SignUp extends Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    if(nextProps.auth.isAuthenticated) {
+    if (nextProps.auth.isAuthenticated) {
       // if isauth true which means user is loged in redirect
       // this.props.history.push('/dashboard')
     }
@@ -43,6 +44,7 @@ class SignUp extends Component {
   validateForm() {
     return (
       this.state.email.length > 0 &&
+      this.state.name.length > 0 &&
       this.state.password.length > 0 &&
       this.state.password === this.state.confirmPassword
     );
@@ -57,12 +59,14 @@ class SignUp extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const newUser = {
+      name: this.state.name,
       email: this.state.email,
       password: this.state.password
     };
     axios
       .post('http://localhost:3001/users/signup', {
         email: this.state.email,
+        name: this.state.name,
         password: this.state.password
       })
       .then((response) => {
@@ -95,7 +99,7 @@ class SignUp extends Component {
       .post('http://localhost:3001/users/oauth/google', {
         access_token
       })
-      .then((response) =>{
+      .then((response) => {
         this.props.setCurrent(response.data.token);
       })
       .catch(function (error) {
@@ -112,25 +116,12 @@ class SignUp extends Component {
     return (
       <Card className="container" style={styles.card}>
         <form onSubmit={this.handleSubmit}>
-          <GoogleLogin
-            clientId="890644813294-bvuq6cf7lsilohneqvov28oi60sfdmig.apps.googleusercontent.com"
-            buttonText="Login"
-            onSuccess={response => this.responseGoogle(response)}
-            onFailure={response => this.responseGoogle(response)}
-          />
-          <FacebookLogin
-            appId="485850475180066"
-            autoLoad={false}
-            fields="name,email,picture"
-            //onClick={componentClicked}
-            callback={response => this.responseFacebook(response)}
-          />
           <Input
-            id="userName"
-            label="User Name"
-            value={this.state.userName}
+            id="name"
+            label="Your Name"
+            value={this.state.name}
             onChange={this.handleChange}
-            placeholder="Username"
+            placeholder="Name"
           />
           <br />
           <br />
@@ -163,6 +154,20 @@ class SignUp extends Component {
           <Button disabled={!this.validateForm()} type="submit">
             Signup
           </Button>
+          <br />
+          <GoogleLogin
+            clientId="890644813294-bvuq6cf7lsilohneqvov28oi60sfdmig.apps.googleusercontent.com"
+            buttonText="LOGIN WITH GOOGLE"
+            onSuccess={response => this.responseGoogle(response)}
+            onFailure={response => this.responseGoogle(response)}
+          />
+          <FacebookLogin
+            appId="485850475180066"
+            autoLoad={false}
+            fields="name,email,picture"
+            //onClick={componentClicked}
+            callback={response => this.responseFacebook(response)}
+          />
           <Button onClick={this.onLogoutClick.bind(this)} >
             Logout
           </Button>

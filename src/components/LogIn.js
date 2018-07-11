@@ -43,6 +43,13 @@ class LoginForm extends Component {
 
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      // if isauth true which means user is loged in - redirect
+      // this.props.history.push('/dashboard')
+    }
+  }
+
   validateField(fieldName, value) {
     let fieldValidationErrors = this.state.formErrors;
     let emailValid = this.state.emailValid;
@@ -156,7 +163,7 @@ class LoginForm extends Component {
               </Button>
               <GoogleLogin
                 clientId="890644813294-bvuq6cf7lsilohneqvov28oi60sfdmig.apps.googleusercontent.com"
-                buttonText="Login"
+                buttonText="LOGIN WITH GOOGLE"
                 onSuccess={response => this.responseGoogle(response)}
                 onFailure={response => this.responseGoogle(response)}
               />
