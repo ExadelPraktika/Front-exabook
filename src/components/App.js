@@ -7,7 +7,7 @@ import { setCurrent } from '../actions/authActions';
 import store from '../store';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
-import TopBar from './Topbar/Topbar';
+import Marketplace from './Marketplace/Marketplace';
 import SideBar from "./sidebar/SideBar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Layout from '../hoc/Layout'
@@ -26,10 +26,9 @@ class App extends Component {
 
         <Router>
           <Switch>
-          <Route exact path="/" component={LogIn} />
           <Layout>
             <Switch>
-            <Route exact path="/ssss" component={LogIn} />
+            <Route exact path="/" component={Marketplace} />
             <Route exact path="/register" component={SignUp} />
             <Route exact path="/main" component={SideBar} />
             </Switch>
@@ -41,7 +40,6 @@ class App extends Component {
 
   }
 }
-
 
 export default App;
 
