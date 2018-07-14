@@ -26,16 +26,18 @@
     "babel-preset-react-native": "^4.0.0",
     "babel-preset-stage-0": "^6.24.1",
     "jwt-decode": "^2.2.0",
+    "moment": "^2.22.2",
+    "prop-types": "latest",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-facebook-login": "^4.0.1",
     "react-google-login": "^3.2.1",
+    "react-places-autocomplete": "^7.2.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0",
-    "prop-types": "latest"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -43,6 +45,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "webpack": "^4.12.1",
     "webpack-cli": "^3.0.8",

@@ -7,6 +7,7 @@ import { setCurrent } from '../actions/authActions';
 import store from '../store';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
+import Events from './Events/Events'
 import TopBar from './Topbar/Topbar';
 import SideBar from "./sidebar/SideBar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -26,9 +27,10 @@ class App extends Component {
 
         <Router>
           <Switch>
-          <Route exact path="/" component={LogIn} />
+          <Route exact path="/" component={Events} />
           <Layout>
             <Switch>
+            <Route exact path="/events" component={Events} />
             <Route exact path="/ssss" component={LogIn} />
             <Route exact path="/register" component={SignUp} />
             <Route exact path="/main" component={SideBar} />

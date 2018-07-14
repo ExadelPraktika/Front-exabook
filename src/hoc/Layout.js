@@ -13,8 +13,8 @@ class Layout extends Component {
     return (
       <div>
         <TopBar />
-        <Grid container spacing={2} style={style}>
-          <Grid item xs>
+        <Grid container spacing={8} style={style}>
+          <Grid item xs = {2}>
             <SideBar />
           </Grid>
           <Grid item xs>
