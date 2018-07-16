@@ -1,7 +1,7 @@
 {
   "name": "exabook",
   "version": "1.0.0",
-  "description": "Front-end for the Exabook social network",
+  "descriptionOpened": "Front-end for the Exabook social network",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",

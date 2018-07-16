@@ -80,7 +80,7 @@ class Tab1 extends React.Component {
   }
 
   handleClick() {
-    this.setState(state => ({ open: !state.open }));
+    this.setState(state => ({ comments: !state.comments }));
   }
 
   render() {
@@ -111,9 +111,9 @@ class Tab1 extends React.Component {
           </Tabs>
         </AppBar>
         <ListItem button onClick={this.handleClick}>
-          {this.state.open ? <ExpandLess /> : <ExpandMore />}
+          {this.state.comments ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+        <Collapse in={this.state.comments} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem>
               {this.state.value === 0 && (

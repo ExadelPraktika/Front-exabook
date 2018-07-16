@@ -3,19 +3,18 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/es/Card/Card";
-import red from "@material-ui/core/es/colors/red";
+import AttachmentIcon from '@material-ui/icons/attachment';
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 import TextField from "@material-ui/core/es/TextField/TextField";
 import SearchIcon from '@material-ui/icons/Search';
 import Poster from './Poster';
+import Input from "@material-ui/core/es/Input/Input";
+import Button from "@material-ui/core/es/Button/Button";
+import Typography from "@material-ui/core/es/Typography/Typography";
 
 const styles = theme => ({
     grid: {
       marginLeft: 120
-    },
-    img: {
-      width: 400,
-      height: 225,
     },
     limiter: {
         marginLeft: theme.spacing.unit,
@@ -34,6 +33,11 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: 200,
     },
+    comments: {
+        margin: 10,
+        marginLeft: 30,
+        width: 350,
+    }
 });
 
 
@@ -52,6 +56,40 @@ class Marketplace extends Component {
         const { classes } = this.props;
         return (
             <div>
+                <Card className={classes.card}>
+                    <div>
+                        <Input
+                            placeholder={"Title"}
+                            className={classes.comments}
+                        />
+                        <Input
+                            placeholder={"Category (optional)"}
+                            className={classes.comments}
+                        />
+                    </div>
+                    <div>
+                        <Input
+                            placeholder={"Description"}
+                            className={classes.comments}
+                            multiline={true}
+                        />
+                        <Button
+                            className={classes.comments}
+                            style={{width: 350}}
+                        >
+                            <AttachmentIcon/>
+                        </Button>
+                    </div>
+                    <div>
+                        <Button
+                            className={classes.comments}
+                            style={{width: 750}}>
+                            <Typography>
+                                Post
+                            </Typography>
+                        </Button>
+                    </div>
+                </Card>
                 <Card className={classes.card}>
                     <TextField
                         id="location"
@@ -89,9 +127,6 @@ class Marketplace extends Component {
                     </IconButton>
                 </Card>
                 <Grid className = {classes.grid} container spacing = {16}>
-                    <Poster/>
-                    <Poster/>
-                    <Poster/>
                     <Poster/>
                 </Grid>
             </div>

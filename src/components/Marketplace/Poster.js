@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from "prop-types";
 import CardHeader from "@material-ui/core/es/CardHeader/CardHeader";
 import Card from "@material-ui/core/es/Card/Card";
-import CardMedia from "@material-ui/core/es/CardMedia/CardMedia";
 import CardContent from "@material-ui/core/es/CardContent/CardContent";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import CardActions from "@material-ui/core/es/CardActions/CardActions";
@@ -11,16 +10,15 @@ import Button from "@material-ui/core/es/Button/Button";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 import Collapse from "@material-ui/core/es/Collapse/Collapse";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import red from "@material-ui/core/es/colors/red";
-import FormControl from "@material-ui/core/es/FormControl/FormControl";
-import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
-import Select from "@material-ui/core/es/Select/Select";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import Menu from "@material-ui/core/es/Menu/Menu";
+import Input from "@material-ui/core/es/Input/Input";
+import Icon from '@material-ui/core/Icon';
+import MobileStepper from "@material-ui/core/es/MobileStepper/MobileStepper";
+
 
 const classes = theme => ({
     div:{
@@ -29,31 +27,13 @@ const classes = theme => ({
     iconButton: {
         marginLeft: 40,
     },
-    button: {
-        display: 'block',
-        marginTop: theme.spacing.unit,
-    },
     img: {
         width: 400,
         height: 225,
     },
-    limiter: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: 100,
-        left: 10
-    },
-    post: {
-        maxWidth: 760,
-        marginLeft: 150,
-        margin: 10,
-    },
     card: {
         maxWidth: 400,
         margin: 20,
-    },
-    actions: {
-        display: 'flex',
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -65,8 +45,8 @@ const classes = theme => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
-    avatar: {
-        backgroundColor: red[500],
+    comments: {
+        margin: 10,
     },
 });
 
@@ -74,48 +54,70 @@ class Poster extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: false,
-            open: false,
-            rating: false,
+            user: {
+                name: 'Nick Hompton',
+                avatar: "https://api.adorable.io/avatars/50/abott@adorable.png"
+            },
+            category: '',
+            description: 'Add rice and stir very gently to distribute. Top with artichokes and peppers, and\n' +
+                'cook without stirring, until most of the liquid is absorbed, 15 to 18 minutes.\n' +
+                'Reduce heat to medium-low, add reserved shrimp and mussels, tucking them down into\n' +
+                'the rice, and cook again without stirring, until mussels have opened and rice is\n' +
+                'just tender, 5 to 7 minutes more. (Discard any mussels that don’t open.)',
+
+            title: 'Selling stuff',
+            timePosted: 'January 14, 2018',
+            descriptionOpened: false,
+            comments: false,
+            rating: '',
+            anchorEl: null,
+            images: [
+                'http://kb4images.com//images/image/37185176-image.jpg',
+                'http://kb4images.com//images/anime/36769098-anime.jpg',
+                'http://kb4images.com//images/yamaha-r1-wallpaper/36082550-yamaha-r1-wallpaper.jpg'
+            ],
+            activeStep: 0,
         };
     }
 
-    handleRateClick = () => {
-        this.setState(() => {
-                if (this.state.rating) {
-                    return {rating: false}
-                }
-                return {rating: true}
-            }
-        );
+    handleRateClick = event => {
+        this.setState({ anchorEl: event.currentTarget });
     };
 
     handleRateClose = () => {
         this.setState({ anchorEl: null });
     };
 
-    handleClose = () => {
-        this.setState({
-            open: false,
-            ...this.state
-        });
-    };
-
-    handleOpen = () => {
-        this.setState({
-            open: true,
-            ...this.state
-        });
-    };
-
-    handleExpandClick = () => {
+    handleCommentButton = () => {
         this.setState(() => {
-                if (this.state.expanded) {
-                    return {expanded: false}
+                if (this.state.comments) {
+                    return {comments: false}
                 }
-                return {expanded: true}
+                return {comments: true}
             }
         );
+    };
+
+    handleDescriptionButton = () => {
+        this.setState(() => {
+                if (this.state.descriptionOpened) {
+                    return {descriptionOpened: false}
+                }
+                return {descriptionOpened: true}
+            }
+        );
+    };
+
+    handleNextImage = () => {
+        this.setState(prevState => ({
+            activeStep: prevState.activeStep + 1,
+        }));
+    };
+
+    handleLastImage = () => {
+        this.setState(prevState => ({
+            activeStep: prevState.activeStep - 1,
+        }));
     };
 
     render() {
@@ -125,37 +127,68 @@ class Poster extends Component {
                 <Card className={classes.card}>
                     <CardHeader
                         avatar={
-                            <Avatar aria-label="Sale" className={classes.avatar}>
-                                R
-                            </Avatar>
+                            <Avatar src={this.state.user.avatar}/>
                         }
-                        action={
-                            <IconButton>
-                                <MoreVertIcon/>
-                            </IconButton>
-                        }
-                        title="Selling stuff"
-                        subheader="January 14, 2018"
+                        title={this.state.user.name}
+                        subheader={this.state.timePosted}
                     />
-                    <img className={classes.img} src={"http://kb4images.com//images/image/37185176-image.jpg"}/>
+                    {this.state.images.length === 1 ? <img src={this.state.images[0]} className={classes.img}/>
+                        :
+                        <div>
+                            <img src={this.state.images[this.state.activeStep]} className={classes.img}/>
+                            <MobileStepper
+                                steps={this.state.images.length}
+                                position="static"
+                                activeStep={this.state.activeStep}
+                                className={classes.mobileStepper}
+                                nextButton={
+                                    <Button
+                                        size="small"
+                                        onClick={this.handleNextImage}
+                                        disabled={this.state.activeStep === this.state.images.length - 1}>
+                                        Next
+                                    </Button>
+                                }
+                                backButton={
+                                    <Button
+                                        size="small"
+                                        onClick={this.handleLastImage}
+                                        disabled={this.state.activeStep === 0}>
+                                        Back
+                                    </Button>
+                                }
+                            />
+                        </div>
+                    }
                     <CardContent>
                         <Typography component="p">
-                            This impressive paella is a perfect party dish and a fun meal to cook together with
-                            your guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                            {this.state.title}
                         </Typography>
                     </CardContent>
                     <CardActions className={classes.actions} disableActionSpacing>
-                        <Button className={classes.button} onClick={this.handleOpen}>
+                        <Button className={classes.button} onClick={this.handleCommentButton}>
                             Comment
                         </Button>
                         <Button
                             className={classes.button}
                             onClick={this.handleRateClick}
-                            aria-expanded={this.state.rating}
-                            aria-label="Show more"
+                            aria-owns={this.state.anchorEl ? 'simple-menu' : null}
+                            aria-haspopup="true"
                         >
                             Rate
                         </Button>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={this.state.anchorEl}
+                            open={Boolean(this.state.anchorEl)}
+                            onClose={this.handleRateClose}
+                        >
+                            <MenuItem onClick={this.handleRateClose}>5 ★</MenuItem>
+                            <MenuItem onClick={this.handleRateClose}>4 ★</MenuItem>
+                            <MenuItem onClick={this.handleRateClose}>3 ★</MenuItem>
+                            <MenuItem onClick={this.handleRateClose}>2 ★</MenuItem>
+                            <MenuItem onClick={this.handleRateClose}>1 ★</MenuItem>
+                        </Menu>
                         <IconButton className={classes.iconButton} aria-label="Add to favorites">
                             <FavoriteIcon/>
                         </IconButton>
@@ -163,61 +196,37 @@ class Poster extends Component {
                             <ShareIcon/>
                         </IconButton>
                         <IconButton
-                            className={classes.expanded}
-                            onClick={this.handleExpandClick}
-                            aria-expanded={this.state.expanded}
+                            className={classes.descriptionOpened}
+                            onClick={this.handleDescriptionButton}
+                            aria-expanded={this.state.descriptionOpened}
                             aria-label="Show more"
                         >
                             <ExpandMoreIcon/>
                         </IconButton>
                     </CardActions>
-                    <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                        <CardContent>
-                            <Typography paragraph variant="body2">
-                                Method:
-                            </Typography>
-                            <Typography paragraph>
-                                Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-                                minutes.
-                            </Typography>
-                            <Typography paragraph>
-                                Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-                                heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-                                browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving
-                                chicken and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion,
-                                salt and pepper, and cook, stirring often until thickened and fragrant, about 10
-                                minutes. Add saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-                            </Typography>
-                            <Typography paragraph>
-                                Add rice and stir very gently to distribute. Top with artichokes and peppers, and
-                                cook without stirring, until most of the liquid is absorbed, 15 to 18 minutes.
-                                Reduce heat to medium-low, add reserved shrimp and mussels, tucking them down into
-                                the rice, and cook again without stirring, until mussels have opened and rice is
-                                just tender, 5 to 7 minutes more. (Discard any mussels that don’t open.)
-                            </Typography>
-                            <Typography>
-                                Set aside off of the heat to let rest for 10 minutes, and then serve.
-                            </Typography>
-                        </CardContent>
-                    </Collapse>
-                    <Collapse in={this.state.rating} timeout="auto" unmountOnExit>
-                        <div className={classes.div}>
-                            <IconButton onClick={this.handleRateClick}>
-                                1
-                            </IconButton>
-                            <IconButton onClick={this.handleRateClick}>
-                                2
-                            </IconButton>
-                            <IconButton onClick={this.handleRateClick}>
-                                3
-                            </IconButton>
-                            <IconButton onClick={this.handleRateClick}>
-                                4
-                            </IconButton>
-                            <IconButton onClick={this.handleRateClick}>
-                                5
+                    <Collapse in={this.state.comments} timeout="auto" unmountOnExit>
+                        <div className={classes.comments}>
+                            <Input
+                                autoFocus={true}
+                                multiline={true}
+                                style = {{width: 330}}
+                            />
+                            <IconButton>
+                                <Icon>send</Icon>
                             </IconButton>
                         </div>
+                        <div className={classes.comments}>
+                            <Typography>
+                                Comments
+                            </Typography>
+                        </div>
+                    </Collapse>
+                    <Collapse in={this.state.descriptionOpened} timeout="auto" unmountOnExit>
+                        <CardContent>
+                            <Typography paragraph>
+                                {this.state.description}
+                            </Typography>
+                        </CardContent>
                     </Collapse>
                 </Card>
             </div>
