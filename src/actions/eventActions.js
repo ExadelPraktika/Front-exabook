@@ -30,7 +30,7 @@ export const getEvents = () => dispatch => {
       })
     );
 };
-
+//TODO KAD gauti my events tiesiog padaryti my events actiona dar viena ji ideti i switch ir paduoti funkcija su reiksme papildoma is selectiono tarp mano ar visu eventu
 // Set loading state
 export const setEventLoading = () => {
   return {

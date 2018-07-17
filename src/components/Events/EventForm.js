@@ -12,14 +12,18 @@ import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { addEvent } from '../../actions/eventActions'
+import Dropzone from 'react-dropzone'
 import * as moment from 'moment'
+import axios from 'axios'
 import DataPicker from './UI-components/DataPicker'
 import renderFunc from './UI-components/PlacesAuto'
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
-
+import { render } from 'react-dom';
+import { CloudinaryContext, Transformation, Image } from 'cloudinary-react';
+//require('./App.css');
 const styles = {
   card: {
     minWidth: 300,
@@ -34,6 +38,10 @@ const styles = {
   location: {
     minWidth: 300,
     maxWidth: 370,
+  },
+  photo: {
+    maxWidth: 320,
+    maxHeight: 250
   }
 };
 class EventForm extends Component {
@@ -46,8 +54,10 @@ class EventForm extends Component {
       start: '',
       end: '',
       location: '',
+      photo: '',
       address: ''
     };
+    this.uploadWidget = this.uploadWidget.bind(this);
   }
 
   componentWillMount() {
@@ -71,8 +81,10 @@ class EventForm extends Component {
     });
   };
   handleChange = (address) => {
-    this.setState({ address,
-      location: address });
+    this.setState({
+      address,
+      location: address
+    });
   };
   handleChange1 = (e) => {
     this.setState({
@@ -81,7 +93,7 @@ class EventForm extends Component {
   }
   onSubmit = (e) => {
     e.preventDefault();
-    
+
     const { user } = this.props.auth;
     console.log(user._id);
     const newEvent = {
@@ -90,10 +102,11 @@ class EventForm extends Component {
       location: this.state.location,
       start: this.state.start,
       end: this.state.end,
-      description: this.state.description
+      description: this.state.description,
+      photo: this.state.photo
     };
     this.props.addEvent(newEvent);
-    
+
   }
 
   // handleSelect = address => {
@@ -102,6 +115,15 @@ class EventForm extends Component {
   //     .then(latLng => console.log('Success', latLng))
   //     .catch(error => console.error('Error', error));
   // };
+
+
+  uploadWidget() {
+    cloudinary.openUploadWidget({ cloud_name: 'exabook', upload_preset: 'n1jdzlyw', show_powered_by: false, tags: ['xmas'], max_image_width: '1600', max_image_height: '900' },
+      (error, result) => {
+        console.log(result[0].secure_url);
+        this.setState({ photo: result[0].secure_url });
+      });
+  }
 
 
   render() {
@@ -119,6 +141,12 @@ class EventForm extends Component {
               />
             </FormControl>
             <br />
+            <img src={this.state.photo} style={styles.photo} />
+            <div className="upload">
+              <Button onClick={this.uploadWidget.bind(this)} className="upload-button">
+                Add Events Image
+              </Button>
+            </div>
             <PlacesAutocomplete
               styles={styles.location}
               value={this.state.address}
@@ -134,12 +162,14 @@ class EventForm extends Component {
               onChange={this.onChange1}
               value={this.state.start}
             />
+            <br />
             <DataPicker
               name="end"
               label="Event Ends"
               onChange={this.onChange2}
               value={this.state.end}
             />
+             
             <TextField
               name="description"
               onChange={this.handleChange1}
@@ -150,12 +180,13 @@ class EventForm extends Component {
               //className={classes.textField}
               margin="normal"
             />
+
             <Button style={styles.button}
               //style={styles.button}
               variant="contained"
               onClick={this.onSubmit}
               type="submit"
-              //disabled={!this.state.formValid}
+            //disabled={!this.state.formValid}
             >
               Create event
               </Button>
