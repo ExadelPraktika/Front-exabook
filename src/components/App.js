@@ -26,12 +26,12 @@ class App extends Component {
 
         <Router>
           <Switch>
-          <Route exact path="/" component={LogIn} />
+          <Route exact path="/aaa" component={LogIn} />
           <Layout>
             <Switch>
             <Route exact path="/ssss" component={LogIn} />
             <Route exact path="/register" component={SignUp} />
-            <Route exact path="/main" component={SideBar} />
+            <Route exact path="/" component={SideBar} />
             </Switch>
           </Layout>
           </Switch>
