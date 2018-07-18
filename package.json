@@ -30,6 +30,7 @@
     "extract-loader": "^2.0.1",
     "handlebars-loader": "^1.7.0",
     "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "prop-types": "latest",
     "react": "^16.4.1",

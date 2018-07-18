@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import EventItem from './EventItem';
-
+import EventCard from './UI-components/EventCard';
 class EventFeed extends Component {
   render() {
     const {events} = this.props;
-    return events.map(event => <EventItem key={event._id} event={event}/>)
+    return events.map(event => <EventCard key={event._id} event={event}/>)
   }
 }
 

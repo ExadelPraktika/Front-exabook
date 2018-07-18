@@ -184,7 +184,7 @@ class EventForm extends Component {
             <Button style={styles.button}
               //style={styles.button}
               variant="contained"
-              onClick={this.onSubmit}
+              onClick={(event) => { this.onSubmit(event); this.props.handleClose();}}
               type="submit"
             //disabled={!this.state.formValid}
             >

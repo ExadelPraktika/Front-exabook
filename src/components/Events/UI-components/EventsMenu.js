@@ -6,7 +6,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/EventNote';
 import LocationOnIcon from '@material-ui/icons/Add';
-
+import AlertDialog from './AlertDialog'
 const styles = {
   root: {
     width: 500,
@@ -39,9 +39,10 @@ class SimpleBottomNavigation extends React.Component {
         showLabels
         className={classes.root}
       >
-        <BottomNavigationAction label="Upcoming events" icon={<RestoreIcon />} />
-        <BottomNavigationAction label="Events Calender" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Add event" icon={<LocationOnIcon />} />
+      
+        <BottomNavigationAction label="Upcoming events" onClick={this.props.action2}icon={<RestoreIcon />} />
+        <BottomNavigationAction label="Events Calender" onClick={this.props.action} icon={<FavoriteIcon />} />
+        <AlertDialog  label="Add event"/> 
       </BottomNavigation>
     );
   }

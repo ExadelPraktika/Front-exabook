@@ -5,13 +5,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-
-function Transition(props) {
-  return <Slide direction="up" {...props} />;
-}
-
-class AlertDialogSlide extends React.Component {
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import LocationOnIcon from '@material-ui/icons/Add';
+import Aux  from '../../../hoc/Auxil'
+import EventForm from '../EventForm'
+class AlertDialog extends React.Component {
   state = {
     open: false,
   };
@@ -24,39 +22,26 @@ class AlertDialogSlide extends React.Component {
     this.setState({ open: false });
   };
 
-
   render() {
     return (
-      <div>
+        <Aux>
+        <BottomNavigationAction label={this.props.label} icon={<LocationOnIcon /> }  onClick={this.handleClickOpen}/>
         <Dialog
           open={this.state.open}
-          TransitionComponent={Transition}
-          keepMounted
           onClose={this.handleClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-slide-title">
-            {"Use Google's location service?"}
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              Let Google help apps determine location. This means sending anonymous location data to
-              Google, even when no apps are running.
-            </DialogContentText>
+            <EventForm
+            handleClose={this.handleClose}
+            />
           </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Disagree
-            </Button>
-            <Button onClick={this.handleClose} color="primary">
-              Agree
-            </Button>
-          </DialogActions>
         </Dialog>
-      </div>
+        </Aux>
     );
   }
 }
 
-export default AlertDialogSlide;
+export default AlertDialog;

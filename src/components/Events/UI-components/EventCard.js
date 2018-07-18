@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
+import InfoIcon from '@material-ui/icons/Info';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
@@ -15,11 +16,15 @@ import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
+import LocationCity from '@material-ui/icons/LocationOn';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Button from '@material-ui/core/Button';
 import AlertDialog from './AlertDialog'
+import { connect } from 'react-redux';
+import { deleteEvent, goingEvent, ungoingEvent } from '../../../actions/eventActions'
 const dateFormat = require('dateformat');
+import EventDisplay from './EventDisplay'
 const styles = theme => ({
   card: {
     maxWidth: 420,
@@ -48,51 +53,85 @@ const styles = theme => ({
   },
   notShow: {
     display: 'none'
-  }
+  },
+
 });
 
 class RecipeReviewCard extends React.Component {
-  state = { expanded: false,
-    isgoing: this.props.isgoing };
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: false,
+      isgoing: this.props.isgoing,
+      showModal1: false
+    };
+    this.handleClick = this.handleClick.bind(this);
+  }
 
-    
+  handleClick(event) {  // switch the value of the showModal state
+    this.setState({
+      showModal1: !this.state.showModal1
+
+    });
+  }
+  getComponent = () => {
+    if (this.state.showModal1) {  // show the modal if state showModal is true
+      return <EventDisplay eventid={this.props.event._id} creator={this.props.event.creator} />;
+    } else {
+      return null;
+    }
+  }
+  userExists = (user) => {
+    return this.props.event.going.some(function (el) {
+      console.log(el.user._id === user)
+      return el.user._id === user;
+    });
+  }
+
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
   };
-
+  onDeleteClick(id, idas) {
+    console.log('clicked', id, idas)
+    this.props.deleteEvent(id, idas)
+  }
+  onGoingClick(id, idas) {
+    console.log('clicked', id, idas)
+    this.props.goingEvent(id, idas)
+  }
+  onUnGoingClick(id, idas) {
+    console.log('clicked', id, idas)
+    this.props.ungoingEvent(id, idas)
+  }
   render() {
+
+    const { event, auth } = this.props;
     const { classes } = this.props;
-    console.log(this.props.userid)
-    console.log(this.props.going)
-    console.log(this.props.isgoing)
-   
-    let deleteButton;
-    if (this.props.creator._id === this.props.userid) {
-      deleteButton = (
-        <Button variant="contained" color="secondary" className={styles.notShow} onClick={this.props.deleteEvent}>
-          Delete
-        </Button>
-      )
-    } else {
-      deleteButton = null;
+    let eventCreator;
+    if (event.creator.method === 'google') {
+      eventCreator = event.creator.google.name
     }
-  
+    if (event.creator.method === 'local') {
+      eventCreator = event.creator.local.name
+    }
+    if (event.creator.method === 'facebook') {
+      eventCreator = event.creator.facebook.name
+    }
+
     let goingButton;
-    if (this.props.isgoing) {
+    if (this.userExists(this.props.auth.user._id)) {
       goingButton = (
-        <Button variant="outlined" color="primary" className={classes.button} onClick={this.props.unGoingEvent} >
+        <Button variant="outlined" color="primary" className={classes.button} onClick={this.onUnGoingClick.bind(this, this.props.auth.user._id, event._id)} >
           Going
         </Button>
       )
     } else {
       goingButton = (
-      <Button variant="outlined" color="secondary" className={classes.button} onClick={this.props.goingEvent}>
-        Not Going
+        <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onGoingClick.bind(this, this.props.auth.user._id, event._id)}>
+          Not Going
       </Button>
       )
     }
-
-
     return (
       <div>
         <Card className={classes.card}>
@@ -107,31 +146,44 @@ class RecipeReviewCard extends React.Component {
                 <MoreVertIcon />
               </IconButton>
             }
-            title={this.props.eventCreator}
-            subheader={dateFormat(this.props.date, "dddd, mmmm dS, yyyy, h:MM TT")}
+            title={eventCreator}
+            subheader={dateFormat(event.date, "dddd, mmmm dS, yyyy, h:MM TT")}
           />
+          {this.getComponent()}
           <CardMedia
             className={classes.media}
 
-            image={this.props.photo.toString()}
+            image={event.photo.length > 0 ? event.photo : 'http://www.womenshealthapta.org/wp-content/plugins/wp-blog-manager-lite/images/no-image-available.png'}
             title="Contemplative Reptile"
           />
           <CardContent>
             <Typography component="p">
-            <strong>{this.props.name}</strong><br/>
-              This impressive paella is a perfect party dish and a fun meal to cook together with
-              your guests. Add 1 cup of frozen peas along with the mussels, if you like.
+              <strong>{event.title}</strong><br />
+              starts: {dateFormat(event.start, "dddd, mmmm dS, yyyy, h:MM TT")}<br />
+              ends: {dateFormat(event.end, "dddd, mmmm dS, yyyy, h:MM TT")}<br />
+              going: {event.going.length}<br />
+              location:{event.location}<LocationCity /><br />
             </Typography>
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
-          {goingButton}
+            {goingButton}
             <IconButton aria-label="Add to favorites">
               <FavoriteIcon />
             </IconButton>
-            <IconButton aria-label="Share">
+            {/* <IconButton aria-label="Share">
               <ShareIcon />
+              
+            </IconButton> */}
+            <IconButton onClick={this.handleClick} >
+              <InfoIcon />
             </IconButton>
-            {deleteButton}
+            {/* <Button onClick={this.handleClick}>More info</Button> */}
+            {event.creator._id === auth.user._id ? (
+              <Button variant="contained" color="secondary" className={styles.notShow} onClick={this.onDeleteClick.bind(this, this.props.auth.user._id, event._id)}>
+                Delete
+             </Button>
+            ) : null}
+
             <IconButton
               className={classnames(classes.expand, {
                 [classes.expandOpen]: this.state.expanded,
@@ -142,34 +194,14 @@ class RecipeReviewCard extends React.Component {
             >
               <ExpandMoreIcon />
             </IconButton>
-            <AlertDialog />
           </CardActions>
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <Typography paragraph variant="body2">
-                Method:
+                Events Description:
               </Typography>
               <Typography paragraph>
-                Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-                minutes.
-              </Typography>
-              <Typography paragraph>
-                Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-                heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-                browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving
-                chicken and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion,
-                salt and pepper, and cook, stirring often until thickened and fragrant, about 10
-                minutes. Add saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-              </Typography>
-              <Typography paragraph>
-                Add rice and stir very gently to distribute. Top with artichokes and peppers, and
-                cook without stirring, until most of the liquid is absorbed, 15 to 18 minutes.
-                Reduce heat to medium-low, add reserved shrimp and mussels, tucking them down into
-                the rice, and cook again without stirring, until mussels have opened and rice is
-                just tender, 5 to 7 minutes more. (Discard any mussels that don’t open.)
-              </Typography>
-              <Typography>
-                Set aside off of the heat to let rest for 10 minutes, and then serve.
+                {event.description}
               </Typography>
             </CardContent>
           </Collapse>
@@ -180,7 +212,14 @@ class RecipeReviewCard extends React.Component {
 }
 
 RecipeReviewCard.propTypes = {
-  classes: PropTypes.object.isRequired,
+  deleteEvent: PropTypes.func.isRequired,
+  goingEvent: PropTypes.func.isRequired,
+  ungoingEvent: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired
 };
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
-export default withStyles(styles)(RecipeReviewCard);
+//export default withStyles(styles)(RecipeReviewCard);
+export default connect(mapStateToProps, { deleteEvent, goingEvent, ungoingEvent })(withStyles(styles)(RecipeReviewCard));
