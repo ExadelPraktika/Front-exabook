@@ -112,7 +112,7 @@ class EventDisplay extends React.Component {
               title="Contemplative Reptile"
             /> */}
             <CardContent>
-                <Comment/>
+              <Comment />
               <Typography component="p">
                 <strong>{event.title}</strong><br />
                 starts: {dateFormat(event.start, "dddd, mmmm dS, yyyy, h:MM TT")}<br />

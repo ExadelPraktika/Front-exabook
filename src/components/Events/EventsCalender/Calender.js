@@ -12,13 +12,13 @@ import EventList from './EventsList';
 class Calender extends Component {
   componentDidMount() {
     this.getmyevents.bind(this, this.props)
-    
+
   }
-  getmyevents(id){
+  getmyevents(id) {
     this.props.getuserEvents(id)
   }
   render() {
-    const {events} = this.props.event;
+    const { events } = this.props.event;
     //this.props.getuserEvents(this.props.auth.user._id)
     // const {events, loading} = this.props.event;
     // let eventContent;
@@ -29,9 +29,9 @@ class Calender extends Component {
     // }
     return (
 
-          <EventList style={{marginLeft: '2000'}} events={events}
-          />
-         
+      <EventList style={{ marginLeft: '2000' }} events={events}
+      />
+
 
     )
   }
@@ -44,4 +44,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, {getuserEvents })(Calender);
+export default connect(mapStateToProps, { getuserEvents })(Calender);
