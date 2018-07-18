@@ -5,7 +5,7 @@ import Drawer from "@material-ui/core/Drawer";
 import Tab1 from "./Tab1";
 import Tab2 from "./Tab2";
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 const avatarPic = "https://api.adorable.io/avatars/50/abott@adorable.png";
 
 const styles = theme => ({

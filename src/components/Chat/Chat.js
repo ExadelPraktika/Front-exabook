@@ -3,39 +3,53 @@ import io from "socket.io-client";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import Icon from '@material-ui/core/Icon';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
+import Icon from "@material-ui/core/Icon";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import { Typography } from "@material-ui/core";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
 var uniqid = require("uniqid");
 
 const styles = theme => ({
   button: {
-    margin: theme.spacing.unit,
-  },
-  leftIcon: {
-    marginRight: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.unit
   },
-  iconSmall: {
-    fontSize: 20,
+  root: {
+    overflow: "hidden"
+    //padding: `0 ${theme.spacing.unit * 3}px`
   },
+  gridList: {
+    width: 300,
+    height: 250
+  },
+  title: {
+    textAlign: "center",
+    margin: theme.spacing.unit
+  },
+  paper: {
+    margin: theme.spacing.unit,
+    padding: theme.spacing.unit * 2,
+    maxWidth: 300
+  }
 });
 
 class Chat extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       username: "",
       message: "",
       messages: []
     };
-
-
 
     this.socket = io("localhost:3001");
 
@@ -58,32 +72,63 @@ class Chat extends React.Component {
       this.setState({ message: "" });
     };
   }
-  render() {
-    const { classes } = this.props;
+
+  validateForm() {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-4">
-            <div className="card">
-              <div className="card-body">
-                <div className="card-title">Global Chat</div>
-                <hr />
-                <div className="messages">
+      this.state.message.length > 0 // &&
+      // this.state.username.length > 0
+    );
+  }
+
+  render() {
+    const { classes, auth } = this.props;
+
+    let nick;
+    if (auth.user.method === "google") {
+      nick = auth.user.google.name;
+    }
+    if (auth.user.method === "local") {
+      nick = auth.user.local.name;
+    }
+    if (auth.user.method === "facebook") {
+      nick = auth.user.facebook.name;
+    }
+
+    return (
+      <div className={classes.root}>
+        <div>
+          <div>
+            <div>
+              <div className={classes.title}>Global Chat</div>
+              <hr />
+              <div>
+                <GridList
+                  cellHeight="auto"
+                  className={classes.gridList}
+                  cols={1}
+                >
                   {this.state.messages.map(message => {
                     return (
-                      <div
-                        key={uniqid()}
-                        className={`message ${this.props.username ===
-                          this.state.username && "mine"}`}
-                      >
-                        {message.author}: {message.message}
-                      </div>
+                      <GridListTile key={uniqid()}>
+                        <Paper className={classes.paper}>
+                          <Grid container wrap="nowrap" spacing={8}>
+                            <Grid item xs>
+                              <Typography>
+                                {message.author}: {message.message}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Paper>
+                      </GridListTile>
                     );
                   })}
-                </div>
+                </GridList>
               </div>
-              <div className="card-footer">
-                <FormHelperText id="username-helper-text">
+            </div>
+            <div className="card-footer">
+              {
+                // Username input field for testing
+                /*<FormHelperText id="username-helper-text">
                   Username
                 </FormHelperText>
                 <Input
@@ -93,29 +138,30 @@ class Chat extends React.Component {
                   onChange={ev => this.setState({ username: ev.target.value })}
                   margin="dense"
                 />
-                <br />
-                <FormHelperText id="message-helper-text">
-                  Message
-                </FormHelperText>
-                <Input
-                  id="message"
-                  multiline
-                  //className={classes.textField}
-                  margin="none"
-                  value={this.state.message}
-                  onChange={ev => this.setState({ message: ev.target.value })}
-                />
-                
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.sendMessage}
-                >
-                  Send
-                  <Icon className={classes.rightIcon}>send</Icon>
-                </Button>
-              </div>
+                <br />*/
+              }
+              <FormHelperText id="message-helper-text">Message</FormHelperText>
+              <Input
+                id="message"
+                multiline
+                //className={classes.textField}
+                margin="none"
+                value={this.state.message}
+                onChange={ev =>
+                  this.setState({ message: ev.target.value, username: nick })
+                }
+              />
+
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={this.sendMessage}
+                disabled={!this.validateForm()}
+              >
+                Send
+                <Icon className={classes.rightIcon}>send</Icon>
+              </Button>
             </div>
           </div>
         </div>
@@ -126,6 +172,11 @@ class Chat extends React.Component {
 
 Chat.propTypes = {
   classes: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Chat);
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(Chat));
