@@ -12,14 +12,14 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AlertDialog from './UI-components/AlertDialog';
 import Calender from './EventsCalender/Calender'
 class Events extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.handler = this.handler.bind(this);
     this.handler2 = this.handler2.bind(this);
 
     // Set some state
     this.state = {
-        messageShown: false
+      messageShown: false
     };
   }
   componentDidMount() {
@@ -28,27 +28,27 @@ class Events extends Component {
   handler() {
     console.log('clicked')
     this.setState({
-        messageShown: true
+      messageShown: true
     });
-}
-handler2() {
-  console.log('clicked antras')
-  this.setState({
+  }
+  handler2() {
+    console.log('clicked antras')
+    this.setState({
       messageShown: false
-  });
-}
-  getmyevents(id){
+    });
+  }
+  getmyevents(id) {
     this.props.getuserEvents(id)
   }
   render() {
     //this.props.getuserEvents(this.props.auth.user._id)
-    const {events, loading} = this.props.event;
-    let calender = <Calender style={{marginLeft: '20%'}} />;
+    const { events, loading } = this.props.event;
+    let calender = <Calender style={{ marginLeft: '20%' }} />;
     let eventContent;
-    if(events === null || loading) {
-      eventContent = <Spinner/>
+    if (events === null || loading) {
+      eventContent = <Spinner />
     } else {
-      eventContent = <EventFeed events={events}/>
+      eventContent = <EventFeed events={events} />
     }
     return (
       <div>
@@ -57,16 +57,16 @@ handler2() {
           <Grid item xs={12}>
             <EventsMenu
               action={this.handler}
-              action2={this.handler2}/>
-                        <Button variant="outlined" color="primary" className="upload-button" onClick={this.getmyevents.bind(this, this.props.auth.user._id)} >
-          Get my events
+              action2={this.handler2} />
+            <Button variant="outlined" color="primary" className="upload-button" onClick={this.getmyevents.bind(this, this.props.auth.user._id)} >
+              Get my events
         </Button>
-          <Button variant="outlined" color="primary" className="upload-button" onClick={() =>this.props.getEvents()} >
-          Get All events
+            <Button variant="outlined" color="primary" className="upload-button" onClick={() => this.props.getEvents()} >
+              Get All events
         </Button>
           </Grid>
-          <Grid  container spacing = {8}>
-          {!this.state.messageShown ? eventContent: calender}
+          <Grid container spacing={8}>
+            {!this.state.messageShown ? eventContent : calender}
           </Grid>
         </Grid>
       </div>

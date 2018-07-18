@@ -169,7 +169,7 @@ class EventForm extends Component {
               onChange={this.onChange2}
               value={this.state.end}
             />
-             
+
             <TextField
               name="description"
               onChange={this.handleChange1}
@@ -184,7 +184,7 @@ class EventForm extends Component {
             <Button style={styles.button}
               //style={styles.button}
               variant="contained"
-              onClick={(event) => { this.onSubmit(event); this.props.handleClose();}}
+              onClick={(event) => { this.onSubmit(event); this.props.handleClose(); }}
               type="submit"
             //disabled={!this.state.formValid}
             >

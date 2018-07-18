@@ -21,14 +21,14 @@ function DateAndTimePickers(props) {
   return (
     <form className={classes.container} noValidate>
       <TextField
-        name= {props.name}
+        name={props.name}
         id="datetime-local"
         label={props.label}
         type="datetime-local"
         //defaultValue={props.defaultas}
         className={classes.textField}
-        onChange = {props.onChange} 
-        value = {props.value} 
+        onChange={props.onChange}
+        value={props.value}
         InputLabelProps={{
           shrink: true,
         }}
