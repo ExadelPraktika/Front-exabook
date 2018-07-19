@@ -80,7 +80,7 @@ class SignUp extends Component {
 
   responseFacebook = (response) => {
     console.log(response);
-    const access_token = response.accessToken
+    const access_token = response.accessToken;
     axios
       .post('http://localhost:3001/users/oauth/facebook', {
         access_token
@@ -91,7 +91,7 @@ class SignUp extends Component {
       .catch(function (error) {
         console.log(error);
       });
-  }
+  };
 
   responseGoogle = (response) => {
     const access_token = response.Zi.access_token;
@@ -105,7 +105,7 @@ class SignUp extends Component {
       .catch(function (error) {
         console.log(error);
       });
-  }
+  };
 
 
   render() {

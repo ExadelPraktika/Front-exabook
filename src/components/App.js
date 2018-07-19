@@ -24,17 +24,19 @@ class App extends Component {
     return (
       <Provider store={store}>
 
-        <Router>
-          <Switch>
-          <Layout>
-            <Switch>
-            <Route exact path="/" component={Marketplace} />
-            <Route exact path="/register" component={SignUp} />
-            <Route exact path="/main" component={SideBar} />
-            </Switch>
-          </Layout>
-          </Switch>
-        </Router>
+          <Router>
+              <Switch>
+                  <Route exact path="/" component={Marketplace} />
+                  <Layout>
+                      <Switch>
+                          <Route exact path="/marketplace" component={Marketplace} />
+                          <Route exact path="/login" component={LogIn} />
+                          <Route exact path="/register" component={SignUp} />
+                          <Route exact path="/main" component={SideBar} />
+                      </Switch>
+                  </Layout>
+              </Switch>
+          </Router>
       </Provider>
     )
 
