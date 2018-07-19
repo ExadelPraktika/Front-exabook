@@ -23,7 +23,6 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import { render } from 'react-dom';
 import { CloudinaryContext, Transformation, Image } from 'cloudinary-react';
-//require('./App.css');
 const styles = {
   card: {
     minWidth: 300,
