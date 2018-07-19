@@ -7,12 +7,12 @@ import { setCurrent } from '../actions/authActions';
 import store from '../store';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
-import TopBar from './Topbar/Topbar';
+import Marketplace from './Marketplace/Marketplace';
 import SideBar from "./sidebar/SideBar";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Layout from '../hoc/Layout'
 
-
-if(localStorage.jwtToken) {
+if (localStorage.jwtToken) {
   // Set auth token header auth
   setAuthToken(localStorage.jwtToken);
   //Decode token and get user info 
@@ -21,21 +21,27 @@ if(localStorage.jwtToken) {
 class App extends Component {
   render() {
 
-    return(
-      <Provider store={ store }>
-      <Router>
-          <div>
-            <Route exact path="/" component={LogIn} />
-            <Route exact path="/register" component={SignUp} />
-            <Route exact path="/main" component={SideBar} />
-          </div>
+    return (
+      <Provider store={store}>
+
+          <Router>
+              <Switch>
+                  <Route exact path="/" component={Marketplace} />
+                  <Layout>
+                      <Switch>
+                          <Route exact path="/marketplace" component={Marketplace} />
+                          <Route exact path="/login" component={LogIn} />
+                          <Route exact path="/register" component={SignUp} />
+                          <Route exact path="/main" component={SideBar} />
+                      </Switch>
+                  </Layout>
+              </Switch>
           </Router>
-    </Provider>
+      </Provider>
     )
 
   }
 }
-
 
 export default App;
 

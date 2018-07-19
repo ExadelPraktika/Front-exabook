@@ -19,12 +19,12 @@ const styles = {
         marginRight: 30,
     },
     home: {
-        marginLeft: 100,
+        marginLeft: 60,
         marginRight: 250
     }
 };
 
-const ButtonAppBar = props => {
+const TopBar = props => {
     const { classes } = props;
     return (
         <div className={classes.root}>
@@ -43,10 +43,10 @@ const ButtonAppBar = props => {
             </AppBar>
         </div>
     );
-}
+};
 
-ButtonAppBar.propTypes = {
+TopBar.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ButtonAppBar);
+export default withStyles(styles)(TopBar);

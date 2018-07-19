@@ -28,10 +28,8 @@ const styles = theme => ({
   },
   test: {
     position: "absolute",
-    top: 0,
-    left: 95,
-    right: 0,
-    bottom: 0
+    align: "center",
+    left: 90,
   }
 });
 
@@ -39,9 +37,8 @@ class ClippedDrawer extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div width={drawerWidth} className={classes.root}>
+      <div className={classes.root}>
         <div className={classes.test}>
-          <img src={avatarPic} className={classes.avatar} />
           <p>UserName</p>
         </div>
         <div>
@@ -52,8 +49,6 @@ class ClippedDrawer extends React.Component {
             }}
           >
           <Tab1 />
-            
-
             <Tab2 />
           </Drawer>
         </div>
