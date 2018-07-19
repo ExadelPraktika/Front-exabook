@@ -10,6 +10,8 @@ import Events from './Events/Events'
 import TopBar from './Topbar/Topbar';
 import SideBar from "./sidebar/SideBar";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import Marketplace from './Marketplace/Marketplace'
+import EventFeed from './Events/EventFeed';
 
 
 if(localStorage.jwtToken) {
@@ -26,11 +28,12 @@ class App extends Component {
         <Router>
           <Switch>
             <Route exact path="/" component={LogIn} />
+            <Route exact path="/register" component={SignUp} />
             <Layout>
               <Switch>
-                <Route exact path="/ssss" component={LogIn} />
-                <Route exact path="/register" component={SignUp} />
                 <Route exact path="/dashboard" component={SideBar} />
+                <Route exact path="/marketplace" component={Marketplace} />
+                <Route exact path="/events" component={EventFeed} />
               </Switch>
             </Layout>
         </Switch>

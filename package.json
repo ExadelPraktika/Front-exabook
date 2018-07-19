@@ -30,11 +30,8 @@
     "extract-loader": "^2.0.1",
     "handlebars-loader": "^1.7.0",
     "jwt-decode": "^2.2.0",
-<<<<<<< HEAD
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
-=======
->>>>>>> origin/sprint-2
     "prop-types": "latest",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
@@ -47,12 +44,9 @@
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
-<<<<<<< HEAD
-    "styled-components": "^3.3.3"
-=======
+    "styled-components": "^3.3.3",
     "socket.io-client": "^2.1.1",
     "uniqid": "^5.0.3"
->>>>>>> origin/sprint-2
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
