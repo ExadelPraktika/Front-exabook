@@ -128,7 +128,7 @@ class RecipeReviewCard extends React.Component {
     } else {
       goingButton = (
         <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onGoingClick.bind(this, this.props.auth.user._id, event._id)}>
-          Not Going
+          Going
       </Button>
       )
     }
