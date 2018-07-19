@@ -16,7 +16,7 @@ class Layout extends Component {
         <TopBar />
         <Grid container spacing={8} style={style}>
           <Grid item xs = {2}>
-              <SideBar />
+            <SideBar />
           </Grid>
           <Grid item xs>
             {this.props.children}

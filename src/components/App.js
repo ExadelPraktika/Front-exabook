@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import jwt_decode from 'jwt-decode';
@@ -9,10 +8,12 @@ import LogIn from './LogIn';
 import SignUp from './SignUp';
 import Marketplace from './Marketplace/Marketplace';
 import SideBar from "./sidebar/SideBar";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Layout from '../hoc/Layout'
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Marketplace from './Marketplace/Marketplace'
+import Events from './Events/Events';
 
-if (localStorage.jwtToken) {
+
+if(localStorage.jwtToken) {
   // Set auth token header auth
   setAuthToken(localStorage.jwtToken);
   //Decode token and get user info 
@@ -21,27 +22,26 @@ if (localStorage.jwtToken) {
 class App extends Component {
   render() {
 
-    return (
+    return(
       <Provider store={store}>
-
-          <Router>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={LogIn} />
+            <Route exact path="/register" component={SignUp} />
+            <Layout>
               <Switch>
-                  <Route exact path="/" component={Marketplace} />
-                  <Layout>
-                      <Switch>
-                          <Route exact path="/marketplace" component={Marketplace} />
-                          <Route exact path="/login" component={LogIn} />
-                          <Route exact path="/register" component={SignUp} />
-                          <Route exact path="/main" component={SideBar} />
-                      </Switch>
-                  </Layout>
+                <Route exact path="/dashboard" component={SideBar} />
+                <Route exact path="/marketplace" component={Marketplace} />
+                <Route exact path="/events" component={Events} />
               </Switch>
-          </Router>
-      </Provider>
+            </Layout>
+        </Switch>
+      </Router>
+    </Provider>
     )
 
   }
 }
 
-export default App;
 
+export default App;
