@@ -6,11 +6,11 @@ import { setCurrent } from '../actions/authActions';
 import store from '../store';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
-import Marketplace from './Marketplace/Marketplace';
 import SideBar from "./sidebar/SideBar";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Marketplace from './Marketplace/Marketplace'
 import Events from './Events/Events';
+import Layout from "../hoc/Layout";
 
 
 if(localStorage.jwtToken) {

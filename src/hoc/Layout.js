@@ -15,7 +15,7 @@ class Layout extends Component {
       <div>
         <TopBar />
         <Grid container spacing={8} style={style}>
-          <Grid item xs = {2}>
+          <Grid item xs = {3}>
             <SideBar />
           </Grid>
           <Grid item xs>
