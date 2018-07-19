@@ -21,14 +21,19 @@ class App extends Component {
   render() {
 
     return(
-      <Provider store={ store }>
-      <Router>
-          <div>
+      <Provider store={store}>
+        <Router>
+          <Switch>
             <Route exact path="/" component={LogIn} />
-            <Route exact path="/register" component={SignUp} />
-            <Route exact path="/main" component={SideBar} />
-          </div>
-          </Router>
+            <Layout>
+              <Switch>
+                <Route exact path="/ssss" component={LogIn} />
+                <Route exact path="/register" component={SignUp} />
+                <Route exact path="/dashboard" component={SideBar} />
+              </Switch>
+            </Layout>
+        </Switch>
+      </Router>
     </Provider>
     )
 

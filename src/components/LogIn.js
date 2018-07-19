@@ -50,7 +50,7 @@ class LoginForm extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
       // if isauth true which means user is loged in - redirect
-      // this.props.history.push('/dashboard')
+       this.props.history.push('/dashboard')
     }
   }
 
