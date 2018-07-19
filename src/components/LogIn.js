@@ -32,6 +32,7 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: '',
       email: '',
       password: '',
       formErrors: { email: '', password: '' },
@@ -93,7 +94,8 @@ class LoginForm extends Component {
     axios
       .post('http://localhost:3001/users/signin', {
         email: this.state.email,
-        password: this.state.password
+        password: this.state.password,
+        name: this.state.name
       })
       .then(response => {
         console.log(response)
@@ -162,7 +164,10 @@ class LoginForm extends Component {
               />
               <FormHelperText error id="name-helper-text">{this.state.formErrors.password}</FormHelperText>
               </FormControl>
-              
+              <Input 
+                  name="name"
+                  onChange={this.handleChange}
+                />
               <Button 
                 style={styles.button}
                 variant="contained"

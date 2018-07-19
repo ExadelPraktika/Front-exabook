@@ -26,6 +26,7 @@
     "babel-preset-react-native": "^4.0.0",
     "babel-preset-stage-0": "^6.24.1",
     "jwt-decode": "^2.2.0",
+    "prop-types": "latest",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-facebook-login": "^4.0.1",
@@ -34,8 +35,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0",
-    "prop-types": "latest"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
