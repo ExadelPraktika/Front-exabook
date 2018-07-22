@@ -1,64 +1,78 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { getEvent } from '../../../actions/eventActions';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Modal from '@material-ui/core/Modal';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import LocationCity from '@material-ui/icons/LocationOn';
-import Button from '@material-ui/core/Button';
-import Comment from './Comment'
-const dateFormat = require('dateformat');
-
+import React from "react";
+import { connect } from "react-redux";
+import { getEvent } from "../../../actions/eventActions";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Modal from "@material-ui/core/Modal";
+import SwipeableViews from "react-swipeable-views";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import List from "@material-ui/core/List";
+import CommentBox from "./Comment-Feed/CommentBox";
+import CommentFeed from "./Comment-Feed/CommentFeed";
+const dateFormat = require("dateformat");
 
 function getModalStyle() {
   const top = 50;
   const left = 50;
 
-
   return {
     top: `${top}%`,
     left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
+    transform: `translate(-${top}%, -${left}%)`
   };
 }
+function TabContainer({ children, dir }) {
+  return (
+    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
+      {children}
+    </Typography>
+  );
+}
+
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  dir: PropTypes.string.isRequired
+};
 
 const styles = theme => ({
+  root: {
+    backgroundColor: theme.palette.background.paper,
+    width: "600px"
+  },
   media: {
     height: 0,
-    paddingTop: '56.25%', // 16:9
-    height: '200'
+    paddingTop: "56.25%", // 16:9
+    height: "200"
   },
   paper: {
-    position: 'absolute',
-    width: '300',
+    position: "absolute",
+    width: "300",
     backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
+    boxShadow: theme.shadows[5]
   },
   div: {
-    width: '300',
-    height: '600'
+    width: "300",
+    height: "600"
+  },
+  commentContainer: {
+    height: "300",
+    overflow: "scroll"
   }
 });
 
 class EventDisplay extends React.Component {
   state = {
     open: true,
+    value: 0,
+    scroll: "paper"
   };
   componentDidMount() {
     this.props.getEvent(this.props.eventid);
-    console.log('kazkas vyksta')
-    console.log('id evento', this.props.eventid)
+    console.log("kazkas vyksta");
+    console.log("id evento", this.props.eventid);
   }
   handleOpen = () => {
     this.setState({ open: true });
@@ -68,19 +82,27 @@ class EventDisplay extends React.Component {
     this.setState({ open: false });
   };
 
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
+  handleChangeIndex = index => {
+    this.setState({ value: index });
+  };
   render() {
-    const { classes } = this.props;
-    const { event } = this.props.event
-    console.log(event.creator)
+    const { classes, theme } = this.props;
+    const { event } = this.props.event;
+    console.log(event);
+    console.log(event.comments);
     let eventCreator;
-    if (this.props.creator.method === 'google') {
-      eventCreator = this.props.creator.google.name
+    if (this.props.creator.method === "google") {
+      eventCreator = this.props.creator.google.name;
     }
-    if (this.props.creator.method === 'local') {
-      eventCreator = this.props.creator.local.name
+    if (this.props.creator.method === "local") {
+      eventCreator = this.props.creator.local.name;
     }
-    if (this.props.creator.method === 'facebook') {
-      eventCreator = this.props.creator.facebook.name
+    if (this.props.creator.method === "facebook") {
+      eventCreator = this.props.creator.facebook.name;
     }
     return (
       <div>
@@ -91,43 +113,43 @@ class EventDisplay extends React.Component {
           onClose={this.handleClose}
         >
           <div style={getModalStyle()} className={classes.paper}>
-            <CardHeader
-              avatar={
-                <Avatar aria-label={this.state.isgoing} className={classes.avatar}>
-                  T
-              </Avatar>
-              }
-              action={
-                <IconButton>
-                  <MoreVertIcon />
-                </IconButton>
-              }
-              title={eventCreator}
-              subheader={dateFormat(event.date, "dddd, mmmm dS, yyyy, h:MM TT")}
-            />
-            {/* <CardMedia
-              className={classes.media}
-
-              image={event.photo !== '' ? event.photo : 'http://www.womenshealthapta.org/wp-content/plugins/wp-blog-manager-lite/images/no-image-available.png'}
-              title="Contemplative Reptile"
-            /> */}
-            <CardContent>
-              <Comment />
-              <Typography component="p">
-                <strong>{event.title}</strong><br />
-                starts: {dateFormat(event.start, "dddd, mmmm dS, yyyy, h:MM TT")}<br />
-                ends: {dateFormat(event.end, "dddd, mmmm dS, yyyy, h:MM TT")}<br />
-                <Button onClick={this.handleClick}>More info</Button>
-                {event.location}<LocationCity /><br />
-              </Typography>
-            </CardContent>
-            <Typography variant="title" id="modal-title">
-              {event.title}
-            </Typography>
-
-            <Typography variant="subheading" id="simple-modal-description">
-              Duis mollis, est non cossssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmodo luctus, nisi erat porttitor ligula.
-            </Typography>
+            <div className={classes.root}>
+              <AppBar position="static" color="default">
+                <Tabs
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  fullWidth
+                >
+                  <Tab label="General Info" />
+                  <Tab label="Comment feed" />
+                  <Tab label="Item Three" />
+                </Tabs>
+              </AppBar>
+              <SwipeableViews
+                axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+                index={this.state.value}
+                onChangeIndex={this.handleChangeIndex}
+              >
+                <TabContainer dir={theme.direction}>Item One</TabContainer>
+                <TabContainer
+                  dir={theme.direction}
+                  className={classes.commentContainer}
+                >
+                  <CommentBox eventID={event._id} />
+                  <List>
+                    <CommentFeed
+                      className={classes.root2}
+                      comments={event.comments}
+                      userID={this.props.auth.user._id}
+                      eventID={event._id}
+                    />
+                  </List>
+                </TabContainer>
+                <TabContainer dir={theme.direction}>Item Three</TabContainer>
+              </SwipeableViews>
+            </div>
           </div>
         </Modal>
       </div>
@@ -141,10 +163,9 @@ EventDisplay.propTypes = {
   event: PropTypes.object.isRequired
 };
 
-
 const mapStateToProps = state => ({
-  event: state.event
+  event: state.event,
+  auth: state.auth
 });
 
-
-export default connect(mapStateToProps, { getEvent })(withStyles(styles)(EventDisplay));
+export default connect(mapStateToProps,{ getEvent })(withStyles(styles, { withTheme: true })(EventDisplay));

@@ -92,6 +92,56 @@ export const ungoingEvent = (id, idas) => dispatch => {
     );
 };
 
+// Add comment
+export const addComment = (eventID, commentData) => dispatch => {
+  axios
+    .post(`http://localhost:3001/events/comment/${eventID}`, commentData)
+    .then(res => 
+      dispatch(getEvent(eventID))
+      // dispatch({
+      //   type: GET_EVENT,
+      //   payload: res.data,
+      // })
+    );
+};
+
+// Add comment
+export const deleteComment = (eventID, commentID) => dispatch => {
+  axios
+    .delete(`http://localhost:3001/events/comment/${eventID}/${commentID}`)
+    .then(res => 
+      dispatch(getEvent(eventID))
+      // dispatch({
+      //   type: GET_EVENT,
+      //   payload: res.data,
+      // })
+    );
+};
+
+export const addLike = (userID, eventID, commentID) => dispatch => {
+  axios
+    .post(`http://localhost:3001/events/comments/like/${userID}/${eventID}/${commentID}`)
+    .then(res => 
+      dispatch(getEvent(eventID))
+      // dispatch({
+      //   type: GET_EVENT,
+      //   payload: res.data,
+      // })
+    );
+};
+
+export const deleteLike = (userID, eventID, commentID) => dispatch => {
+  axios
+    .post(`http://localhost:3001/events/comments/unlike/${userID}/${eventID}/${commentID}`)
+    .then(res => 
+      dispatch(getEvent(eventID))
+      // dispatch({
+      //   type: GET_EVENT,
+      //   payload: res.data,
+      // })
+    );
+};
+
 //TODO KAD gauti my events tiesiog padaryti my events actiona dar viena ji ideti i switch ir paduoti funkcija su reiksme papildoma is selectiono tarp mano ar visu eventu
 // Set loading state
 export const setEventLoading = () => {
