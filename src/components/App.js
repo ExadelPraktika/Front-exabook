@@ -31,7 +31,7 @@ class App extends Component {
             <Layout>
               <Switch>
                 {/*kai "/dashboard" path, turi but {feed} bet dar nepabaigta*/}
-                <Route exact path="/dashboard" component={SideBar} />
+                <Route exact path="/dashboard" component={Marketplace} />
                 <Route exact path="/marketplace" component={Marketplace} />
                 <Route exact path="/events" component={Events} />
               </Switch>

@@ -1,30 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import Poster from './Poster';
+import Poster from './UI-components/Poster';
 
 class MarketFeed extends Component {
     render() {
-        const { posts } = this.props;
-        return posts.map((post, index) => <Poster
-                name={post.name}
-                avatar={post.avatar}
-                category={post.category}
-                description={post.description}
-                title={post.title}
-                timePosted={post.timePosted}
-                descriptionOpened={post.descriptionOpened}
-                comments={post.comments}
-                rating={post.rating}
-                anchorEl={post.anchorEl}
-                images={post.images}
-                activeStep={post.activeStep}
-        />
-        )
+        const { marketFeed } = this.props;
+        return (marketFeed.map(post => <Poster key={post._id} post={post}/>)).reverse();
     }
 }
 
 MarketFeed.propTypes = {
-    posts: PropTypes.array.isRequired
+    marketFeed: PropTypes.array.isRequired
 };
 
 export default MarketFeed;

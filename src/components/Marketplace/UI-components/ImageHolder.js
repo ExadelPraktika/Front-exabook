@@ -15,7 +15,7 @@ class ImageHolder extends Component{
     constructor(props){
         super(props);
         this.state = {
-            activeStep: this.props.activeStep,
+            activeStep: 0,
         }
     }
 
@@ -69,7 +69,6 @@ class ImageHolder extends Component{
 }
 ImageHolder.propTypes = {
     classes: PropTypes.object.isRequired,
-    activeStep: PropTypes.number.isRequired,
     images: PropTypes.array.isRequired
 };
 

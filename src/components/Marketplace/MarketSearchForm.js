@@ -5,18 +5,13 @@ import IconButton from "@material-ui/core/es/IconButton/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from "prop-types";
+import Button from "@material-ui/core/es/Button/Button";
+import Typography from "@material-ui/core/es/Typography/Typography";
 
 const styles = theme => ({
-    card: {
-        maxWidth: 820,
-        marginLeft: 150,
-        margin: 10,
-    },
     textField: {
-        left: 50,
-        width: 200,
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
+        margin: 10,
+        width: 300,
     }
 });
 
@@ -31,46 +26,77 @@ class MarketSearchForm extends Component{
             Search: ''
         }
     }
+    handleSearchClose = () => {
+      this.props.handleClose();
+    };
 
     render(){
         const { classes } = this.props;
         return(
-            <Card className={classes.card}>
+            <Card>
+              <div>
                 <TextField
-                    id="location"
-                    label="Location"
-                    type="search"
-                    className={classes.textField}
-                    margin="normal"
+                  id="location"
+                  label="Location"
+                  type="search"
+                  className={classes.textField}
+                  margin="normal"
+                />
+              </div>
+              <div>
+                <TextField
+                  id="category"
+                  label="Category"
+                  type="category"
+                  className={classes.textField}
+                  margin="normal"
+                />
+              </div>
+              <div>
+                <TextField
+                  id="limit"
+                  label="Minimum price"
+                  type="number"
+                  style={{
+                    margin: 10,
+                    width: 150,
+                  }}
+                  inputProps={{
+                    step: 10,
+                  }}
                 />
                 <TextField
-                    id="category"
-                    label="Category"
-                    type="category"
-                    className={classes.textField}
-                    margin="normal"
+                  id="limit"
+                  label="Max price"
+                  type="number"
+                  style={{
+                    margin: 10,
+                    width: 150,
+                  }}
+                  inputProps={{
+                    step: 10,
+                  }}
                 />
+              </div>
+              <div>
                 <TextField
-                    id="limit"
-                    label="Min-Max"
-                    type="number"
-                    defaultValue="0"
-                    className={classes.textField}
-                    style={{width: 100}}
-                    inputProps={{
-                        step: 10,
-                    }}
+                  id="search"
+                  label="Search field"
+                  type="search"
+                  className={classes.textField}
+                  margin="normal"
                 />
-                <TextField
-                    id="search"
-                    label="Search field"
-                    type="search"
+              </div>
+              <div>
+                  <Button
                     className={classes.textField}
-                    margin="normal"
-                />
-                <IconButton style={{left: 50}}>
-                    <SearchIcon/>
-                </IconButton>
+                    onClick={this.handleSearchClose}
+                  >
+                    <Typography variant={'button'}>
+                      Search
+                    </Typography>
+                  </Button>
+              </div>
             </Card>
         )
     }
