@@ -6,6 +6,7 @@ import Input from "@material-ui/core/es/Input/Input";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/es/Button/Button";
+
 const dateFormat = require('dateformat');
 
 const styles = {
@@ -31,7 +32,7 @@ class MarketForm extends Component {
 
     createMarketPost = () =>{
         let time = new Date();
-        let fullTime = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, ") + (time.getHours() < 10 ? "0" + time.getHours() : time.getHours()) + ":" + time.getMinutes();
+        let fullTime = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, ") + (time.getHours() < 10 ? "0" + time.getHours() : time.getHours()) + ":" + (time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes());
         const newPost = {
             category: this.state.category,
             description: this.state.description,
@@ -91,7 +92,7 @@ class MarketForm extends Component {
                 <div>
                     <Input
                         name={'category'}
-                        placeholder={"Category (optional)"}
+                        placeholder={"Category"}
                         style={styles.comments}
                         value={this.state.category}
                         onChange={(e) => {this.handleChange(e)}}

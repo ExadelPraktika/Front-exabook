@@ -147,7 +147,7 @@ class Footer extends Component{
                 </Collapse>
                 <Collapse in={this.state.descriptionOpened} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <Typography paragraph>
+                        <Typography>
                             {this.props.description}
                         </Typography>
                     </CardContent>

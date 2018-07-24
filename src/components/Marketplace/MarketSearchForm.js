@@ -1,37 +1,42 @@
 import React, { Component } from 'react';
 import Card from "@material-ui/core/es/Card/Card";
 import TextField from "@material-ui/core/es/TextField/TextField";
-import IconButton from "@material-ui/core/es/IconButton/IconButton";
-import SearchIcon from '@material-ui/icons/Search';
-import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux'
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/es/Button/Button";
 import Typography from "@material-ui/core/es/Typography/Typography";
-
-const styles = theme => ({
-    textField: {
-        margin: 10,
-        width: 300,
-    }
-});
+import { getSearchedPosts } from "../../actions/marketActions";
 
 class MarketSearchForm extends Component{
     constructor(props){
         super(props);
 
         this.state = {
-            Location: '',
-            Category: '',
-            MinMax: 0,
-            Search: ''
+            location: '',
+            category: '',
+            min: 0,
+            max: 0,
+            search: ''
         }
     }
+    handleChange = (e) => {
+      this.setState({
+        [e.target.id]: e.target.value
+      });
+    };
     handleSearchClose = () => {
+      let search = {
+        location: this.state.location,
+        category: this.state.category,
+        min: this.state.min,
+        max: this.state.max,
+        search: this.state.search
+      };
+      this.props.getSearchedPosts(search);
       this.props.handleClose();
     };
 
     render(){
-        const { classes } = this.props;
         return(
             <Card>
               <div>
@@ -39,7 +44,8 @@ class MarketSearchForm extends Component{
                   id="location"
                   label="Location"
                   type="search"
-                  className={classes.textField}
+                  onChange={(e) => {this.handleChange(e)}}
+                  style={{margin: 10, width: 300}}
                   margin="normal"
                 />
               </div>
@@ -48,15 +54,17 @@ class MarketSearchForm extends Component{
                   id="category"
                   label="Category"
                   type="category"
-                  className={classes.textField}
+                  onChange={(e) => {this.handleChange(e)}}
+                  style={{margin: 10, width: 300}}
                   margin="normal"
                 />
               </div>
               <div>
                 <TextField
-                  id="limit"
+                  id="min"
                   label="Minimum price"
                   type="number"
+                  onChange={(e) => {this.handleChange(e)}}
                   style={{
                     margin: 10,
                     width: 150,
@@ -66,9 +74,10 @@ class MarketSearchForm extends Component{
                   }}
                 />
                 <TextField
-                  id="limit"
+                  id="max"
                   label="Max price"
                   type="number"
+                  onChange={(e) => {this.handleChange(e)}}
                   style={{
                     margin: 10,
                     width: 150,
@@ -83,13 +92,14 @@ class MarketSearchForm extends Component{
                   id="search"
                   label="Search field"
                   type="search"
-                  className={classes.textField}
+                  onChange={(e) => {this.handleChange(e)}}
+                  style={{margin: 10, width: 300}}
                   margin="normal"
                 />
               </div>
               <div>
                   <Button
-                    className={classes.textField}
+                    style={{margin: 10, width: 300}}
                     onClick={this.handleSearchClose}
                   >
                     <Typography variant={'button'}>
@@ -103,7 +113,11 @@ class MarketSearchForm extends Component{
 }
 
 MarketSearchForm.propTypes = {
-    classes: PropTypes.object.isRequired
+    getSearchedPosts: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(MarketSearchForm);
+const mapStateToProps = state => ({
+  market: state.market,
+});
+
+export default connect(mapStateToProps, { getSearchedPosts })(MarketSearchForm);

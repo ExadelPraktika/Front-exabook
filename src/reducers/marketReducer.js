@@ -1,4 +1,4 @@
-import {CREATE_POST, GET_MARKET_POSTS, MARKET_LOADING} from '../actions/types';
+import {CREATE_POST, GET_MARKET_POSTS, GET_SEARCHED_POSTS} from '../actions/types';
 
 const initialState = {
     marketFeed: [],
@@ -16,6 +16,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 marketFeed: action.payload
+            };
+        case GET_SEARCHED_POSTS:
+            return {
+              ...state,
+              marketFeed: action.payload
             };
         default:
             return state;

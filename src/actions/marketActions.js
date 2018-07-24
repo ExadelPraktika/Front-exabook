@@ -4,6 +4,7 @@ import {
   CREATE_POST,
   GET_MARKET_POSTS,
   GET_MARKET_POST,
+  GET_SEARCHED_POSTS,
   GET_USER_POSTS
 } from './types';
 
@@ -14,6 +15,18 @@ export const getMarketPosts = () => dispatch => {
     .then(res =>
       dispatch({
         type: GET_MARKET_POSTS,
+        payload: res.data
+      })
+    );
+};
+
+// Get market
+export const getSearchedPosts = postData => dispatch => {
+  axios
+    .post('http://localhost:3001/marketplace/search', postData)
+    .then(res =>
+      dispatch({
+        type: GET_SEARCHED_POSTS,
         payload: res.data
       })
     );

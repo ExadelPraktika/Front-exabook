@@ -6,15 +6,13 @@ import MarketFeed from "./MarketFeed";
 import { getMarketPosts, createPost } from "../../actions/marketActions";
 import MarketTab from "./UI-components/MarketTab";
 
-
 class Marketplace extends Component {
 
   componentDidMount(){
     this.props.getMarketPosts();
     console.log('got market posts');
   }
-
-    render() {
+  render() {
         const { marketFeed, loading } = this.props.market;
         let marketContent;
         if(marketFeed === null || loading){
@@ -22,16 +20,15 @@ class Marketplace extends Component {
         }
         else
             marketContent = <MarketFeed marketFeed={marketFeed}/>;
-
         return (
             <div>
                 <MarketTab/>
-                <Grid container spacing = {16}>
-                    {marketContent}
-                </Grid>
+                    <Grid container spacing = {16}>
+                        {marketContent}
+                    </Grid>
             </div>
         )
-    }
+  }
 }
 Marketplace.propTypes = {
     market: PropTypes.object.isRequired,
