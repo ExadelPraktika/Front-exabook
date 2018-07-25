@@ -8,10 +8,9 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Typography } from "@material-ui/core";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import UserAvatar from "react-user-avatar";
 
 var uniqid = require("uniqid");
 
@@ -24,20 +23,51 @@ const styles = theme => ({
   },
   root: {
     overflow: "hidden"
-    //padding: `0 ${theme.spacing.unit * 3}px`
   },
-  gridList: {
+  messagesContainer: {
     width: 300,
-    height: 250
+    height: 250,
+    overflowY: "auto"
   },
   title: {
     textAlign: "center",
     margin: theme.spacing.unit
   },
-  paper: {
+  paperMe: {
     margin: theme.spacing.unit,
-    padding: theme.spacing.unit * 2,
-    maxWidth: 300
+    padding: theme.spacing.unit * 0.5,
+    maxWidth: 160,
+    minWidth: 10,
+    whiteSpace: "normal",
+    wordWrap: "break-word",
+    background: "#2196f3",
+    elevation: "0",
+    borderRadius: 12
+  },
+  paperThem: {
+    margin: theme.spacing.unit,
+    padding: theme.spacing.unit * 0.5,
+    maxWidth: 160,
+    minWidth: 10,
+    whiteSpace: "normal",
+    wordWrap: "break-word",
+    background: "#f9ad3b",
+    elevation: "0",
+    borderRadius: 12
+  },
+  avatar: {
+    width: 36,
+    color: "White",
+    fontFamily: "Sans-serif",
+    fontStyle: "bold",
+    fontSize: "18px"
+  },
+  messagesMe: {
+    display: "flex",
+    justifyContent: "flex-end"
+  },
+  messagesThem: {
+    display: "flex"
   }
 });
 
@@ -71,13 +101,29 @@ class Chat extends React.Component {
       });
       this.setState({ message: "" });
     };
+
+    this.onKeyDown = ev => {
+      if (ev.keyCode === 13 && this.validateForm()) {
+        ev.preventDefault();
+        this.socket.emit("SEND_MESSAGE", {
+          author: this.state.username,
+          message: this.state.message
+        });
+        this.setState({ message: "" });
+      }
+    };
   }
 
   validateForm() {
-    return (
-      this.state.message.length > 0 // &&
-      // this.state.username.length > 0
-    );
+    return this.state.message.length > 0;
+  }
+  componentDidMount(){
+    var objDiv = document.getElementById("divExample");
+    objDiv.scrollTop = objDiv.scrollHeight;
+  }
+  componentDidUpdate(){
+      var objDiv = document.getElementById("divExample");
+      objDiv.scrollTop = objDiv.scrollHeight;
   }
 
   render() {
@@ -93,7 +139,7 @@ class Chat extends React.Component {
     if (auth.user.method === "facebook") {
       nick = auth.user.facebook.name;
     }
-
+   
     return (
       <div className={classes.root}>
         <div>
@@ -101,60 +147,62 @@ class Chat extends React.Component {
             <div>
               <div className={classes.title}>Global Chat</div>
               <hr />
-              <div>
-                <GridList
-                  cellHeight="auto"
-                  className={classes.gridList}
-                  cols={1}
-                >
-                  {this.state.messages.map(message => {
-                    return (
-                      <GridListTile key={uniqid()}>
-                        <Paper className={classes.paper}>
-                          <Grid container wrap="nowrap" spacing={8}>
-                            <Grid item xs>
-                              <Typography>
-                                {message.author}: {message.message}
-                              </Typography>
-                            </Grid>
+              <div className={classes.messagesContainer} id="divExample">
+                {this.state.messages.map(message => {
+                  return (
+                    <div
+                      key={uniqid()}
+                      className={
+                        message.author === nick
+                          ? classes.messagesMe
+                          : classes.messagesThem
+                      }
+                    >
+                      {message.author === nick ? null : (
+                        <UserAvatar
+                          size="36"
+                          className={classes.avatar}
+                          name={message.author}
+                          src=""
+                        />
+                      )}
+                      <Paper
+                        className={
+                          message.author === nick
+                            ? classes.paperMe
+                            : classes.paperThem
+                        }
+                      >
+                        <Grid container>
+                          <Grid item xs zeroMinWidth>
+                            <Typography style={{ color: "White" }}>
+                              {message.message}
+                            </Typography>
                           </Grid>
-                        </Paper>
-                      </GridListTile>
-                    );
-                  })}
-                </GridList>
+                        </Grid>
+                      </Paper>
+                    </div>
+                  );
+                })}
               </div>
             </div>
             <div className="card-footer">
-              {
-                // Username input field for testing
-                /*<FormHelperText id="username-helper-text">
-                  Username
-                </FormHelperText>
-                <Input
-                  id="Username"
-                  //className={classes.textField}
-                  value={this.state.username}
-                  onChange={ev => this.setState({ username: ev.target.value })}
-                  margin="dense"
-                />
-                <br />*/
-              }
               <FormHelperText id="message-helper-text">Message</FormHelperText>
               <Input
                 id="message"
                 multiline
-                //className={classes.textField}
                 margin="none"
                 value={this.state.message}
                 onChange={ev =>
                   this.setState({ message: ev.target.value, username: nick })
                 }
+                onKeyDown={this.onKeyDown}
               />
 
               <Button
                 variant="contained"
                 color="primary"
+                type="submit"
                 className={classes.button}
                 onClick={this.sendMessage}
                 disabled={!this.validateForm()}
