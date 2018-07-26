@@ -32,7 +32,7 @@ class AlertDialog extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Ready to create event?"}</DialogTitle>
           <DialogContent>
             <EventForm
             handleClose={this.handleClose}

@@ -57,9 +57,10 @@ export const getEvent = (id) => dispatch => {
     .then(res => 
       dispatch({
         type: GET_EVENT,
-        payload: res.data
+        payload: res.data,
+        
       })
-    );
+    )
 };
 
 // Delete posts
@@ -76,19 +77,83 @@ export const deleteEvent = (id, idas) => dispatch => {
 };
 
 // Add user to going list
-export const goingEvent = (id, idas) => dispatch => {
+export const goingEvent = (id, idas, l) => dispatch => {
+  if(!l){
   axios
     .post(`http://localhost:3001/events/going/${id}/${idas}`)
     .then(res => 
       dispatch(getEvents())
+    );}else {
+      axios
+    .post(`http://localhost:3001/events/going/${id}/${idas}`)
+    .then(res => 
+      dispatch(getEvent(idas))
+    )
+    }
+};
+
+export const ungoingEvent = (id, idas, l) => dispatch => {
+  if(!l){
+    axios
+      .post(`http://localhost:3001/events/ungoing/${id}/${idas}`)
+      .then(res => 
+        dispatch(getEvents())
+      );}else {
+        axios
+      .post(`http://localhost:3001/events/ungoing/${id}/${idas}`)
+      .then(res => 
+        dispatch(getEvent(idas))
+      )
+      }
+};
+
+// Add comment
+export const addComment = (eventID, commentData) => dispatch => {
+  axios
+    .post(`http://localhost:3001/events/comment/${eventID}`, commentData)
+    .then(res => 
+      dispatch(getEvent(eventID))
+      // dispatch({
+      //   type: GET_EVENT,
+      //   payload: res.data,
+      // })
     );
 };
 
-export const ungoingEvent = (id, idas) => dispatch => {
+// Add comment
+export const deleteComment = (eventID, commentID) => dispatch => {
   axios
-    .post(`http://localhost:3001/events/ungoing/${id}/${idas}`)
+    .delete(`http://localhost:3001/events/comment/${eventID}/${commentID}`)
     .then(res => 
-      dispatch(getEvents())
+      dispatch(getEvent(eventID))
+      // dispatch({
+      //   type: GET_EVENT,
+      //   payload: res.data,
+      // })
+    );
+};
+
+export const addLike = (userID, eventID, commentID) => dispatch => {
+  axios
+    .post(`http://localhost:3001/events/comments/like/${userID}/${eventID}/${commentID}`)
+    .then(res => 
+      dispatch(getEvent(eventID))
+      // dispatch({
+      //   type: GET_EVENT,
+      //   payload: res.data,
+      // })
+    );
+};
+
+export const deleteLike = (userID, eventID, commentID) => dispatch => {
+  axios
+    .post(`http://localhost:3001/events/comments/unlike/${userID}/${eventID}/${commentID}`)
+    .then(res => 
+      dispatch(getEvent(eventID))
+      // dispatch({
+      //   type: GET_EVENT,
+      //   payload: res.data,
+      // })
     );
 };
 
