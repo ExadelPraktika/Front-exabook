@@ -8,16 +8,16 @@ import AddAPhoto from '@material-ui/icons/AddAPhoto';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Avatar from '@material-ui/core/Avatar';
 import deepOrange from '@material-ui/core/colors/deepOrange';
-import { addPost } from '../../actions/postActions';
+import { addPost } from '../../../actions/postActions';
 import { connect } from 'react-redux';
 
 const styles = theme => ({
   button: {
-    margin: theme.spacing.unit,
+    marginLeft: theme.spacing.unit * 5,
+    marginTop: theme.spacing.unit * 3
   },
   rightIcon: {
     marginLeft: theme.spacing.unit * 30,
@@ -41,7 +41,6 @@ class AddPost extends Component {
     this.state = {
       postBody: '',
       open: false,
-      datePosted: ''
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -64,27 +63,13 @@ class AddPost extends Component {
 
   handleSubmit = (event) => {
     const { user } = this.props.auth;
-    let time = new Date();
-    time.setHours(time.getHours() + 3)
-    console.log(user._id);
-    console.log(time.toISOString().substring(0, 16))
-
-    this.setState({ time: time.toISOString().substring(0, 16)});
-    
-
+  
     const newPost = {
       author: user._id,
       postBody: this.state.postBody,
-      datePosted: this.state.time
     };
 
     this.props.addPost(newPost);
-
-    // axios
-    //   .post('http://localhost:3001/posts/test')
-    //   .then(response => {
-    //     console.log(response);
-    //   });
   }
 
   render() {
@@ -92,7 +77,7 @@ class AddPost extends Component {
 
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
+        <Button variant="contained" color="primary" onClick={this.handleClickOpen} className={classes.button}>
           <Avatar className={classes.orangeAvatar}>N</Avatar>
           What's new with you?
           <AddAPhoto className={classes.rightIcon} /> 

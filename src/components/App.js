@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Marketplace from './Marketplace/Marketplace'
 import Events from './Events/Events';
 import Layout from "../hoc/Layout";
+import Posts from './Feed/Posts';
 
 
 if(localStorage.jwtToken) {
@@ -31,7 +32,7 @@ class App extends Component {
             <Layout>
               <Switch>
                 {/*kai "/dashboard" path, turi but {feed} bet dar nepabaigta*/}
-                <Route exact path="/dashboard" component={Marketplace} />
+                <Route exact path="/dashboard" component={Posts} />
                 <Route exact path="/marketplace" component={Marketplace} />
                 <Route exact path="/events" component={Events} />
               </Switch>
