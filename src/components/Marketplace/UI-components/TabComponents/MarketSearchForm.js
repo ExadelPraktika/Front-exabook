@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/es/Button/Button";
 import Typography from "@material-ui/core/es/Typography/Typography";
-import { getSearchedPosts } from "../../actions/marketActions";
+import { getSearchedPosts } from '../../../../actions/marketActions';
 
 class MarketSearchForm extends Component{
     constructor(props){

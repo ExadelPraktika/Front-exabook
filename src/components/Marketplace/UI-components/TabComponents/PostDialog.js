@@ -3,8 +3,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import LocationOnIcon from '@material-ui/icons/Add';
-import Aux  from '../../../hoc/Auxil'
-import MarketForm from "../MarketForm";
+import Aux  from '../../../../hoc/Auxil';
+import MarketForm from './MarketForm';
 
 class PostDialog extends React.Component {
   state = {

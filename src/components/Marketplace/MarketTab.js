@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import PostDialog from "./PostDialog";
-import SearchDialog from "./SearchDialog";
+import PostDialog from './UI-components/TabComponents/PostDialog';
+import SearchDialog from './UI-components/TabComponents/SearchDialog';
 import { connect } from 'react-redux'
-import { getMarketPosts, getUserPosts } from '../../../actions/marketActions'
+import { getMarketPosts, getUserPosts } from '../../actions/marketActions';
 
 class CenteredTabs extends React.Component {
   constructor(props){

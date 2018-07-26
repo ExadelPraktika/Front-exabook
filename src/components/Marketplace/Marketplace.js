@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Grid from "@material-ui/core/Grid";
 import MarketFeed from "./MarketFeed";
 import { getMarketPosts, createPost } from "../../actions/marketActions";
-import MarketTab from "./UI-components/MarketTab";
+import MarketTab from './MarketTab';
 
 class Marketplace extends Component {
 
