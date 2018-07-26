@@ -4,8 +4,8 @@ import PostCard from './UI-components/PostCard';
 
 class PostFeed extends Component {
   render() {
-    const {posts} = this.props;
-    return posts.map(posts => <PostCard key={post._id} post={post}/>)
+    const { posts } = this.props;
+    return posts.map( posts => <PostCard key={post._id} post={post}/>)
   }
 }
 
