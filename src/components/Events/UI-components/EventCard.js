@@ -85,13 +85,13 @@ class RecipeReviewCard extends React.Component {
     } else {
       return null;
     }
-  }
+  };
   userExists = (user) => {
     return this.props.event.going.some(function (el) {
-      console.log(el.user._id === user)
+      console.log(el.user._id === user);
       return el.user._id === user;
     });
-  }
+  };
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
