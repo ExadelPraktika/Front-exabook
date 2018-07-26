@@ -43,9 +43,7 @@ class MarketForm extends Component {
             location: this.state.location
         };
         this.props.createPost(newPost);
-        console.log('created new post');
         this.props.getMarketPosts();
-        console.log('got market posts');
         this.setState({
             title: '',
             category: '',

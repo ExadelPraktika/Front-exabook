@@ -6,7 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import PostDialog from "./PostDialog";
 import SearchDialog from "./SearchDialog";
 import { connect } from 'react-redux'
-import { getMarketPosts} from '../../../actions/marketActions'
+import { getMarketPosts, getUserPosts } from '../../../actions/marketActions'
 
 class CenteredTabs extends React.Component {
   constructor(props){
@@ -21,6 +21,10 @@ class CenteredTabs extends React.Component {
     this.setState({ value });
   };
 
+  getUserposts = (id) => {
+    this.props.getUserPosts(id);
+  };
+
   render() {
     return (
       <Paper style={{margin: 10, width: 1000}}>
@@ -32,7 +36,7 @@ class CenteredTabs extends React.Component {
           centered
         >
           <Tab label="Market posts" onClick={this.props.getMarketPosts}/>
-          <Tab label="My market posts"/>
+          <Tab label="My market posts" onClick={this.getUserposts.bind(this, this.props.auth.user._id)}/>
           <Tab label={<PostDialog label="Add post"/>} />
           <Tab label={<SearchDialog label="Search posts"/>} />
         </Tabs>
@@ -42,7 +46,8 @@ class CenteredTabs extends React.Component {
 }
 
 CenteredTabs.propTypes = {
-  getMarketPosts: PropTypes.func.isRequired
+  getMarketPosts: PropTypes.func.isRequired,
+  getUserPosts: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -50,4 +55,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { getMarketPosts })(CenteredTabs);
+export default connect(mapStateToProps, { getMarketPosts, getUserPosts })(CenteredTabs);
