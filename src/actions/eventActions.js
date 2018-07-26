@@ -57,9 +57,10 @@ export const getEvent = (id) => dispatch => {
     .then(res => 
       dispatch({
         type: GET_EVENT,
-        payload: res.data
+        payload: res.data,
+        
       })
-    );
+    )
 };
 
 // Delete posts
@@ -76,20 +77,34 @@ export const deleteEvent = (id, idas) => dispatch => {
 };
 
 // Add user to going list
-export const goingEvent = (id, idas) => dispatch => {
+export const goingEvent = (id, idas, l) => dispatch => {
+  if(!l){
   axios
     .post(`http://localhost:3001/events/going/${id}/${idas}`)
     .then(res => 
       dispatch(getEvents())
-    );
+    );}else {
+      axios
+    .post(`http://localhost:3001/events/going/${id}/${idas}`)
+    .then(res => 
+      dispatch(getEvent(idas))
+    )
+    }
 };
 
-export const ungoingEvent = (id, idas) => dispatch => {
-  axios
-    .post(`http://localhost:3001/events/ungoing/${id}/${idas}`)
-    .then(res => 
-      dispatch(getEvents())
-    );
+export const ungoingEvent = (id, idas, l) => dispatch => {
+  if(!l){
+    axios
+      .post(`http://localhost:3001/events/ungoing/${id}/${idas}`)
+      .then(res => 
+        dispatch(getEvents())
+      );}else {
+        axios
+      .post(`http://localhost:3001/events/ungoing/${id}/${idas}`)
+      .then(res => 
+        dispatch(getEvent(idas))
+      )
+      }
 };
 
 // Add comment

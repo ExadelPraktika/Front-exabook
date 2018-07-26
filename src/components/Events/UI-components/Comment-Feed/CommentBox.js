@@ -158,8 +158,8 @@ class CommentBox extends Component {
     }
     return (
       <div>
-        <FormGroup onSubmit={this.onSubmit} onKeyPress={this.onKeyPress}>
-          <FormLabel>Add comment</FormLabel>
+        <FormGroup onSubmit={this.onSubmit} onKeyPress={this.onKeyPress}><br />
+        <FormLabel>Add comment</FormLabel>
           <br />
           <div className={classes.margin}>
             <Card className={classes.padding}>
@@ -175,6 +175,7 @@ class CommentBox extends Component {
                     <Grid item>
                       <TextField
                         name="text"
+                        
                         onChange={this.handleChange1}
                         multiline="true"
                         style={{ width: 330 }}
