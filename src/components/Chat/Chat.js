@@ -117,13 +117,13 @@ class Chat extends React.Component {
   validateForm() {
     return this.state.message.length > 0;
   }
-  componentDidMount(){
-    var objDiv = document.getElementById("divExample");
+  componentDidMount() {
+    var objDiv = document.getElementById("autoScroll");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
-  componentDidUpdate(){
-      var objDiv = document.getElementById("divExample");
-      objDiv.scrollTop = objDiv.scrollHeight;
+  componentDidUpdate() {
+    var objDiv = document.getElementById("autoScroll");
+    objDiv.scrollTop = objDiv.scrollHeight;
   }
 
   render() {
@@ -139,7 +139,7 @@ class Chat extends React.Component {
     if (auth.user.method === "facebook") {
       nick = auth.user.facebook.name;
     }
-   
+
     return (
       <div className={classes.root}>
         <div>
@@ -147,7 +147,7 @@ class Chat extends React.Component {
             <div>
               <div className={classes.title}>Global Chat</div>
               <hr />
-              <div className={classes.messagesContainer} id="divExample">
+              <div className={classes.messagesContainer} id="autoScroll">
                 {this.state.messages.map(message => {
                   return (
                     <div
