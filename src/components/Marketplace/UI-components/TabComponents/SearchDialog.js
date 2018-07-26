@@ -3,8 +3,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import SearchIcon from '@material-ui/icons/Search';
-import Aux  from '../../../hoc/Auxil'
-import MarketSearchForm from "../MarketSearchForm";
+import Aux  from '../../../../hoc/Auxil';
+import MarketSearchForm from './MarketSearchForm';
 
 class SearchDialog extends React.Component {
   state = {

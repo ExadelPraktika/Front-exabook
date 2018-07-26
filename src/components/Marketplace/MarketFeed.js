@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import Poster from './UI-components/Poster';
+import Poster from './UI-components/PostComponents/Poster';
 
 class MarketFeed extends Component {
     render() {

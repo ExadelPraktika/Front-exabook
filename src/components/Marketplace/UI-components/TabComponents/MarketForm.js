@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { createPost, getMarketPosts} from '../../actions/marketActions'
+import { createPost, getMarketPosts} from '../../../../actions/marketActions'
 import Card from "@material-ui/core/es/Card/Card";
 import Input from "@material-ui/core/es/Input/Input";
 import Typography from "@material-ui/core/es/Typography/Typography";
