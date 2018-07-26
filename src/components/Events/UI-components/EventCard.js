@@ -21,6 +21,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Button from '@material-ui/core/Button';
 import AlertDialog from './AlertDialog'
+import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { deleteEvent, goingEvent, ungoingEvent } from '../../../actions/eventActions'
 const dateFormat = require('dateformat');
@@ -28,8 +29,9 @@ import EventDisplay from './EventDisplay'
 const styles = theme => ({
   card: {
     maxWidth: 420,
-    float: 'left',
-    margin: '5%',
+    minWidth: 300,
+    float: 'right',
+    margin: '1%',
   },
   media: {
     height: 0,
@@ -54,6 +56,9 @@ const styles = theme => ({
   notShow: {
     display: 'none'
   },
+  marginRight: {
+    marginRight: 20
+  }
 
 });
 
@@ -80,13 +85,13 @@ class RecipeReviewCard extends React.Component {
     } else {
       return null;
     }
-  }
+  };
   userExists = (user) => {
     return this.props.event.going.some(function (el) {
-      console.log(el.user._id === user)
+      console.log(el.user._id === user);
       return el.user._id === user;
     });
-  }
+  };
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
@@ -104,9 +109,17 @@ class RecipeReviewCard extends React.Component {
     this.props.ungoingEvent(id, idas)
   }
   render() {
-
+    const calendarStrings = {
+      lastDay : '[Yesterday at] LT',
+      sameDay : '[Today at] LT',
+      nextDay : '[Tomorrow at] LT',
+      lastWeek : '[last] dddd [at] LT',
+      nextWeek : 'dddd [at] LT',
+      sameElse : 'YYYY-MM-DD HH:mm'
+  };
     const { event, auth } = this.props;
     const { classes } = this.props;
+    console.log(event.start);
     let eventCreator;
     if (event.creator.method === 'google') {
       eventCreator = event.creator.google.name
@@ -135,7 +148,7 @@ class RecipeReviewCard extends React.Component {
     return (
       <div>
         <Card className={classes.card}>
-          <CardHeader
+          <CardHeader className={classes.marginRight}
             avatar={
               <Avatar aria-label={this.state.isgoing} className={classes.avatar}>
                 T
@@ -147,7 +160,8 @@ class RecipeReviewCard extends React.Component {
               </IconButton>
             }
             title={eventCreator}
-            subheader={dateFormat(event.date, "dddd, mmmm dS, yyyy, h:MM TT")}
+
+            subheader={<Moment fromNow>{event.date}</Moment>}
           />
           {this.getComponent()}
           <CardMedia
@@ -159,10 +173,10 @@ class RecipeReviewCard extends React.Component {
           <CardContent>
             <Typography component="p">
               <strong>{event.title}</strong><br />
-              starts: {dateFormat(event.start, "dddd, mmmm dS, yyyy, h:MM TT")}<br />
-              ends: {dateFormat(event.end, "dddd, mmmm dS, yyyy, h:MM TT")}<br />
+              starts:  <Moment calendar={calendarStrings}>{event.start}</Moment><br /> 
+              ends: <Moment calendar={calendarStrings}>{event.end}</Moment><br /> 
               going: {event.going.length}<br />
-              location:{event.location}<LocationCity /><br />
+              <LocationCity /> {event.location.split(',').slice(0, 3).join(', ')}<br />
             </Typography>
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>

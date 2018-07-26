@@ -1,15 +1,12 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import LocationOnIcon from '@material-ui/icons/Add';
+import SearchIcon from '@material-ui/icons/Search';
 import Aux  from '../../../hoc/Auxil'
-import EventForm from '../EventForm'
-class AlertDialog extends React.Component {
+import MarketSearchForm from "../MarketSearchForm";
+
+class SearchDialog extends React.Component {
   state = {
     open: false,
   };
@@ -24,24 +21,28 @@ class AlertDialog extends React.Component {
 
   render() {
     return (
-        <Aux>
-        <BottomNavigationAction label={this.props.label} icon={<LocationOnIcon /> }  onClick={this.handleClickOpen}/>
+      <Aux>
+        <BottomNavigationAction
+          label={this.props.label}
+          showLabel={true}
+          icon={<SearchIcon />}
+          onClick={this.handleClickOpen}
+        />
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Ready to create event?"}</DialogTitle>
           <DialogContent>
-            <EventForm
-            handleClose={this.handleClose}
+            <MarketSearchForm
+              handleClose={this.handleClose}
             />
           </DialogContent>
         </Dialog>
-        </Aux>
+      </Aux>
     );
   }
 }
 
-export default AlertDialog;
+export default SearchDialog;

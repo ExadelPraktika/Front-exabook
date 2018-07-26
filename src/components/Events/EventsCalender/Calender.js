@@ -8,7 +8,9 @@ import Spinner from '../../../utils/Spinner';
 import EventsMenu from '../UI-components/EventsMenu';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import EventList from './EventsList';
-
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
+import MomentUtils from 'material-ui-pickers/utils/moment-utils'
+import Filter from '../Filter/Filter'
 class Calender extends Component {
   componentDidMount() {
     this.getmyevents.bind(this, this.props)
@@ -29,10 +31,11 @@ class Calender extends Component {
     // }
     return (
 
-      <EventList style={{ marginLeft: '2000' }} events={events}
-      />
-
-
+      // <EventList style={{ marginLeft: '2000' }} events={events}
+      // />
+      <MuiPickersUtilsProvider utils={MomentUtils} >
+      <Filter  events={events}/>
+      </MuiPickersUtilsProvider>
     )
   }
 }

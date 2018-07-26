@@ -2,37 +2,42 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from 'react-redux'
 import Grid from "@material-ui/core/Grid";
-import Poster from './Poster';
-import MarketForm from "./MarketForm";
-import MarketSearchForm from "./MarketSearchForm";
-import { addMarketPost } from '../../actions/marketActions';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import MarketFeed from "./MarketFeed";
-
+import { getMarketPosts, createPost } from "../../actions/marketActions";
+import MarketTab from "./UI-components/MarketTab";
 
 class Marketplace extends Component {
 
-    render() {
-        const { marketFeed } = this.props.market;
+  componentDidMount(){
+    this.props.getMarketPosts();
+    console.log('got market posts');
+  }
+  render() {
+        const { marketFeed, loading } = this.props.market;
+        let marketContent;
+        if(marketFeed === null || loading){
+            marketContent = null;
+        }
+        else
+            marketContent = <MarketFeed marketFeed={marketFeed}/>;
         return (
             <div>
-                <MarketForm/>
-                <MarketSearchForm/>
-                <Grid style={{ marginLeft: 120}} container spacing = {16}>
-                    <MarketFeed posts={marketFeed}/>
-                </Grid>
+                <MarketTab/>
+                    <Grid container spacing = {16}>
+                        {marketContent}
+                    </Grid>
             </div>
         )
-    }
+  }
 }
 Marketplace.propTypes = {
     market: PropTypes.object.isRequired,
-    addMarketPost: PropTypes.func.isRequired,
+    getMarketPosts: PropTypes.func.isRequired,
+    createPost: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     market: state.market,
-    auth: state.auth
 });
 
-export default connect(mapStateToProps, {addMarketPost})(Marketplace);
+export default connect(mapStateToProps, { getMarketPosts, createPost })(Marketplace);

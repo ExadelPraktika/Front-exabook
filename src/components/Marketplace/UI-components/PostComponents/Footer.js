@@ -17,7 +17,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const styles = theme => ({
     iconButton: {
-        marginLeft: 40,
+        marginLeft: 70,
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -39,11 +39,20 @@ class Footer extends Component{
         super(props);
 
         this.state = {
-            anchorEl: this.props.anchorEl,
-            comments: this.props.comments,
-            descriptionOpened: this.props.descriptionOpened
+            anchorEl: null,
+            comments: false,
+            descriptionOpened: false,
+            liked: false
         }
     }
+
+    handleLikeClick = () => {
+        this.setState(()=>{
+            if(this.state.liked)
+                return {liked: false};
+            return {liked: true};
+        });
+    };
 
     handleRateClick = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -100,8 +109,12 @@ class Footer extends Component{
                         <MenuItem onClick={this.handleRateClose}>2 ★</MenuItem>
                         <MenuItem onClick={this.handleRateClose}>1 ★</MenuItem>
                     </Menu>
-                    <IconButton className={classes.iconButton} aria-label="Add to favorites">
-                        <FavoriteIcon/>
+                    <IconButton
+                        className={classes.iconButton}
+                        aria-label="Add to favorites"
+                        onClick={this.handleLikeClick}
+                    >
+                        {this.state.liked === false ? <FavoriteIcon/> : <FavoriteIcon color={'secondary'}/>}
                     </IconButton>
                     <IconButton aria-label="Share">
                         <ShareIcon/>
@@ -134,7 +147,7 @@ class Footer extends Component{
                 </Collapse>
                 <Collapse in={this.state.descriptionOpened} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <Typography paragraph>
+                        <Typography>
                             {this.props.description}
                         </Typography>
                     </CardContent>
@@ -145,10 +158,6 @@ class Footer extends Component{
 }
 Footer.propTypes = {
     description: PropTypes.string.isRequired,
-    descriptionOpened: PropTypes.bool.isRequired,
-    comments: PropTypes.bool.isRequired,
-    anchorEl: PropTypes.object.isRequired,
-
 };
 
 export default withStyles(styles)(Footer);
