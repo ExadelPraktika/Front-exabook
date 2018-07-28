@@ -28,19 +28,19 @@ const TopBar = props => {
     const { classes } = props;
     return (
         <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar >
-                    <Button color="inherit" style={styles.home}>Home</Button>
-                    <Button color="inherit" style={styles.button}>Events</Button>
-                    <Button color="inherit" style={styles.button}>Groups</Button>
-                    <Button color="inherit" style={styles.button}>Market</Button>
-                    <Button color="inherit" style={styles.button}>Map</Button>
-                    <div className={classes.row}>
-                        <Avatar alt="Unknown" src="https://api.adorable.io/avatars/50/abott@adorable.png" className={classes.avatar} />
-                    </div>
-                    <Button color="inherit">Logout</Button>
-                </Toolbar>
-            </AppBar>
+                <AppBar position="static">
+                    <Toolbar >
+                        <Button color="inherit" style={styles.home}>Home</Button>
+                        <Button color="inherit" style={styles.button}>Events</Button>
+                        <Button color="inherit" style={styles.button}>Groups</Button>
+                        <Button color="inherit" style={styles.button}>Market</Button>
+                        <Button color="inherit" style={styles.button}>Map</Button>
+                        <div className={classes.row}>
+                            <Avatar alt="Unknown" src="https://api.adorable.io/avatars/50/abott@adorable.png" className={classes.avatar} />
+                        </div>
+                        <Button color="inherit">Logout</Button>
+                    </Toolbar>
+                </AppBar>
         </div>
     );
 };

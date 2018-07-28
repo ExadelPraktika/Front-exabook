@@ -3,13 +3,14 @@ import axios from 'axios';
 import {
   CREATE_POST,
   GET_MARKET_POSTS,
-  GET_MARKET_POST,
   GET_SEARCHED_POSTS,
-  GET_USER_POSTS
+  GET_USER_POSTS,
+  DELETE_MARKET_POST
 } from './types';
 
 // Get market
 export const getMarketPosts = () => dispatch => {
+  console.log('got market posts');
   axios
     .get('http://localhost:3001/marketplace/')
     .then(res =>
@@ -22,6 +23,7 @@ export const getMarketPosts = () => dispatch => {
 
 // Get market
 export const getSearchedPosts = postData => dispatch => {
+  console.log('searching for posts');
   axios
     .post('http://localhost:3001/marketplace/search', postData)
     .then(res =>
@@ -32,9 +34,9 @@ export const getSearchedPosts = postData => dispatch => {
     );
 };
 
-//Get users market
-export const getuserEvents = (id) => dispatch => {
-  console.log('suveike get user');
+// Get users market
+export const getUserPosts = (id) => dispatch => {
+  console.log('got user posts');
   axios
     .get(`http://localhost:3001/marketplace/my/${id}`)
     .then(res =>
@@ -45,37 +47,28 @@ export const getuserEvents = (id) => dispatch => {
     );
 };
 
-// Get single post
-export const getMarketPost = (id) => dispatch => {
+// Add market post
+export const createPost = postData => dispatch => {
+  console.log('created a new post');
   axios
-    .get(`http://localhost:3001/marketplace/${id}`)
+    .post('http://localhost:3001/marketplace/', postData)
     .then(res =>
       dispatch({
-        type: GET_MARKET_POST,
+        type: CREATE_POST,
         payload: res.data
       })
     );
 };
 
-// Add market post
-export const createPost = postData => dispatch => {
-    axios
-        .post('http://localhost:3001/marketplace/', postData)
-        .then(res =>
-            dispatch({
-                type: CREATE_POST,
-                payload: res.data
-            })
-        );
-};
-// Get marketplace posts
-export const getMarketplacePosts = () => dispatch => {
+// Delete market post
+export const deletePost = (userId, postId) => dispatch => {
+  console.log('deleting post');
   axios
-    .get('http://localhost:3001/marketplace/')
+    .delete(`http://localhost:3001/marketplace/${userId}/${postId}`)
     .then(res =>
       dispatch({
-        type: GET_MARKET_POSTS,
-        payload: res.data
+        type: DELETE_MARKET_POST,
+        payload: postId
       })
     );
 };

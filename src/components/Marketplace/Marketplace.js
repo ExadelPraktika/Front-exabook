@@ -10,7 +10,6 @@ class Marketplace extends Component {
 
   componentDidMount(){
     this.props.getMarketPosts();
-    console.log('got market posts');
   }
   render() {
         const { marketFeed, loading } = this.props.market;

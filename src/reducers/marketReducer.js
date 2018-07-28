@@ -1,4 +1,10 @@
-import {CREATE_POST, GET_MARKET_POSTS, GET_SEARCHED_POSTS} from '../actions/types';
+import {
+  CREATE_POST,
+  DELETE_MARKET_POST,
+  GET_MARKET_POSTS,
+  GET_SEARCHED_POSTS,
+  GET_USER_POSTS
+} from '../actions/types';
 
 const initialState = {
     marketFeed: [],
@@ -19,8 +25,18 @@ export default function(state = initialState, action) {
             };
         case GET_SEARCHED_POSTS:
             return {
+                ...state,
+                marketFeed: action.payload
+            };
+        case GET_USER_POSTS:
+            return {
+                ...state,
+                marketFeed: action.payload
+            };
+      case DELETE_MARKET_POST:
+            return {
               ...state,
-              marketFeed: action.payload
+              marketFeed: state.marketFeed.filter(post => post._id !== action.payload)
             };
         default:
             return state;
