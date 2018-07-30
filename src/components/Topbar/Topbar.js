@@ -26,14 +26,6 @@ const styles = {
 };
 
 class TopBar extends Component {
-    constructor() {
-        super();
-        this.handleClick = this.handleClick.bind(this);
-    }
-    handleClick(e) {
-        e.preventDefault();
-        this.props.history.push('/marketplace');
-    }
     render() {
       const {classes} = this.props;
       return (

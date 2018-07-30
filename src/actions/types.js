@@ -5,6 +5,7 @@ export const GET_MARKET_POSTS = 'GET_MARKET_POSTS';
 export const GET_SEARCHED_POSTS = 'GET_SEARCHED_POSTS';
 export const GET_USER_POSTS = 'GET_USER_POSTS';
 export const DELETE_MARKET_POST = 'DELETE_MARKET_POST';
+export const UPDATE_POST = 'UPDATE_POST';
 
 export const EVENT_LOADING = 'EVENT_LOADING';
 export const GET_EVENTS = 'GET_EVENTS';

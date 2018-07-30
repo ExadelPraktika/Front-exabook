@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from "@material-ui/core/es/styles";
 import CardActions from "@material-ui/core/es/CardActions/CardActions";
 import Button from "@material-ui/core/es/Button/Button";
 import Menu from "@material-ui/core/es/Menu/Menu";
@@ -14,16 +13,18 @@ import CardContent from "@material-ui/core/es/CardContent/CardContent";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { connect } from 'react-redux';
+import { update } from "../../../../actions/marketActions";
 
-const styles = theme => ({
+const styles = {
     iconButton: {
         marginLeft: 70,
     },
     expand: {
         transform: 'rotate(0deg)',
-        transition: theme.transitions.create('transform', {
+        /*transition: theme.transitions.create('transform', {
             duration: theme.transitions.duration.shortest,
-        }),
+        }),*/
         marginLeft: 'auto',
     },
     expandOpen: {
@@ -32,7 +33,7 @@ const styles = theme => ({
     comments: {
         margin: 10,
     },
-});
+};
 
 class Footer extends Component{
     constructor(props){
@@ -40,22 +41,33 @@ class Footer extends Component{
 
         this.state = {
             anchorEl: null,
+            rate: this.props.rating,
             comments: false,
             descriptionOpened: false,
-            liked: false
+            liked: this.props.liked
         }
     }
 
     handleLikeClick = () => {
-        this.setState(()=>{
-            if(this.state.liked)
-                return {liked: false};
-            return {liked: true};
-        });
+        let object = {
+            rating: this.state.rate,
+            liked: !this.state.liked,
+            _id: this.props._id,
+            disableComments: this.props.disableComments
+        };
+        this.props.update(object);
+        this.setState({ liked: !this.state.liked});
     };
 
     handleRateClick = event => {
         this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleRated = (rate) => {
+        let object = { rating: rate, liked: this.state.liked, _id: this.props._id };
+        this.props.update(object);
+        if(rate) this.setState({ anchorEl: null , rate: rate});
+        this.setState({ anchorEl: null });
     };
 
     handleRateClose = () => {
@@ -82,20 +94,18 @@ class Footer extends Component{
         );
     };
     render(){
-        const { classes } = this.props;
         return(
             <div>
-                <CardActions className={classes.actions} disableActionSpacing>
-                    <Button className={classes.button} onClick={this.handleCommentButton}>
+                <CardActions style={styles.actions} disableActionSpacing>
+                    <Button onClick={this.handleCommentButton} disabled={ this.props.disableComments }>
                         Comment
                     </Button>
                     <Button
-                        className={classes.button}
                         onClick={this.handleRateClick}
                         aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                         aria-haspopup="true"
                     >
-                        Rate
+                      { this.state.rate }
                     </Button>
                     <Menu
                         id="simple-menu"
@@ -103,14 +113,14 @@ class Footer extends Component{
                         open={Boolean(this.state.anchorEl)}
                         onClose={this.handleRateClose}
                     >
-                        <MenuItem onClick={this.handleRateClose}>5 ★</MenuItem>
-                        <MenuItem onClick={this.handleRateClose}>4 ★</MenuItem>
-                        <MenuItem onClick={this.handleRateClose}>3 ★</MenuItem>
-                        <MenuItem onClick={this.handleRateClose}>2 ★</MenuItem>
-                        <MenuItem onClick={this.handleRateClose}>1 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated('5 ★')}>5 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated('4 ★')}>4 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated('3 ★')}>3 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated('2 ★')}>2 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated('1 ★')}>1 ★</MenuItem>
                     </Menu>
                     <IconButton
-                        className={classes.iconButton}
+                        style={styles.iconButton}
                         aria-label="Add to favorites"
                         onClick={this.handleLikeClick}
                     >
@@ -120,7 +130,7 @@ class Footer extends Component{
                         <ShareIcon/>
                     </IconButton>
                     <IconButton
-                        className={classes.descriptionOpened}
+                        style={styles.descriptionOpened}
                         onClick={this.handleDescriptionButton}
                         aria-expanded={this.state.descriptionOpened}
                         aria-label="Show more"
@@ -129,7 +139,7 @@ class Footer extends Component{
                     </IconButton>
                 </CardActions>
                 <Collapse in={this.state.comments} timeout="auto" unmountOnExit>
-                    <div className={classes.comments}>
+                    <div style={styles.comments}>
                         <Input
                             autoFocus={true}
                             multiline={true}
@@ -139,7 +149,7 @@ class Footer extends Component{
                             <Icon>send</Icon>
                         </IconButton>
                     </div>
-                    <div className={classes.comments}>
+                    <div style={styles.comments}>
                         <Typography>
                             Comments
                         </Typography>
@@ -158,7 +168,16 @@ class Footer extends Component{
 }
 Footer.propTypes = {
     description: PropTypes.string.isRequired,
+    liked: PropTypes.bool.isRequired,
+    rating: PropTypes.string.isRequired,
+    update: PropTypes.func.isRequired,
+    _id: PropTypes.string.isRequired,
+    disableComments: PropTypes.bool.isRequired
 };
 
-export default withStyles(styles)(Footer);
+const mapStateToProps = state => ({
+  market: state.market
+});
+
+export default connect( mapStateToProps, { update })(Footer);
 

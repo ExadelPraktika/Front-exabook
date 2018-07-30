@@ -35,6 +35,7 @@ class Poster extends Component {
       this.state = {
         anchorEl: null,
         open: false,
+        disableComments: false
       };
     }
     handlePopperClick = event => {
@@ -47,6 +48,10 @@ class Poster extends Component {
 
     handleDelete = (userId, postId) => {
       this.props.deletePost(userId, postId);
+    };
+
+    handleDisableComments = () => {
+      this.setState({ disableComments: !this.state.disableComments})
     };
 
     render() {
@@ -79,10 +84,14 @@ class Poster extends Component {
                                     >
                                       {this.props.auth.user._id === this.props.post.creator._id
                                         ?
-                                        <MenuItem onClick={this.handleDelete.bind(this, this.props.auth.user._id, this.props.post._id)}>Delete</MenuItem>
+                                        <div>
+                                          <MenuItem onClick={this.handleDelete.bind(this, this.props.auth.user._id, this.props.post._id)}>Delete</MenuItem>
+                                          <MenuItem onClick={this.handleDisableComments.bind(this)}>
+                                            {this.state.disableComments === true ? 'Enable comments' : 'Disable comments'}
+                                            </MenuItem>
+                                        </div>
                                         :
-                                        null}
-                                      <MenuItem onClick={this.handleClose}>Disable comments</MenuItem>
+                                        <MenuItem onClick={this.handleClose}>Buy</MenuItem>}
                                     </Menu>
                                   </Paper>
                                 </Fade>
@@ -108,7 +117,13 @@ class Poster extends Component {
                     {(this.props.post.images === undefined || this.props.post.images.length === 0) ? null :
                         <ImageHolder images={this.props.post.images}/>
                     }
-                    <Footer description={this.props.post.description}/>
+                    <Footer
+                      disableComments={this.state.disableComments}
+                      description={this.props.post.description}
+                      liked={this.props.post.liked}
+                      rating={this.props.post.rating}
+                      _id={this.props.post._id}
+                    />
                 </Card>
             </div>
         );

@@ -26,28 +26,29 @@ class CenteredTabs extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
-      <Paper style={{margin: 10, width: 1000}}>
-        <Tabs
-          value={this.state.value}
-          onChange={this.handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          centered
-        >
-          <Tab label="Market posts" onClick={this.props.getMarketPosts}/>
-          <Tab label="My market posts" onClick={this.getUserposts.bind(this, this.props.auth.user._id)}/>
-          <Tab label={<PostDialog label="Add post"/>} />
-          <Tab label={<SearchDialog label="Search posts"/>} />
-        </Tabs>
-      </Paper>
+        <Paper style={{margin: 10, width: 1000}}>
+          <Tabs
+            value={this.state.value}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            centered
+          >
+            <Tab label="Market posts" onClick={this.props.getMarketPosts}/>
+            <Tab label="My market posts" onClick={this.getUserposts.bind(this, this.props.auth.user._id)}/>
+            <Tab label={<PostDialog label="Add post"/>} />
+            <Tab label={<SearchDialog label="Search posts"/>} />
+          </Tabs>
+        </Paper>
     );
   }
 }
 
 CenteredTabs.propTypes = {
   getMarketPosts: PropTypes.func.isRequired,
-  getUserPosts: PropTypes.func.isRequired
+  getUserPosts: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

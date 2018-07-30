@@ -3,7 +3,7 @@ import {
   DELETE_MARKET_POST,
   GET_MARKET_POSTS,
   GET_SEARCHED_POSTS,
-  GET_USER_POSTS
+  GET_USER_POSTS, UPDATE_POST
 } from '../actions/types';
 
 const initialState = {
@@ -33,11 +33,16 @@ export default function(state = initialState, action) {
                 ...state,
                 marketFeed: action.payload
             };
-      case DELETE_MARKET_POST:
+        case DELETE_MARKET_POST:
             return {
               ...state,
               marketFeed: state.marketFeed.filter(post => post._id !== action.payload)
             };
+        case UPDATE_POST:
+          return {
+            ...state,
+            marketFeed: action.payload
+          };
         default:
             return state;
     }

@@ -5,7 +5,8 @@ import {
   GET_MARKET_POSTS,
   GET_SEARCHED_POSTS,
   GET_USER_POSTS,
-  DELETE_MARKET_POST
+  DELETE_MARKET_POST,
+  UPDATE_POST
 } from './types';
 
 // Get market
@@ -29,6 +30,19 @@ export const getSearchedPosts = postData => dispatch => {
     .then(res =>
       dispatch({
         type: GET_SEARCHED_POSTS,
+        payload: res.data
+      })
+    );
+};
+
+// Update market post
+export const update = postData => dispatch => {
+  console.log('updating post');
+  axios
+    .post('http://localhost:3001/marketplace/update', postData)
+    .then(res =>
+      dispatch({
+        type: UPDATE_POST,
         payload: res.data
       })
     );
