@@ -10,13 +10,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import FormLabel from "@material-ui/core/FormLabel";
 import Tabs from "@material-ui/core/Tabs";
-import Icon from "@material-ui/core/es/Icon/Icon";
 import Tab from "@material-ui/core/Tab";
-import Popper from "@material-ui/core/Popper";
-import Fade from "@material-ui/core/Fade";
-import Paper from "@material-ui/core/Paper";
-import Portal from "@material-ui/core/Portal";
-import FavoriteIcon from "@material-ui/icons/Favorite";
+import Tooltip from "@material-ui/core/Tooltip";
 import { goingEvent, ungoingEvent } from "../../../actions/eventActions";
 import {
   LocationOn,
@@ -32,12 +27,9 @@ import CommentBox from "./Comment-Feed/CommentBox";
 import CommentFeed from "./Comment-Feed/CommentFeed";
 import Map from "./Map/Map";
 import Moment from "react-moment";
-import PersonCard from './GoingList/PersonCard';
-import GoingList from './GoingList/GoingList';
+import GoingList from "./GoingList/GoingList";
 
 import "moment-timezone";
-
-const dateFormat = require("dateformat");
 
 function getModalStyle() {
   const top = 50;
@@ -115,7 +107,7 @@ const styles = theme => ({
     paddingTop: "7%"
   },
   calender4: {
-    textAlign: "center",
+    textAlign: "center"
   },
   calender3: {
     paddingTop: "7%"
@@ -132,7 +124,7 @@ const styles = theme => ({
   center: {
     textAlign: "center",
     bottom: 0,
-    textTransform: "lowercase",
+    textTransform: "lowercase"
   },
   middle: {
     paddingLeft: "35%"
@@ -358,24 +350,37 @@ class EventDisplay extends React.Component {
                           gutterBottom
                           className={classes.margintop}
                         >
-                          {Object.keys(this.state.vaa).length
+                          {/* {Object.keys(this.state.vaa).length
                             ? event.location
                                 .split(",")
                                 .slice(0, 3)
                                 .join(", ")
-                            : null}
+                            : null} */}
+                                          {event.location.length > 25 ? (
+                <Tooltip title={event.location} placement="top">
+                  <span>
+                    {event.location.replace(/^(.{25}[^\s]*).*/, "$1") + "..."}
+                  </span>
+                </Tooltip>
+              ) : (
+                <span>
+                {event.location}
+                </span>
+              )}
                         </Typography>
                       </Grid>
                       <Grid item xs={4} className={classes.calender}>
-                        <Typography
-                          onClick={this.handleClick}
-                          variant="p"
-                          gutterBottom
-                          color="primary"
-                          className={classes.margintop1}
-                        >
-                          {!show ? "show map" : "hide map"}
-                        </Typography>
+                        {!isNaN(event.coordLat) || !isNaN(event.coordLng) ? (
+                          <Typography
+                            onClick={this.handleClick}
+                            variant="p"
+                            gutterBottom
+                            color="primary"
+                            className={classes.margintop1}
+                          >
+                            {!show ? "show map" : "hide map"}
+                          </Typography>
+                        ) : null}
                       </Grid>
                       {show ? (
                         <Grid className={classes.middle} item xs={12}>
@@ -425,11 +430,13 @@ class EventDisplay extends React.Component {
                       </Grid>
                       <Grid item xs={12} className={classes.calender4}>
                         <Typography variant="subheading" gutterBottom>
-                          {event.description.length > 0 ? event.description :  'no details of the event...'}
+                          {event.description.length > 0
+                            ? event.description
+                            : "no details of the event..."}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} className={classes.center}>
-                      <Button
+                        <Button
                           className={classes.center}
                           onClick={this.redirectToComments}
                         >
@@ -437,7 +444,6 @@ class EventDisplay extends React.Component {
                           see discussion{" "}
                         </Button>
                       </Grid>
-                        
                     </Grid>
                   </div>
                 </TabContainer>
@@ -457,13 +463,16 @@ class EventDisplay extends React.Component {
                   </List>
                 </TabContainer>
                 <TabContainer dir={theme.direction}>
-                <br/><br/>
-                <Grid container spacing={0}>
-                <Grid  item xs={4}></Grid> 
-                <Grid  item xs={8}><FormLabel>People that are going</FormLabel></Grid>
-                <Grid  item xs={12}><GoingList event={event}/></Grid>
-                
-                  
+                  <br />
+                  <br />
+                  <Grid container spacing={0}>
+                    <Grid item xs={4} />
+                    <Grid item xs={8}>
+                      <FormLabel>People that are going</FormLabel>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <GoingList event={event} />
+                    </Grid>
                   </Grid>
                 </TabContainer>
               </SwipeableViews>

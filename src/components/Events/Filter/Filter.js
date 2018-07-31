@@ -6,17 +6,12 @@ import { FilterDrawer, filterSelectors, filterActions } from './index'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
 import TextField from '@material-ui/core/TextField'
 import ReactList from 'react-list'
-import Divider from '@material-ui/core/Divider'
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import MenuIcon from '@material-ui/icons/Menu';
 import EventCard from '../EventsCalender/EventCard'
-import GridList from "@material-ui/core/GridList";
 const styles = theme => ({
   root: {
     flexGrow: 1,

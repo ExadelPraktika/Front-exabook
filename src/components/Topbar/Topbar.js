@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-
+import ProfileOptions from '../../utils/profileOptions'
 const styles = {
     root: {
         flexGrow: 1,
@@ -36,7 +36,7 @@ const TopBar = props => {
                     <Button color="inherit" style={styles.button}>Market</Button>
                     <Button color="inherit" style={styles.button}>Map</Button>
                     <div className={classes.row}>
-                        <Avatar alt="Unknown" src="https://api.adorable.io/avatars/50/abott@adorable.png" className={classes.avatar} />
+                        <ProfileOptions className={classes.avatar} />
                     </div>
                     <Button color="inherit">Logout</Button>
                 </Toolbar>

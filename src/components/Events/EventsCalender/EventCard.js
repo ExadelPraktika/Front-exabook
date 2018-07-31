@@ -151,6 +151,7 @@ class EventCard extends Component {
                     className={classes.imageTitle}
                   >
                     {dateFormat(this.props.start, "dddd dS,  h:MM TT")}
+                    
                     <span className={classes.imageMarked} />
                   </Typography>
                 </span>

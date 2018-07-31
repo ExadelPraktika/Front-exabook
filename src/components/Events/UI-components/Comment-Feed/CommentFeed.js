@@ -5,7 +5,7 @@ import Comment from "../Comment-Feed/Comment";
 class CommentFeed extends Component {
   render() {
     const { comments } = this.props;
-    if (comments == null) {
+    if (comments < 0) {
       return <div> No comments </div>;
     } else {
       console.log(comments, "from feed");

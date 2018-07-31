@@ -22,6 +22,15 @@ export const setCurrentUser = (user) => {
   };
 };
 
+export const addAvatar = (id, data) => dispatch => {
+  console.log('suveike')
+  axios
+    .put(`http://localhost:3001/users/avatar/${id}`, data)
+    .then(res => {
+      dispatch(setCurrentUser(res.data.user))
+   })
+  };
+
 //Log user out
 export const logoutUser = () => dispatch => {
   //Remove token from localStorage
