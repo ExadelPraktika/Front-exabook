@@ -83,19 +83,22 @@ class Chat extends React.Component {
 
     this.socket = io("localhost:3001");
 
-    this.socket.on("RECEIVE_MESSAGE", function(data) {
+    this.socket.on("output", function(data) {
       addMessage(data);
     });
 
     const addMessage = data => {
-      console.log(data);
-      this.setState({ messages: [...this.state.messages, data] });
+      //console.log(data);
+      for(var x = 0; x < data.length; x++){
+      this.setState({ messages: [data[x]]
+     });
+    }
       console.log(this.state.messages);
     };
 
     this.sendMessage = ev => {
       ev.preventDefault();
-      this.socket.emit("SEND_MESSAGE", {
+      this.socket.emit("input", {
         author: this.state.username,
         message: this.state.message
       });
@@ -105,7 +108,7 @@ class Chat extends React.Component {
     this.onKeyDown = ev => {
       if (ev.keyCode === 13 && this.validateForm()) {
         ev.preventDefault();
-        this.socket.emit("SEND_MESSAGE", {
+        this.socket.emit("input", {
           author: this.state.username,
           message: this.state.message
         });
@@ -148,27 +151,29 @@ class Chat extends React.Component {
               <div className={classes.title}>Global Chat</div>
               <hr />
               <div className={classes.messagesContainer} id="autoScroll">
-                {this.state.messages.map(message => {
+                {this.state.messages.map(key => {
+                  console.log();
                   return (
                     <div
                       key={uniqid()}
                       className={
-                        message.author === nick
+                        key.author === nick
                           ? classes.messagesMe
                           : classes.messagesThem
                       }
                     >
-                      {message.author === nick ? null : (
+                      {/*{this.state.messages.author === nick ? null : (
                         <UserAvatar
                           size="36"
                           className={classes.avatar}
-                          name={message.author}
+                          name={this.state.messages.author}
                           src=""
                         />
-                      )}
+                      )}*/}
+                      
                       <Paper
                         className={
-                          message.author === nick
+                          key.author === nick
                             ? classes.paperMe
                             : classes.paperThem
                         }
@@ -176,14 +181,15 @@ class Chat extends React.Component {
                         <Grid container>
                           <Grid item xs zeroMinWidth>
                             <Typography style={{ color: "White" }}>
-                              {message.message}
+                              {key.message}
+                              
                             </Typography>
                           </Grid>
                         </Grid>
                       </Paper>
                     </div>
-                  );
-                })}
+                    );
+                  })}
               </div>
             </div>
             <div className="card-footer">
