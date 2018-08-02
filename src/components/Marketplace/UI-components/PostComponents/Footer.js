@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from "@material-ui/core/es/styles";
 import CardActions from "@material-ui/core/es/CardActions/CardActions";
 import Button from "@material-ui/core/es/Button/Button";
 import Menu from "@material-ui/core/es/Menu/Menu";
@@ -14,6 +13,10 @@ import CardContent from "@material-ui/core/es/CardContent/CardContent";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import classnames from 'classnames';
+import { updateLikes, updateRates } from "../../../../actions/marketActions";
 
 const styles = theme => ({
     iconButton: {
@@ -40,23 +43,52 @@ class Footer extends Component{
 
         this.state = {
             anchorEl: null,
+            rate: this.props.rating,
             comments: false,
             descriptionOpened: false,
-            liked: false
+            liked: this.props.liked,
+            averageRating: 'Rated'
         }
     }
 
     handleLikeClick = () => {
-        this.setState(()=>{
-            if(this.state.liked)
-                return {liked: false};
-            return {liked: true};
-        });
+        let userLikes = this.props.liked;
+        if (userLikes.indexOf(this.props.currentUser) === -1) {
+            userLikes.push(this.props.currentUser);
+        }
+        else {
+            userLikes.splice(userLikes.indexOf(this.props.currentUser), 1);
+        }
+        let object = {
+            liked: userLikes,
+            _id: this.props._id,
+        };
+        this.props.updateLikes(object);
+        this.setState({ liked: this.props.liked});
     };
 
     handleRateClick = event => {
         this.setState({ anchorEl: event.currentTarget });
     };
+
+    handleRated = (rate) => {
+        let object = {
+            _id: this.props._id,
+            rating: {
+            ...this.state.rate,
+            [this.props.currentUser]: rate
+            }
+        };
+        this.props.updateRates(object);
+        this.setState({ anchorEl: null , rate: this.props.rating });
+    };
+
+    /*getPostsRating = () => {
+        let averageRate = 0;
+        Object.keys(this.state.rate).forEach( (key) => { averageRate += this.state.rate[key]});
+        averageRate = averageRate / Object.keys(this.state.rate).length;
+        this.setState({averageRating: averageRate + '★/5★'});
+    };*/
 
     handleRateClose = () => {
         this.setState({ anchorEl: null });
@@ -86,41 +118,49 @@ class Footer extends Component{
         return(
             <div>
                 <CardActions className={classes.actions} disableActionSpacing>
-                    <Button className={classes.button} onClick={this.handleCommentButton}>
+                    <Button onClick={this.handleCommentButton} disabled={ this.props.disableComments }>
                         Comment
                     </Button>
-                    <Button
-                        className={classes.button}
+                    {this.props.currentUser !== this.props.postCreator
+                      ?
+                      <Button
                         onClick={this.handleRateClick}
                         aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                         aria-haspopup="true"
-                    >
-                        Rate
-                    </Button>
+                      >
+                         { this.state.rate === undefined ? 'Unrated' : this.state.averageRating }
+                      </Button>
+                      :
+                      <Button disabled={true}>
+                        { this.state.rate === undefined ? 'Unrated' : this.state.averageRating }
+                      </Button>
+                    }
                     <Menu
                         id="simple-menu"
                         anchorEl={this.state.anchorEl}
                         open={Boolean(this.state.anchorEl)}
                         onClose={this.handleRateClose}
                     >
-                        <MenuItem onClick={this.handleRateClose}>5 ★</MenuItem>
-                        <MenuItem onClick={this.handleRateClose}>4 ★</MenuItem>
-                        <MenuItem onClick={this.handleRateClose}>3 ★</MenuItem>
-                        <MenuItem onClick={this.handleRateClose}>2 ★</MenuItem>
-                        <MenuItem onClick={this.handleRateClose}>1 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated(5)}>5 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated(4)}>4 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated(3)}>3 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated(2)}>2 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated(1)}>1 ★</MenuItem>
                     </Menu>
                     <IconButton
                         className={classes.iconButton}
                         aria-label="Add to favorites"
                         onClick={this.handleLikeClick}
                     >
-                        {this.state.liked === false ? <FavoriteIcon/> : <FavoriteIcon color={'secondary'}/>}
+                        {this.state.liked.indexOf(this.props.currentUser) === -1 ? <FavoriteIcon/> : <FavoriteIcon color={'secondary'}/>}
                     </IconButton>
                     <IconButton aria-label="Share">
                         <ShareIcon/>
                     </IconButton>
                     <IconButton
-                        className={classes.descriptionOpened}
+                          className={classnames(classes.expand, {
+                            [classes.expandOpen]: this.state.descriptionOpened,
+                          })}
                         onClick={this.handleDescriptionButton}
                         aria-expanded={this.state.descriptionOpened}
                         aria-label="Show more"
@@ -158,7 +198,20 @@ class Footer extends Component{
 }
 Footer.propTypes = {
     description: PropTypes.string.isRequired,
+    liked: PropTypes.array.isRequired,
+    updateLikes: PropTypes.func.isRequired,
+    updateRates: PropTypes.func.isRequired,
+    _id: PropTypes.string.isRequired,
+    disableComments: PropTypes.bool.isRequired,
+    currentUser: PropTypes.string.isRequired,
+    classes: PropTypes.object.isRequired,
+    postCreator: PropTypes.string,
+    rating: PropTypes.object
 };
 
-export default withStyles(styles)(Footer);
+const mapStateToProps = state => ({
+  market: state.market
+});
+
+export default connect( mapStateToProps, { updateLikes, updateRates })(withStyles(styles)(Footer));
 
