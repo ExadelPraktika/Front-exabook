@@ -10,6 +10,7 @@ import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import { addComment, getEvent } from "../../../../actions/eventActions";
+import Avatar from '@material-ui/core/Avatar';
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import CardMedia from "@material-ui/core/CardMedia";
 const styles = theme => ({
@@ -20,9 +21,8 @@ const styles = theme => ({
     margin: 10
   },
   posterImg: {
-    with: 100,
-    height: 100,
-    borderRadius: "50%;"
+    with: 200,
+    height: 200,
   },
   padding: {
     padding: "20px"
@@ -39,13 +39,14 @@ const styles = theme => ({
   },
   photo: {
     maxWidth: 100,
-    maxHeight: 80,
-    opacity: 0.8
+    maxHeight: 100,
+    opacity: 0.8,
+    BorderRadius: '50%'
   },
   floatLeft: {
     float: "left",
-    maxWidth: 100,
-    maxHeight: 80,
+    width: 40,
+    height: 40,
     marginTop: "4px"
   }
 });
@@ -59,10 +60,27 @@ class CommentBox extends Component {
       comments: this.props.comments,
       descriptionOpened: this.props.descriptionOpened,
       photo: "",
-      text: ""
+      text: "",
+      name: ""
     };
     this.uploadWidget = this.uploadWidget.bind(this);
     this.deletePhoto = this.deletePhoto.bind(this);
+  }
+  componentDidMount(){
+    const { user } = this.props.auth;
+    let name;
+    if (user.method === "google") {
+      name = user.google.name;
+    }
+    if (user.method === "local") {
+      name = user.local.name;
+    }
+    if (user.method === "facebook") {
+      name = user.facebook.name;
+    }
+    this.setState({
+      name: name
+    })
   }
 
   uploadWidget() {
@@ -102,22 +120,16 @@ class CommentBox extends Component {
   onSubmit = e => {
     e.preventDefault();
     const { user } = this.props.auth;
-    let name;
-    if (user.method === "google") {
-      name = user.google.name;
-    }
-    if (user.method === "local") {
-      name = user.local.name;
-    }
-    if (user.method === "facebook") {
-      name = user.facebook.name;
-    }
+    
     const newComment = {
       text: this.state.text,
       photo: this.state.photo,
       user: user._id,
-      name: name
+      name: this.state.name
     };
+    this.setState({
+      text: ''
+    })
     this.props.addComment(this.props.eventID, newComment);
     
     this.setState({ text: "", photo: "" });
@@ -129,6 +141,7 @@ class CommentBox extends Component {
   };
 
   render() {
+    
     const { classes } = this.props;
     let UploadButton;
     if (this.state.photo.length == 0) {
@@ -158,24 +171,21 @@ class CommentBox extends Component {
     }
     return (
       <div>
-        <FormGroup onSubmit={this.onSubmit} onKeyPress={this.onKeyPress}><br />
-        <FormLabel>Add comment</FormLabel>
+        <FormGroup onSubmit={this.onSubmit} onKeyPress={this.onKeyPress}>
           <br />
           <div className={classes.margin}>
             <Card className={classes.padding}>
               <Grid container spacing={8} alignItems="space-around">
                 <Grid item>
-                  <img
-                    className={classes.posterImg}
-                    src="https://ih1.redbubble.net/image.168629070.1597/flat,550x550,075,f.u1.jpg"
-                  />
+                {this.props.auth.user.avatar ? <Avatar  src={this.props.auth.user.avatar} className={classes.posterImg} style={{width:100, height: 100}} /> :
+              (<Avatar  style={{width:100, height: 100}} >{this.state.name.charAt(0)}</Avatar>)}
                 </Grid>
                 <Grid item>
                   <Grid container spacing={8} alignItems="flex-end">
                     <Grid item>
                       <TextField
                         name="text"
-                        
+                        value={this.state.text}
                         onChange={this.handleChange1}
                         multiline="true"
                         style={{ width: 330 }}
@@ -183,11 +193,6 @@ class CommentBox extends Component {
                         label="Say something"
                       />{" "}
                       <br />
-                      <img
-                        src={this.state.photo}
-                        className={classes.photo}
-                        className={classes.floatLeft}
-                      />
                       <Button
                         onClick={event => {
                           this.onSubmit(event)

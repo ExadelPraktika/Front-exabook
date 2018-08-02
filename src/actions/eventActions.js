@@ -7,6 +7,7 @@ import {
   EVENT_LOADING,
   DELETE_EVENT,
   GET_USER_EVENTS,
+  GET_ERRORS,
   GOING_EVENT,
   UNGOING_EVENT
 } from './types';
@@ -19,8 +20,14 @@ export const addEvent = eventData => dispatch => {
       dispatch({
         type: ADD_EVENT,
         payload: res.data
+      }),
+    )
+    .catch(err => 
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
       })
-    );
+    )
 };
 
 // Get events

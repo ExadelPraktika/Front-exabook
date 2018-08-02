@@ -1,3 +1,7 @@
+//ERROR ACTIONS
+export const GET_ERRORS = 'GET_ERRORS';
+
+
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 //MARKET ACTIONS
 export const CREATE_POST = 'CREATE_POST';
@@ -9,6 +13,7 @@ export const UPDATE_MARKET_COMMENTS = 'UPDATE_MARKET_COMMENTS';
 export const UPDATE_MARKET_LIKES = 'UPDATE_MARKET_LIKES';
 export const UPDATE_MARKET_RATES = 'UPDATE_MARKET_RATES';
 
+//EVENT ACTIONS
 export const EVENT_LOADING = 'EVENT_LOADING';
 export const GET_EVENTS = 'GET_EVENTS';
 export const GET_EVENT = 'GET_EVENT';
@@ -17,13 +22,13 @@ export const DELETE_EVENT = 'DELETE_EVENT';
 export const GOING_EVENT = 'GOING_EVENT';
 export const UNGOING_EVENT = 'UNGOING_EVENT';
 export const GET_USER_EVENTS = 'GET_USER_EVENTS';
+
 //FEED ACTIONS
 export const GET_POST = 'GET_POST';
 export const ADD_POST = 'ADD_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const GET_FEED = 'GET_FEED';
 export const FEED_LOADING = 'FEED_LOADING';
-
 
 //FILTER ACTIONS
 export const ON_FILTER_OPEN_CHANGED = 'filters@ON_FILTER_OPEN_CHANGED'
