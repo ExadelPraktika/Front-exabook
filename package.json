@@ -35,11 +35,8 @@
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.10",
     "match-sorter": "^2.2.3",
-    "material-design-icons": "^3.0.1",
     "material-ui-filter": "^2.1.2",
     "material-ui-pickers": "^1.0.0-rc.9",
-    "fine-uploader-wrappers": "^1.0.1",
-    "material-ui-search-bar": "^0.4.2",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
     "muishift": "^1.0.3",
@@ -49,7 +46,6 @@
     "react-dom": "^16.4.1",
     "react-dropzone": "^4.2.13",
     "react-facebook-login": "^4.0.1",
-    "react-fine-uploader": "^1.1.0",
     "react-google-login": "^3.2.1",
     "react-google-maps": "^9.4.5",
     "react-intl": "^2.4.0",
@@ -61,12 +57,11 @@
     "react-scripts": "1.1.4",
     "react-scrollbar": "^0.5.4",
     "react-swipeable-views": "^0.12.15",
-    "react-virtualized": "^9.20.0",
     "react-user-avatar": "^1.10.0",
+    "react-virtualized": "^9.20.0",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "socket.io-client": "^2.1.1",
     "styled-components": "^3.3.3",
     "uniqid": "^5.0.3"
   },
@@ -82,6 +77,5 @@
     "webpack": "^4.16.1",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4"
-  },
-  "proxy": "http://localhost:3001"
+  }
 }

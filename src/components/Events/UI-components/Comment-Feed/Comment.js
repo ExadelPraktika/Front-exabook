@@ -279,26 +279,55 @@ const styles = theme => ({
 
 class Comment extends Component {
   state = {
-    rend: {}
+    rend: {},
+    showLike: {}
   };
-
-  componentWillReceiveProps(nextProps) {
+  componentDidMount() {
+    const result = this.props.comment.likes.find( e => e.user === this.props.auth.user._id );
+    console.log('result', result)
     this.setState({
-      rend: nextProps.event.event
+      showLike: result
     });
-    console.log("???? is will receiv event display", nextProps.event.event);
   }
-
+  // componentWillReceiveProps(nextProps) {
+  //   // this.setState({
+  //   //   rend: nextProps.event.event
+  //   // });
+  //   // console.log("???? is will receiv event display", nextProps.event.event);
+  //   const result = this.props.comment.likes.find( e => e.user === this.props.auth.user._id );
+  //   console.log('result', result)
+  //   this.setState({
+  //     showLike: result
+  //   });
+  // }
+  callFuncs = () => {
+    this.props.addLike(
+      this.props.auth.user._id,
+      this.props.eventID,
+      this.props.comment._id
+    )
+    this.setState({showLike: 'undefined'})
+  }
+  callFuncs2 = () => {
+    this.props.deleteLike(
+      this.props.auth.user._id,
+      this.props.eventID,
+      this.props.comment._id
+    )
+    this.setState({showLike: undefined})
+  }
   render() {
+    console.log('aaaa', this.state.showLike);
     //console.log(this.props.comment.likes.some(e => e.user.toString() !== this.props.auth.user._id))
     console.log('comentaras', this.state.rend)
     const { classes } = this.props;
     return (
       <ListItem className={classes.root}>
         <div className={classes.margin1}>
-          <Avatar>
-            <ImageIcon />
-          </Avatar>
+        {this.props.comment.user.avatar ? <Avatar src={this.props.comment.user.avatar}/> : (<Avatar >
+            {this.props.comment.name.charAt(0)}
+        </Avatar>)}
+          
         </div>
         <div>
           <div>
@@ -331,24 +360,29 @@ class Comment extends Component {
             </Paper>
           </Badge>
           <div>
-            {this.props.comment.likes.some(
-              e => e.user.toString() !== this.props.auth.user._id)}
-            
-              <Typography
+            {/* {this.props.comment.likes.some(
+              e => e.user.toString() !== this.props.auth.user._id)} */}
+              
+            {this.state.showLike === undefined ? <Typography
                 component="p"
                 color="primary"
                 className={classes.text}
-                onClick={() =>
-                  this.props.addLike(
-                    this.props.auth.user._id,
-                    this.props.eventID,
-                    this.props.comment._id
-                  )
+                onClick={ this.callFuncs
+                  
                 }
               >
                 Like
-              </Typography>
-              {Object.keys(this.state.rend).length > 0 ?
+              </Typography> : <Typography
+                component="p"
+                color="primary"
+                className={classes.text}
+                onClick={ this.callFuncs2
+                }
+              >
+                Dislike
+              </Typography> }
+              
+              {/* {Object.keys(this.state.rend).length > 0 ?
               <Typography
                 component="p"
                 color="primary"
@@ -362,7 +396,7 @@ class Comment extends Component {
                 }
               >
                 Dislike
-              </Typography>: null}
+              </Typography>: null} */}
             
 
             {this.props.comment.user._id !== this.props.userID ? null : (
@@ -380,7 +414,6 @@ class Comment extends Component {
                 Delete
               </Typography>
             )}
-
             <Tooltip title={this.props.comment.date} placement="bottom">
               <Typography component="p" className={classes.text1}>
                 <Moment fromNow ago>
