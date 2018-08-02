@@ -14,17 +14,19 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { connect } from 'react-redux';
-import { update } from "../../../../actions/marketActions";
+import { withStyles } from '@material-ui/core/styles';
+import classnames from 'classnames';
+import { updateLikes, updateRates } from "../../../../actions/marketActions";
 
-const styles = {
+const styles = theme => ({
     iconButton: {
         marginLeft: 70,
     },
     expand: {
         transform: 'rotate(0deg)',
-        /*transition: theme.transitions.create('transform', {
+        transition: theme.transitions.create('transform', {
             duration: theme.transitions.duration.shortest,
-        }),*/
+        }),
         marginLeft: 'auto',
     },
     expandOpen: {
@@ -33,7 +35,7 @@ const styles = {
     comments: {
         margin: 10,
     },
-};
+});
 
 class Footer extends Component{
     constructor(props){
@@ -44,19 +46,25 @@ class Footer extends Component{
             rate: this.props.rating,
             comments: false,
             descriptionOpened: false,
-            liked: this.props.liked
+            liked: this.props.liked,
+            averageRating: 'Rated'
         }
     }
 
     handleLikeClick = () => {
+        let userLikes = this.props.liked;
+        if (userLikes.indexOf(this.props.currentUser) === -1) {
+            userLikes.push(this.props.currentUser);
+        }
+        else {
+            userLikes.splice(userLikes.indexOf(this.props.currentUser), 1);
+        }
         let object = {
-            rating: this.state.rate,
-            liked: !this.state.liked,
+            liked: userLikes,
             _id: this.props._id,
-            disableComments: this.props.disableComments
         };
-        this.props.update(object);
-        this.setState({ liked: !this.state.liked});
+        this.props.updateLikes(object);
+        this.setState({ liked: this.props.liked});
     };
 
     handleRateClick = event => {
@@ -64,11 +72,23 @@ class Footer extends Component{
     };
 
     handleRated = (rate) => {
-        let object = { rating: rate, liked: this.state.liked, _id: this.props._id };
-        this.props.update(object);
-        if(rate) this.setState({ anchorEl: null , rate: rate});
-        this.setState({ anchorEl: null });
+        let object = {
+            _id: this.props._id,
+            rating: {
+            ...this.state.rate,
+            [this.props.currentUser]: rate
+            }
+        };
+        this.props.updateRates(object);
+        this.setState({ anchorEl: null , rate: this.props.rating });
     };
+
+    /*getPostsRating = () => {
+        let averageRate = 0;
+        Object.keys(this.state.rate).forEach( (key) => { averageRate += this.state.rate[key]});
+        averageRate = averageRate / Object.keys(this.state.rate).length;
+        this.setState({averageRating: averageRate + '★/5★'});
+    };*/
 
     handleRateClose = () => {
         this.setState({ anchorEl: null });
@@ -94,43 +114,53 @@ class Footer extends Component{
         );
     };
     render(){
+        const { classes } = this.props;
         return(
             <div>
-                <CardActions style={styles.actions} disableActionSpacing>
+                <CardActions className={classes.actions} disableActionSpacing>
                     <Button onClick={this.handleCommentButton} disabled={ this.props.disableComments }>
                         Comment
                     </Button>
-                    <Button
+                    {this.props.currentUser !== this.props.postCreator
+                      ?
+                      <Button
                         onClick={this.handleRateClick}
                         aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                         aria-haspopup="true"
-                    >
-                      { this.state.rate }
-                    </Button>
+                      >
+                         { this.state.rate === undefined ? 'Unrated' : this.state.averageRating }
+                      </Button>
+                      :
+                      <Button disabled={true}>
+                        { this.state.rate === undefined ? 'Unrated' : this.state.averageRating }
+                      </Button>
+                    }
                     <Menu
                         id="simple-menu"
                         anchorEl={this.state.anchorEl}
                         open={Boolean(this.state.anchorEl)}
                         onClose={this.handleRateClose}
                     >
-                        <MenuItem onClick={() => this.handleRated('5 ★')}>5 ★</MenuItem>
-                        <MenuItem onClick={() => this.handleRated('4 ★')}>4 ★</MenuItem>
-                        <MenuItem onClick={() => this.handleRated('3 ★')}>3 ★</MenuItem>
-                        <MenuItem onClick={() => this.handleRated('2 ★')}>2 ★</MenuItem>
-                        <MenuItem onClick={() => this.handleRated('1 ★')}>1 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated(5)}>5 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated(4)}>4 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated(3)}>3 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated(2)}>2 ★</MenuItem>
+                        <MenuItem onClick={() => this.handleRated(1)}>1 ★</MenuItem>
                     </Menu>
                     <IconButton
-                        style={styles.iconButton}
+                        className={classes.iconButton}
                         aria-label="Add to favorites"
                         onClick={this.handleLikeClick}
                     >
-                        {this.state.liked === false ? <FavoriteIcon/> : <FavoriteIcon color={'secondary'}/>}
+                        {this.state.liked.indexOf(this.props.currentUser) === -1 ? <FavoriteIcon/> : <FavoriteIcon color={'secondary'}/>}
                     </IconButton>
                     <IconButton aria-label="Share">
                         <ShareIcon/>
                     </IconButton>
                     <IconButton
-                        style={styles.descriptionOpened}
+                          className={classnames(classes.expand, {
+                            [classes.expandOpen]: this.state.descriptionOpened,
+                          })}
                         onClick={this.handleDescriptionButton}
                         aria-expanded={this.state.descriptionOpened}
                         aria-label="Show more"
@@ -139,7 +169,7 @@ class Footer extends Component{
                     </IconButton>
                 </CardActions>
                 <Collapse in={this.state.comments} timeout="auto" unmountOnExit>
-                    <div style={styles.comments}>
+                    <div className={classes.comments}>
                         <Input
                             autoFocus={true}
                             multiline={true}
@@ -149,7 +179,7 @@ class Footer extends Component{
                             <Icon>send</Icon>
                         </IconButton>
                     </div>
-                    <div style={styles.comments}>
+                    <div className={classes.comments}>
                         <Typography>
                             Comments
                         </Typography>
@@ -168,16 +198,20 @@ class Footer extends Component{
 }
 Footer.propTypes = {
     description: PropTypes.string.isRequired,
-    liked: PropTypes.bool.isRequired,
-    rating: PropTypes.string.isRequired,
-    update: PropTypes.func.isRequired,
+    liked: PropTypes.array.isRequired,
+    updateLikes: PropTypes.func.isRequired,
+    updateRates: PropTypes.func.isRequired,
     _id: PropTypes.string.isRequired,
-    disableComments: PropTypes.bool.isRequired
+    disableComments: PropTypes.bool.isRequired,
+    currentUser: PropTypes.string.isRequired,
+    classes: PropTypes.object.isRequired,
+    postCreator: PropTypes.string,
+    rating: PropTypes.object
 };
 
 const mapStateToProps = state => ({
   market: state.market
 });
 
-export default connect( mapStateToProps, { update })(Footer);
+export default connect( mapStateToProps, { updateLikes, updateRates })(withStyles(styles)(Footer));
 

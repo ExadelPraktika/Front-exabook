@@ -16,7 +16,7 @@ import Fade from "@material-ui/core/es/Fade/Fade";
 import Paper from "@material-ui/core/es/Paper/Paper";
 import Menu from "@material-ui/core/es/Menu/Menu";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
-import { deletePost } from "../../../../actions/marketActions";
+import { deletePost, updateComments } from "../../../../actions/marketActions";
 
 const styles = {
     card: {
@@ -35,7 +35,7 @@ class Poster extends Component {
       this.state = {
         anchorEl: null,
         open: false,
-        disableComments: false
+        disableComments: this.props.post.disableComments
       };
     }
     handlePopperClick = event => {
@@ -51,6 +51,11 @@ class Poster extends Component {
     };
 
     handleDisableComments = () => {
+      let object = {
+        disableComments: !this.state.disableComments,
+        _id: this.props.post._id,
+      };
+      this.props.updateComments(object);
       this.setState({ disableComments: !this.state.disableComments})
     };
 
@@ -82,16 +87,18 @@ class Poster extends Component {
                                       open={Boolean(this.state.anchorEl)}
                                       onClose={this.handleClose}
                                     >
-                                      {this.props.auth.user._id === this.props.post.creator._id
-                                        ?
-                                        <div>
+                                        {this.props.auth.user._id === this.props.post.creator._id
+                                          ?
                                           <MenuItem onClick={this.handleDelete.bind(this, this.props.auth.user._id, this.props.post._id)}>Delete</MenuItem>
+                                          :
+                                          <MenuItem onClick={this.handleClose}>Buy</MenuItem> }
+                                        {this.props.auth.user._id === this.props.post.creator._id
+                                          ?
                                           <MenuItem onClick={this.handleDisableComments.bind(this)}>
                                             {this.state.disableComments === true ? 'Enable comments' : 'Disable comments'}
-                                            </MenuItem>
-                                        </div>
-                                        :
-                                        <MenuItem onClick={this.handleClose}>Buy</MenuItem>}
+                                          </MenuItem>
+                                          :
+                                          null }
                                     </Menu>
                                   </Paper>
                                 </Fade>
@@ -123,6 +130,8 @@ class Poster extends Component {
                       liked={this.props.post.liked}
                       rating={this.props.post.rating}
                       _id={this.props.post._id}
+                      currentUser={this.props.auth.user._id}
+                      postCreator={this.props.post.creator._id}
                     />
                 </Card>
             </div>
@@ -131,9 +140,10 @@ class Poster extends Component {
 }
 
 Poster.propTypes = {
-  deletePost: PropTypes.func.isRequired
+  deletePost: PropTypes.func.isRequired,
+  updateComments: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth
 });
-export default connect(mapStateToProps, {deletePost})(Poster);
+export default connect(mapStateToProps, { deletePost, updateComments })(Poster);
