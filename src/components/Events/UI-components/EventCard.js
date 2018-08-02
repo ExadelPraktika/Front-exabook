@@ -34,7 +34,7 @@ import EventDisplay from "./EventDisplay";
 const styles = theme => ({
   card: {
     maxWidth: 420,
-    minWidth: 300,
+    minWidth: 330,
     float: "right",
     margin: "1%"
   },
@@ -75,11 +75,29 @@ class RecipeReviewCard extends React.Component {
     this.state = {
       expanded: false,
       isgoing: this.props.isgoing,
-      showModal1: false
+      showModal1: false,
+      name: ''
     };
     this.handleClick = this.handleClick.bind(this);
   }
+componentDidMount() {
+  const { event, auth } = this.props;
 
+  let eventCreator;
+  
+  if (event.creator.method === "google") {
+    eventCreator = event.creator.google.name;
+  }
+  if (event.creator.method === "local") {
+    eventCreator = event.creator.local.name;
+  }
+  if (event.creator.method === "facebook") {
+    eventCreator = event.creator.facebook.name;
+  }
+    this.setState({
+      name: eventCreator
+    })
+}
   handleClick(event) {
     // switch the value of the showModal state
     this.setState({
@@ -133,16 +151,7 @@ class RecipeReviewCard extends React.Component {
     const { event, auth } = this.props;
     const { classes } = this.props;
     console.log(event.start);
-    let eventCreator;
-    if (event.creator.method === "google") {
-      eventCreator = event.creator.google.name;
-    }
-    if (event.creator.method === "local") {
-      eventCreator = event.creator.local.name;
-    }
-    if (event.creator.method === "facebook") {
-      eventCreator = event.creator.facebook.name;
-    }
+
 
     let goingButton;
     if (this.userExists(this.props.auth.user._id)) {
@@ -182,8 +191,8 @@ class RecipeReviewCard extends React.Component {
           <CardHeader
             className={classes.marginRight}
             avatar={
-              event.creator.avatar ? <Avatar src={event.creator.avatar}/> : (<Avatar >
-                {eventCreator.charAt(0)}
+              event.creator.avatar  ? <Avatar src={event.creator.avatar}/> : (<Avatar >
+                {this.state.name ?this.state.name.charAt(0): null}
             </Avatar>)
             }
             action={
@@ -191,7 +200,7 @@ class RecipeReviewCard extends React.Component {
                 <MoreVertIcon />
               </IconButton>
             }
-            title={eventCreator}
+            title={this.state.name}
             subheader={<Moment fromNow>{event.date}</Moment>}
           />
           {this.getComponent()}
