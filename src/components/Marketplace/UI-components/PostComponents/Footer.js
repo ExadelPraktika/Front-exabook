@@ -47,8 +47,21 @@ class Footer extends Component{
             comments: false,
             descriptionOpened: false,
             liked: this.props.liked,
-            averageRating: 'Rated'
+            averageRating: ''
         }
+    }
+    componentDidMount(){
+      let averageRate = 0;
+      if(this.state.rate) {
+        Object.keys(this.state.rate).forEach((key) => {
+          averageRate += this.state.rate[key]
+        });
+        averageRate = averageRate / Object.keys(this.state.rate).length;
+        this.setState({averageRating: averageRate + '★/5★'});
+      }
+      else {
+        this.setState({averageRating: 'Unrated'});
+      }
     }
 
     handleLikeClick = () => {
@@ -80,28 +93,24 @@ class Footer extends Component{
             }
         };
         this.props.updateRates(object);
-        this.setState({ anchorEl: null , rate: this.props.rating });
-    };
-
-    /*getPostsRating = () => {
         let averageRate = 0;
-        Object.keys(this.state.rate).forEach( (key) => { averageRate += this.state.rate[key]});
-        averageRate = averageRate / Object.keys(this.state.rate).length;
-        this.setState({averageRating: averageRate + '★/5★'});
-    };*/
+        let rating = { ...this.state.rate, [this.props.currentUser]: rate};
+        Object.keys(rating).forEach((key) => {
+            averageRate += rating[key];
+        });
+        averageRate = averageRate / Object.keys(rating).length;
+        this.setState({
+          anchorEl: null,
+          rate: rating,
+          averageRating: averageRate + '★/5★'});
+    };
 
     handleRateClose = () => {
         this.setState({ anchorEl: null });
     };
 
     handleCommentButton = () => {
-        this.setState(() => {
-                if (this.state.comments) {
-                    return {comments: false}
-                }
-                return {comments: true}
-            }
-        );
+        this.setState({comments: !this.state.comments});
     };
 
     handleDescriptionButton = () => {
@@ -113,6 +122,7 @@ class Footer extends Component{
             }
         );
     };
+
     render(){
         const { classes } = this.props;
         return(
@@ -128,11 +138,11 @@ class Footer extends Component{
                         aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                         aria-haspopup="true"
                       >
-                         { this.state.rate === undefined ? 'Unrated' : this.state.averageRating }
+                         { this.state.averageRating }
                       </Button>
                       :
                       <Button disabled={true}>
-                        { this.state.rate === undefined ? 'Unrated' : this.state.averageRating }
+                        { this.state.averageRating }
                       </Button>
                     }
                     <Menu

@@ -29,7 +29,7 @@ class MarketSearchForm extends Component{
         location: this.state.location,
         category: this.state.category,
         min: this.state.min,
-        max: this.state.max,
+        max: this.state.max + 1,
         search: this.state.search
       };
       this.props.getSearchedPosts(search);
