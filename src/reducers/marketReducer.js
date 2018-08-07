@@ -1,4 +1,5 @@
 import {
+  ADD_MARKET_COMMENT,
   CREATE_POST,
   DELETE_MARKET_POST,
   GET_MARKET_POSTS,
@@ -6,7 +7,9 @@ import {
   GET_USER_POSTS,
   UPDATE_MARKET_COMMENTS,
   UPDATE_MARKET_LIKES,
-  UPDATE_MARKET_RATES
+  UPDATE_MARKET_RATES,
+  DELETE_MARKET_COMMENT,
+  LIKE_MARKET_COMMENT
 } from '../actions/types';
 
 const initialState = {
@@ -52,6 +55,21 @@ export default function(state = initialState, action) {
             marketFeed: action.payload
           };
         case UPDATE_MARKET_COMMENTS:
+          return {
+            ...state,
+            marketFeed: action.payload
+          };
+        case ADD_MARKET_COMMENT:
+          return {
+            ...state,
+            marketFeed: action.payload
+          };
+        case DELETE_MARKET_COMMENT:
+          return {
+            ...state,
+            marketFeed: action.payload
+          };
+        case LIKE_MARKET_COMMENT:
           return {
             ...state,
             marketFeed: action.payload

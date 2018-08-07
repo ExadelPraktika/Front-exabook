@@ -138,6 +138,9 @@ class Poster extends Component {
                       _id={this.props.post._id}
                       currentUser={this.props.auth.user._id}
                       postCreator={this.props.post.creator._id}
+                      //for comments
+                      comments={this.props.post.comments}
+                      User={this.props.auth.user}
                     />
                 </Card>
             </div>
