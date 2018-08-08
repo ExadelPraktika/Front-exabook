@@ -39,8 +39,7 @@ class TopBar extends Component {
               <Button color="inherit" style={styles.button} component={Link} to="/marketplace">Market</Button>
               <Button color="inherit" style={styles.button}>Map</Button>
               <div className={classes.row}>
-                <Avatar alt="Unknown" src="https://api.adorable.io/avatars/50/abott@adorable.png"
-                        className={classes.avatar}/>
+                <ProfileOptions className={classes.avatar} />
               </div>
               <Button color="inherit">Logout</Button>
             </Toolbar>

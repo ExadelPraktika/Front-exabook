@@ -1,8 +1,9 @@
 //ERROR ACTIONS
 export const GET_ERRORS = 'GET_ERRORS';
 
-
+//AUTH ACTIONS
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+
 //MARKET ACTIONS
 export const CREATE_POST = 'CREATE_POST';
 export const GET_MARKET_POSTS = 'GET_MARKET_POSTS';
@@ -17,11 +18,18 @@ export const UPDATE_MARKET_RATES = 'UPDATE_MARKET_RATES';
 export const EVENT_LOADING = 'EVENT_LOADING';
 export const GET_EVENTS = 'GET_EVENTS';
 export const GET_EVENT = 'GET_EVENT';
+export const GET_USER_EVENTS = 'GET_USER_EVENTS';
 export const ADD_EVENT = 'ADD_EVENT';
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const GOING_EVENT = 'GOING_EVENT';
 export const UNGOING_EVENT = 'UNGOING_EVENT';
-export const GET_USER_EVENTS = 'GET_USER_EVENTS';
+
+//FRIENDS ACTIONS
+export const FRIEND_LOADING = 'FRIEND_LOADING';
+export const GET_PEOPLE = 'GET_PEOPLE';
+export const GET_FRIENDS = 'GET_FRIENDS';
+export const SEND_REQUEST = 'SEND_REQUEST';
+export const DELETE_FRIEND = 'DELETE_FRIEND';
 
 //FEED ACTIONS
 export const GET_POST = 'GET_POST';
