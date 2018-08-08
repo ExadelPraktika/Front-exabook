@@ -11,6 +11,7 @@ import { Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import UserAvatar from "react-user-avatar";
+import { getConversations, sendReply } from '../../actions/chatActions'
 
 var uniqid = require("uniqid");
 
@@ -89,10 +90,8 @@ class Chat extends React.Component {
 
     const addMessage = data => {
       //console.log(data);
-      for(var x = 0; x < data.length; x++){
-      this.setState({ messages: [data[x]]
-     });
-    }
+      
+      this.setState({ messages: [...this.state.messages, data] });
       console.log(this.state.messages);
     };
 
@@ -151,13 +150,13 @@ class Chat extends React.Component {
               <div className={classes.title}>Global Chat</div>
               <hr />
               <div className={classes.messagesContainer} id="autoScroll">
-                {this.state.messages.map(key => {
+                {this.state.messages.map(message => {
                   console.log();
                   return (
                     <div
                       key={uniqid()}
                       className={
-                        key.author === nick
+                        message.author === nick
                           ? classes.messagesMe
                           : classes.messagesThem
                       }
@@ -173,7 +172,7 @@ class Chat extends React.Component {
                       
                       <Paper
                         className={
-                          key.author === nick
+                          message.author === nick
                             ? classes.paperMe
                             : classes.paperThem
                         }
@@ -181,7 +180,7 @@ class Chat extends React.Component {
                         <Grid container>
                           <Grid item xs zeroMinWidth>
                             <Typography style={{ color: "White" }}>
-                              {key.message}
+                              {this.props.getConversations}
                               
                             </Typography>
                           </Grid>
@@ -226,11 +225,13 @@ class Chat extends React.Component {
 
 Chat.propTypes = {
   classes: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  getConversations: PropTypes.func.isRequired,
+  sendReply: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Chat));
+export default connect(mapStateToProps, { getConversations, sendReply })(withStyles(styles)(Chat));
