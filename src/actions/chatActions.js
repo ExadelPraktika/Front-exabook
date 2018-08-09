@@ -21,9 +21,9 @@ export const newConversation = () => dispatch => {
     );
 };
 
-export const sendReply = () => dispatch => {
+export const sendReply = replyData => dispatch => {
   axios
-    .post('http://localhost:3001/reply')
+    .post('http://localhost:3001/reply', replyData)
     .then(res => 
       dispatch({
         type: SEND_REPLY,
