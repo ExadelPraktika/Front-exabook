@@ -41,7 +41,7 @@
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
     "muishift": "^1.0.3",
-    "nwb": "^0.22.0",
+    "nwb": "^0.23.0",
     "prop-types": "latest",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",

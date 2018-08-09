@@ -6,9 +6,11 @@ import postReducer from './postReducer';
 import errorReducer from './errorReducer';
 import { filterReducer } from '../components/Events/Filter/index';
 import { reducer as formReducer } from 'redux-form';
+import friendReducer from './friendReducer';
 
 export default combineReducers({
   auth: authReducer,
+  friends: friendReducer,
   errors: errorReducer,
   market: marketReducer,
   event: eventReducer,

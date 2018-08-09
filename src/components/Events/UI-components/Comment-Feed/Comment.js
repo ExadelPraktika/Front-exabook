@@ -354,7 +354,7 @@ class Comment extends Component {
                 }
                 component="p"
               >
-                {this.props.comment.text}
+                {this.props.comment.text}<br/>
                 <img className={classes.img} src={this.props.comment.photo} />
               </Typography>
             </Paper>
