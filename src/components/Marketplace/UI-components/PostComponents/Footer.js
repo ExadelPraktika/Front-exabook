@@ -199,9 +199,9 @@ class Footer extends Component{
                         ? <Badge badgeContent={this.props.liked.length} color={"default"} ><FavoriteIcon/></Badge>
                         : <Badge badgeContent={this.props.liked.length} color={"secondary"} ><FavoriteIcon color={'secondary'}/></Badge>}
                     </IconButton>
-                    <IconButton aria-label="Share">
+                    {/*<IconButton aria-label="Share">
                         <ShareIcon/>
-                    </IconButton>
+                    </IconButton>*/}
                     <IconButton
                           className={classnames(classes.expand, {
                             [classes.expandOpen]: this.state.descriptionOpened,
