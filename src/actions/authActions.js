@@ -19,7 +19,8 @@ export const setCurrent = userToken => dispatch => {
 export const setCurrentUser = (user) => {
   return {
     type: SET_CURRENT_USER,
-    payload: user
+    payload: user,
+    
   };
 };
 

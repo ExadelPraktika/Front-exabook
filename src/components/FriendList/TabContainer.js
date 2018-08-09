@@ -60,6 +60,7 @@ class NestedList extends React.Component {
     this.props.getPeopleList(this.props.auth.user._id);
     this.props.getUserFriends(this.props.auth.user._id);
   }
+
   handleClick = () => {
     this.setState(state => ({ open: !state.open }));
   };
