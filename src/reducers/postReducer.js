@@ -1,4 +1,4 @@
-import { ADD_POST, GET_FEED, FEED_LOADING, DELETE_POST } from '../actions/types';
+import { ADD_POST, GET_FEED, FEED_LOADING, DELETE_POST, EDIT_POST, UPDATE_POST } from '../actions/types';
 
 const initialState = {
     postFeed: [],
@@ -26,7 +26,23 @@ export default function(state = initialState, action) {
         return {
           ...state,
           postFeed: state.postFeed.filter(post => post._id !== action.payload)
-        }
+        };
+      case EDIT_POST:
+        return {
+          ...state,
+          postFeed: state.postFeed.map((post)=>post._id === action._id ? {...post, editing:!post.editing}:post)
+        };
+
+      case 'UPDATE_POST':
+        return state.postFeed.map((post)=>{
+          if(post._id === action._id) {
+            return {
+                ...post,
+                postBody: action.payload.newBody,
+                editing: !post.editing
+            }
+          } else return post;
+      });
       default:
         return state;
     }

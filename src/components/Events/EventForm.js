@@ -57,6 +57,7 @@ class EventForm extends Component {
       address: "",
       coordLat: "",
       coordLng: "",
+      errors: {}
     };
     this.uploadWidget = this.uploadWidget.bind(this);
   }
@@ -70,9 +71,17 @@ class EventForm extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
+
   onChange1 = e => {
     this.setState({
-      start: e.target.value
+      start: e.target.value,
     });
   };
   onChange2 = e => {
@@ -93,7 +102,7 @@ class EventForm extends Component {
           coordLng: latLng.lng
         })
       )
-      .then(console.log( this.state.coordLat,this.state.coordLng ))
+      .then(console.log(this.state.coordLat, this.state.coordLng))
       .catch(error => console.error("Error", error));
   };
   handleChange1 = e => {
@@ -114,7 +123,7 @@ class EventForm extends Component {
       description: this.state.description,
       photo: this.state.photo,
       coordLat: this.state.coordLat,
-      coordLng: this.state.coordLng,
+      coordLng: this.state.coordLng
     };
     this.props.addEvent(newEvent);
   };
@@ -145,16 +154,24 @@ class EventForm extends Component {
   }
 
   render() {
+    const { errors } = this.state;
     return (
       <Card className="login-card" style={styles.card}>
         <CardContent>
           <FormGroup onSubmit={this.onSubmit}>
             <FormLabel>Create Event</FormLabel>
             <br />
-            <FormControl>
-              <InputLabel>Events title</InputLabel>
-              <Input name="title" onChange={this.handleChange1} />
-            </FormControl>
+            <TextField
+              name="title"
+              onChange={this.handleChange1}
+              id="textarea"
+              label="Events title"
+              placeholder=""
+              error={errors.title}
+              helperText={errors.title}
+              //className={classes.textField}
+              margin="normal"
+            />
             <br />
             <img src={this.state.photo} style={styles.photo} />
             <div className="upload">
@@ -165,29 +182,46 @@ class EventForm extends Component {
                 Add Events Image
               </Button>
             </div>
-            <PlacesAutocomplete
-              styles={styles.location}
-              value={this.state.address}
-              //onSelect={this.handleSelect}
-              onChange={this.handleChange}
-            >
-              {renderFunc}
-            </PlacesAutocomplete>
+            <FormControl error aria-describedby="name-error-text">
+              <PlacesAutocomplete
+                styles={styles.location}
+                value={this.state.address}
+                location={errors.location}
+                //onSelect={this.handleSelect}
+                onChange={this.handleChange}
+              >
+                {renderFunc}
+              </PlacesAutocomplete>
+              <FormHelperText id="name-error-text">
+                {errors.location < 0 ? "" : errors.location}
+              </FormHelperText>
+            </FormControl>
             <br />
-            <DataPicker
-              name="start"
-              label="Event Starts"
-              onChange={this.onChange1}
-              value={this.state.start}
-            />
-            <br />
-            <DataPicker
-              name="end"
-              label="Event Ends"
-              onChange={this.onChange2}
-              value={this.state.end}
-            />
 
+            <FormControl error aria-describedby="name-error-text">
+              <DataPicker
+                error="true"
+                name="start"
+                label="Event Starts"
+                onChange={this.onChange1}
+                value={this.state.start}
+              />
+              <FormHelperText id="name-error-text">
+                {errors.start < 0 ? "" : errors.start}
+              </FormHelperText>
+            </FormControl>
+            <br />
+            <FormControl error aria-describedby="name-error-text">
+              <DataPicker
+                name="end"
+                label="Event Ends"
+                onChange={this.onChange2}
+                value={this.state.end}
+              />
+              <FormHelperText id="name-error-text">
+                {errors.end < 0 ? "" : errors.end}
+              </FormHelperText>
+            </FormControl>
             <TextField
               name="description"
               onChange={this.handleChange1}
@@ -195,6 +229,8 @@ class EventForm extends Component {
               label="Description of the event"
               placeholder=""
               multiline
+              error={errors.description}
+              helperText={errors.description}
               //className={classes.textField}
               margin="normal"
             />
@@ -205,7 +241,7 @@ class EventForm extends Component {
               variant="contained"
               onClick={event => {
                 this.onSubmit(event);
-                this.props.handleClose();
+                // this.props.handleClose()
               }}
               type="submit"
               //disabled={!this.state.formValid}
@@ -221,11 +257,13 @@ class EventForm extends Component {
 
 EventForm.propTypes = {
   addEvent: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  errors: state.errors
 });
 
 export default connect(

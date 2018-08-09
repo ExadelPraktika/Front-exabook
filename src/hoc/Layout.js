@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 
 class Layout extends Component {
 
-
   render() {
     const style = {
 

@@ -10,7 +10,7 @@ import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import List from "@material-ui/core/List";
-
+import FriendContainer from "../FriendList/TabContainer";
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper
@@ -101,30 +101,20 @@ class Tab1 extends React.Component {
             <Tab
               disableRipple
               classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-              label="Friend List"
-            />
+              label="Friends"
+              
+            >
+            </Tab>
             <Tab
               disableRipple
               classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-              label="Group List"
+              label="Groups"
             />
+
           </Tabs>
         </AppBar>
-        <ListItem button onClick={this.handleClick}>
-          {this.state.comments ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={this.state.comments} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem>
-              {this.state.value === 0 && (
-                <TabContainer>Friend List</TabContainer>
-              )}
-              {this.state.value === 1 && (
-                <TabContainer>Group list</TabContainer>
-              )}
-            </ListItem>
-          </List>
-        </Collapse>
+        {this.state.value === 0 && <div><FriendContainer/></div>}
+        {this.state.value === 1 &&  <div />}
       </div>
     );
   }
