@@ -29,6 +29,8 @@ export const ADD_POST = 'ADD_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const GET_FEED = 'GET_FEED';
 export const FEED_LOADING = 'FEED_LOADING';
+export const EDIT_POST = 'EDIT_POST';
+export const UPDATE_POST = 'UPDATE_POST';
 
 //FILTER ACTIONS
 export const ON_FILTER_OPEN_CHANGED = 'filters@ON_FILTER_OPEN_CHANGED'

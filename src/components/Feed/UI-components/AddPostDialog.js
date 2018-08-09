@@ -47,8 +47,6 @@ class AddPost extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  
-
   handleChange = (evt) => {
     this.setState({ [evt.target.name]: evt.target.value });
   }
@@ -67,9 +65,11 @@ class AddPost extends Component {
     const newPost = {
       author: user._id,
       postBody: this.state.postBody,
+      editing: false
     };
 
     this.props.addPost(newPost);
+    this.setState({ open: false, postBody: ''});
   }
 
   render() {

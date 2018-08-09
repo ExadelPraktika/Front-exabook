@@ -4,7 +4,8 @@ import marketReducer from './marketReducer'
 import eventReducer from './eventReducer';
 import postReducer from './postReducer';
 import errorReducer from './errorReducer';
-import { filterReducer } from '../components/Events/Filter/index'
+import { filterReducer } from '../components/Events/Filter/index';
+import { reducer as formReducer } from 'redux-form';
 
 export default combineReducers({
   auth: authReducer,
@@ -12,5 +13,7 @@ export default combineReducers({
   market: marketReducer,
   event: eventReducer,
   feed: postReducer,
-  filters: filterReducer
+  filters: filterReducer,
+  form: formReducer
+
 });
