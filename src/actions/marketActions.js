@@ -6,7 +6,12 @@ import {
   GET_SEARCHED_POSTS,
   GET_USER_POSTS,
   DELETE_MARKET_POST,
-  UPDATE_MARKET_COMMENTS, UPDATE_MARKET_LIKES, UPDATE_MARKET_RATES
+  UPDATE_MARKET_COMMENTS,
+  UPDATE_MARKET_LIKES,
+  UPDATE_MARKET_RATES,
+  ADD_MARKET_COMMENT,
+  DELETE_MARKET_COMMENT,
+  LIKE_MARKET_COMMENT
 } from './types';
 
 // Get market
@@ -95,6 +100,45 @@ export const createPost = postData => dispatch => {
     .then(res =>
       dispatch({
         type: CREATE_POST,
+        payload: res.data
+      })
+    );
+};
+
+// Add market comment
+export const addComment = postData => dispatch => {
+  console.log('created a new comment');
+  axios
+    .post('http://localhost:3001/marketplace/comment', postData)
+    .then(res =>
+      dispatch({
+        type: ADD_MARKET_COMMENT,
+        payload: res.data
+      })
+    );
+};
+
+// Delete market comment
+export const likeComment = postData => dispatch => {
+  console.log('liked/unliked a comment');
+  axios
+    .post('http://localhost:3001/marketplace/like/comment', postData)
+    .then(res =>
+      dispatch({
+        type: LIKE_MARKET_COMMENT,
+        payload: res.data
+      })
+    );
+};
+
+// Delete market comment
+export const deleteComment = postData => dispatch => {
+  console.log('deleted a comment');
+  axios
+    .post('http://localhost:3001/marketplace/delete/comment', postData)
+    .then(res =>
+      dispatch({
+        type: DELETE_MARKET_COMMENT,
         payload: res.data
       })
     );

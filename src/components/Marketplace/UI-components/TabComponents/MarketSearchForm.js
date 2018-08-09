@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import Button from "@material-ui/core/es/Button/Button";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import { getSearchedPosts } from '../../../../actions/marketActions';
+import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete';
+import renderFunc from "../PlacesAuto";
 
 class MarketSearchForm extends Component{
     constructor(props){
@@ -24,6 +26,13 @@ class MarketSearchForm extends Component{
         [e.target.id]: e.target.value
       });
     };
+
+  handleChange1 = address => {
+    this.setState({
+      location: address
+    });
+  };
+
     handleSearchClose = () => {
       let search = {
         location: this.state.location,
@@ -40,14 +49,14 @@ class MarketSearchForm extends Component{
         return(
             <Card>
               <div>
-                <TextField
-                  id="location"
-                  label="Location"
-                  type="search"
-                  onChange={(e) => {this.handleChange(e)}}
-                  style={{margin: 10, width: 300}}
-                  margin="normal"
-                />
+                <PlacesAutocomplete
+                  value={this.state.location}
+                  onChange={this.handleChange1}
+                  style={{margin: 10, width: 300,}}
+                  placeholder={"Location"}
+                >
+                  {renderFunc}
+                </PlacesAutocomplete>
               </div>
               <div>
                 <TextField

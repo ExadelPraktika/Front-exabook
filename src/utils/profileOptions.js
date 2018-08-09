@@ -36,6 +36,7 @@ class profileOptions extends React.Component {
         const data = { avatar: result[0].secure_url };
         this.props.addAvatar(this.props.auth.user._id, data);
         this.handleClose();
+        location.reload();
       }
     );
   }
@@ -63,9 +64,9 @@ class profileOptions extends React.Component {
             onClick={this.handleClick}
           />
         ) : (
-          <Avatar onClick={this.handleClick}>
-            {name ? name.charAt(0) : null}
-          </Avatar>
+          <Avatar src={'https://res.cloudinary.com/exabook/image/upload/v1533390048/nophoto_profile_xucgsa.jpg'}
+                  onClick={this.handleClick}/>
+
         )}
 
         <Menu

@@ -16,7 +16,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { updateLikes, updateRates } from "../../../../actions/marketActions";
+import { updateLikes, updateRates, addComment } from "../../../../actions/marketActions";
+import Badge from "@material-ui/core/es/Badge/Badge";
+import Comment from "./Comment";
 
 const styles = theme => ({
     iconButton: {
@@ -47,9 +49,53 @@ class Footer extends Component{
             comments: false,
             descriptionOpened: false,
             liked: this.props.liked,
-            averageRating: 'Rated'
+            averageRating: '',
+            text: ''
         }
     }
+    componentDidMount(){
+      let averageRate = 0;
+      if(this.state.rate) {
+        Object.keys(this.state.rate).forEach((key) => {
+          averageRate += this.state.rate[key]
+        });
+        averageRate = averageRate / Object.keys(this.state.rate).length;
+        this.setState({averageRating: averageRate + '★/5★'});
+      }
+      else {
+        this.setState({averageRating: 'Unrated'});
+      }
+    }
+
+    handleChange = (e) => {
+        this.setState({
+         [e.target.id]: e.target.value
+        });
+    };
+
+    createComment = () => {
+      if(!/^\s*$/.test(this.state.text)) {
+        let lastComments = this.props.comments;
+        let name;
+        if (this.props.User.method === 'google')
+          name = this.props.User.google.name;
+        else if (this.props.User.method === 'facebook')
+          name = this.props.User.facebook.name;
+        else if (this.props.User.method === 'local')
+          name = this.props.User.local.name;
+        const comment = {
+          text: this.state.text,
+          name: name,
+          avatar: this.props.User.avatar,
+          user: this.props.currentUser,
+          likes: [],
+        };
+        lastComments.push(comment);
+        const comments = {_id: this.props._id, comments: lastComments};
+        this.props.addComment(comments);
+        this.setState({text: ''});
+      }
+    };
 
     handleLikeClick = () => {
         let userLikes = this.props.liked;
@@ -80,28 +126,24 @@ class Footer extends Component{
             }
         };
         this.props.updateRates(object);
-        this.setState({ anchorEl: null , rate: this.props.rating });
-    };
-
-    /*getPostsRating = () => {
         let averageRate = 0;
-        Object.keys(this.state.rate).forEach( (key) => { averageRate += this.state.rate[key]});
-        averageRate = averageRate / Object.keys(this.state.rate).length;
-        this.setState({averageRating: averageRate + '★/5★'});
-    };*/
+        let rating = { ...this.state.rate, [this.props.currentUser]: rate};
+        Object.keys(rating).forEach((key) => {
+            averageRate += rating[key];
+        });
+        averageRate = averageRate / Object.keys(rating).length;
+        this.setState({
+          anchorEl: null,
+          rate: rating,
+          averageRating: averageRate + '★/5★'});
+    };
 
     handleRateClose = () => {
         this.setState({ anchorEl: null });
     };
 
     handleCommentButton = () => {
-        this.setState(() => {
-                if (this.state.comments) {
-                    return {comments: false}
-                }
-                return {comments: true}
-            }
-        );
+        this.setState({comments: !this.state.comments});
     };
 
     handleDescriptionButton = () => {
@@ -113,6 +155,7 @@ class Footer extends Component{
             }
         );
     };
+
     render(){
         const { classes } = this.props;
         return(
@@ -128,11 +171,11 @@ class Footer extends Component{
                         aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                         aria-haspopup="true"
                       >
-                         { this.state.rate === undefined ? 'Unrated' : this.state.averageRating }
+                         { this.state.averageRating }
                       </Button>
                       :
                       <Button disabled={true}>
-                        { this.state.rate === undefined ? 'Unrated' : this.state.averageRating }
+                        { this.state.averageRating }
                       </Button>
                     }
                     <Menu
@@ -149,14 +192,16 @@ class Footer extends Component{
                     </Menu>
                     <IconButton
                         className={classes.iconButton}
-                        aria-label="Add to favorites"
+                        aria-label="Like"
                         onClick={this.handleLikeClick}
                     >
-                        {this.state.liked.indexOf(this.props.currentUser) === -1 ? <FavoriteIcon/> : <FavoriteIcon color={'secondary'}/>}
+                      {this.state.liked.indexOf(this.props.currentUser) === -1
+                        ? <Badge badgeContent={this.props.liked.length} color={"default"} ><FavoriteIcon/></Badge>
+                        : <Badge badgeContent={this.props.liked.length} color={"secondary"} ><FavoriteIcon color={'secondary'}/></Badge>}
                     </IconButton>
-                    <IconButton aria-label="Share">
+                    {/*<IconButton aria-label="Share">
                         <ShareIcon/>
-                    </IconButton>
+                    </IconButton>*/}
                     <IconButton
                           className={classnames(classes.expand, {
                             [classes.expandOpen]: this.state.descriptionOpened,
@@ -171,18 +216,25 @@ class Footer extends Component{
                 <Collapse in={this.state.comments} timeout="auto" unmountOnExit>
                     <div className={classes.comments}>
                         <Input
+                            id='text'
+                            value={this.state.text}
                             autoFocus={true}
                             multiline={true}
                             style = {{width: 330}}
+                            onChange={(e) => this.handleChange(e)}
                         />
-                        <IconButton>
+                        <IconButton onClick={this.createComment}>
                             <Icon>send</Icon>
                         </IconButton>
-                    </div>
-                    <div className={classes.comments}>
-                        <Typography>
-                            Comments
-                        </Typography>
+                      <div>
+                        {this.props.comments.map( (comment) => <Comment
+                          key={comment._id}
+                          comment={comment}
+                          postCreator={this.props.postCreator}
+                          comments={this.props.comments}
+                          _id={this.props._id}/>
+                        ).reverse()}
+                      </div>
                     </div>
                 </Collapse>
                 <Collapse in={this.state.descriptionOpened} timeout="auto" unmountOnExit>
@@ -201,17 +253,21 @@ Footer.propTypes = {
     liked: PropTypes.array.isRequired,
     updateLikes: PropTypes.func.isRequired,
     updateRates: PropTypes.func.isRequired,
+    addComment: PropTypes.func.isRequired,
     _id: PropTypes.string.isRequired,
     disableComments: PropTypes.bool.isRequired,
     currentUser: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
     postCreator: PropTypes.string,
-    rating: PropTypes.object
+    User: PropTypes.object.isRequired,
+    rating: PropTypes.object,
+    comments: PropTypes.array
 };
 
 const mapStateToProps = state => ({
-  market: state.market
+  market: state.market,
+  auth: state.auth
 });
 
-export default connect( mapStateToProps, { updateLikes, updateRates })(withStyles(styles)(Footer));
+export default connect( mapStateToProps, { updateLikes, updateRates, addComment })(withStyles(styles)(Footer));
 
