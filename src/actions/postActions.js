@@ -5,10 +5,11 @@ import {
     DELETE_POST,
     GET_POST,
     GET_FEED,
-    FEED_LOADING
+    FEED_LOADING,
+    EDIT_POST
 } from './types';
 
-//Add post
+//ADD POST
 export const addPost = postData => dispatch => {
   axios
     .post('http://localhost:3001/posts/', postData)
@@ -19,7 +20,19 @@ export const addPost = postData => dispatch => {
   );
 };
 
-//Get feed
+export const getPost = (id) => dispatch => {
+  axios
+    .get(`http://localhost:3001/posts/${id}`)
+    .then(res => 
+      dispatch({
+        type: GET_POST,
+        payload: res.data,
+        
+      })
+    )
+};
+
+//GET FEED
 export const getFeed = () => dispatch => {
   dispatch(setFeedLoading());
   console.log('suveike get feed')
@@ -37,14 +50,25 @@ export const getFeed = () => dispatch => {
 }
 
 //DELETE POST
-export const deletePost = (id, idas) => dispatch => {
-  console.log('daejo');
+export const deletePost = (id) => dispatch => {
   axios
-    .delete(`http://localhost:3001/posts/${id}/${idas}/`)
+    .get(`http://localhost:3001/posts/delete/${id}/`)
     .then(res => 
       dispatch({
         type: DELETE_POST,
-        payload: idas
+        payload: id
+      })
+    );
+};
+
+//EDIT POST
+export const editPost = (id) => dispatch => {
+  axios
+    .post(`http://localhost:3001/posts/edit/${id}/`)
+    .then(res => 
+      dispatch({
+        type: EDIT_POST,
+        payload: id
       })
     );
 };

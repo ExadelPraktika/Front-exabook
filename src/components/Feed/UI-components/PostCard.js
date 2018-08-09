@@ -23,8 +23,17 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { deletePost } from '../../../actions/postActions';
 import { connect } from 'react-redux';
-
-
+import Button from '@material-ui/core/Button';
+import Moment from 'react-moment';
+import EditPostDialog from './EditPostDialog';
+import { getPost } from '../../../actions/postActions';
+import { editPost } from '../../../actions/postActions';
+import EditContainer from '../../../hoc/Edit';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 
 
 const styles = theme => ({
@@ -65,8 +74,27 @@ class PostCard extends Component {
       expanded: false,
       anchorEl: null,
       open: false,
+      editOpen: false,
+      showEditDialog: false,
+      post: {},
     };
+
+   
+
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    this.handleEditClick = this.handleEditClick.bind(this);
+  }
+
+  
+
+  handleEditClick = () => {
+  
+    this.setState({
+      showEditDialog: !this.state.showEditDialog,
+
+    });
+    console.log('click')
+
   }
 
   handlePopperClick = event => {
@@ -77,15 +105,17 @@ class PostCard extends Component {
     }));
   };
 
-  handleDeleteClick = (id, idas) => {
-    console.log('clicked', id, idas);
-    this.props.deletePost(id, idas);
+  handleDeleteClick = (id) => {
+    this.props.deletePost(id);
   }
 
-  // handleDeleteClick(id) {
-  //   console.log('clicked', id)
-  //   this.props.deletePost(id)
-  // }
+  handleEditClose = () => {
+    this.setState({ editOpen: false });
+  };
+
+  handleEditOpen = () => {
+    this.setState({ editOpen: true });
+  };
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
@@ -116,6 +146,9 @@ class PostCard extends Component {
                 {creatorName === undefined ? null : creatorName[0].toUpperCase()}
               </Avatar>
             }
+            
+            title={creatorName}
+            subheader={<Moment fromNow>{post.datePosted}</Moment>}
             action={
               <IconButton aria-describedby={id} onClick={this.handlePopperClick}>
                 <MoreVertIcon />
@@ -128,26 +161,32 @@ class PostCard extends Component {
                       anchorEl={anchorEl}
                       open={Boolean(anchorEl)}
                       onClose={this.handleClose}
-                      
                     >
-                      <MenuItem onClick={this.handleClose}>Edit Post</MenuItem>
-                      <MenuItem onClick={this.handleDeleteClick(this.props.auth.user._id, post._id)}>Delete Post</MenuItem>
-                      <MenuItem onClick={this.handleClose}>Disable Sharing</MenuItem>
-                      <MenuItem onClick={this.handleClose}>Disable Comments</MenuItem>
+                      <MenuItem onClick={() => this.handleEditClick()}>Edit Post</MenuItem>
+                      
+                      
+                       {/* <EditPostDialog 
+                        show={this.state.showEditDialog}
+                        handleClose={() => this.handleEditClick()}
+                        value={this.props.post}
+                      /> */}
+
+
+                      <MenuItem onClick={() => this.handleDeleteClick(post._id)}>Delete Post</MenuItem>
+                      <MenuItem >Disable Sharing</MenuItem>
+                      <MenuItem >Disable Comments</MenuItem>
                     </Menu>
-                      {/* <Paper>
-                        <Typography  className={classes.typography}>The content of the Popper.</Typography>
-                      </Paper> */}
+
+                  
                       </Paper>
                     </Fade>
                     )}
+
+                    
                   </Popper>
               </IconButton>
-
               
-            }
-            title={creatorName}
-            subheader={this.props.post.datePosted}
+          }
           />
           <CardMedia
             className={classes.media}
@@ -155,6 +194,35 @@ class PostCard extends Component {
             title="Contemplative Reptile"
           />
           <CardContent>
+          <Dialog
+                          open={this.state.showEditDialog}
+                          onClose={this.handleEditClose}
+                        >
+                        <DialogTitle id="form-dialog-title">Edit Post</DialogTitle>
+                    
+                        <DialogContent>
+                          <TextField
+                            //className={classes.addPostTextBar}
+                            autoFocus
+                            name="postBody"
+                            value={post.postBody}
+                            //onChange={this.handleChange}
+                            margin="normal"
+                            multiline
+                            rowsMax="4"
+                            //label="What's new with you?"
+                          />
+                        </DialogContent>
+
+                        <DialogActions>
+                            <Button color="primary" onClick={() =>this.handleEditClose()}>
+                              Cancel
+                            </Button>
+                            <Button color="primary">
+                              Update
+                            </Button>
+                        </DialogActions>
+      </Dialog>       
             <Typography component="p">
              {this.props.post.postBody}
             </Typography>
@@ -166,6 +234,13 @@ class PostCard extends Component {
             <IconButton aria-label="Share">
               <ShareIcon />
             </IconButton>
+            <Button
+              onClick={() => this.handleEditClick2(post._id) }
+            >
+              Edit
+            </Button>
+            <EditPostDialog show={this.state.showEditDialog} handleClose={this.handleEditClick2}/>
+
             <IconButton
               className={classnames(classes.expand, {
                 [classes.expandOpen]: this.state.expanded,
@@ -191,11 +266,17 @@ class PostCard extends Component {
 PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
   deletePost: PropTypes.func.isRequired,
+  getPost: PropTypes.func.isRequired,
+  editPost: PropTypes.func.isRequired
+  //post: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  //post: state.post
 });
 
 //export default withStyles(styles)(PostCard);
-export default connect(mapStateToProps, { deletePost })(withStyles(styles)(PostCard));
+export default connect(mapStateToProps, { deletePost, getPost, editPost })(withStyles(styles)(PostCard));
+
+
