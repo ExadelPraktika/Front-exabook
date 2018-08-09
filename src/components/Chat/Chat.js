@@ -11,6 +11,8 @@ import { Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import UserAvatar from "react-user-avatar";
+import { getConversations, sendReply, newConversation } from '../../actions/chatActions'
+import { ECANCELED } from "constants";
 
 var uniqid = require("uniqid");
 
@@ -81,37 +83,48 @@ class Chat extends React.Component {
       messages: []
     };
 
-    this.socket = io("localhost:3001");
+    //this.socket = io("localhost:3001");
 
-    this.socket.on("RECEIVE_MESSAGE", function(data) {
-      addMessage(data);
-    });
+ //   this.socket.on("output", function(data) {
+   //   addMessage(data);
+   // });
 
     const addMessage = data => {
-      console.log(data);
+      //console.log(data);
+      
       this.setState({ messages: [...this.state.messages, data] });
       console.log(this.state.messages);
     };
 
     this.sendMessage = ev => {
       ev.preventDefault();
-      this.socket.emit("SEND_MESSAGE", {
+      //this.socket.emit("input", {
+       // author: this.state.username,
+       // message: this.state.message
+      //});
+      /*this.props.newConversation({
         author: this.state.username,
         message: this.state.message
-      });
+      });*/
+      const newMsg = {
+        author: this.state.username,
+        message: this.state.message
+      }
+
+      this.props.sendReply(newMsg);
       this.setState({ message: "" });
     };
 
-    this.onKeyDown = ev => {
+   /* this.onKeyDown = ev => {
       if (ev.keyCode === 13 && this.validateForm()) {
         ev.preventDefault();
-        this.socket.emit("SEND_MESSAGE", {
+        this.socket.emit("input", {
           author: this.state.username,
           message: this.state.message
         });
         this.setState({ message: "" });
       }
-    };
+    };*/
   }
 
   validateForm() {
@@ -149,6 +162,7 @@ class Chat extends React.Component {
               <hr />
               <div className={classes.messagesContainer} id="autoScroll">
                 {this.state.messages.map(message => {
+                  console.log();
                   return (
                     <div
                       key={uniqid()}
@@ -158,14 +172,15 @@ class Chat extends React.Component {
                           : classes.messagesThem
                       }
                     >
-                      {message.author === nick ? null : (
+                      {/*{this.state.messages.author === nick ? null : (
                         <UserAvatar
                           size="36"
                           className={classes.avatar}
-                          name={message.author}
+                          name={this.state.messages.author}
                           src=""
                         />
-                      )}
+                      )}*/}
+                      
                       <Paper
                         className={
                           message.author === nick
@@ -176,14 +191,15 @@ class Chat extends React.Component {
                         <Grid container>
                           <Grid item xs zeroMinWidth>
                             <Typography style={{ color: "White" }}>
-                              {message.message}
+                              {this.props.getConversations({})}
+                              
                             </Typography>
                           </Grid>
                         </Grid>
                       </Paper>
                     </div>
-                  );
-                })}
+                    );
+                  })}
               </div>
             </div>
             <div className="card-footer">
@@ -220,11 +236,14 @@ class Chat extends React.Component {
 
 Chat.propTypes = {
   classes: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  getConversations: PropTypes.func.isRequired,
+  sendReply: PropTypes.func.isRequired,
+  newConversation: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Chat));
+export default connect(mapStateToProps, { getConversations, sendReply, newConversation })(withStyles(styles)(Chat));
