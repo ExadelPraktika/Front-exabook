@@ -17,6 +17,7 @@ import Paper from "@material-ui/core/es/Paper/Paper";
 import Menu from "@material-ui/core/es/Menu/Menu";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import { deletePost, updateComments } from "../../../../actions/marketActions";
+import Badge from "@material-ui/core/es/Badge/Badge";
 
 const styles = {
     card: {
@@ -35,9 +36,15 @@ class Poster extends Component {
       this.state = {
         anchorEl: null,
         open: false,
-        disableComments: this.props.post.disableComments
+        disableComments: this.props.post.disableComments,
+        averageRating: '0'
       };
     }
+
+    componentDidMount(){
+      this.getUserMarketRating();
+    }
+
     handlePopperClick = event => {
       const { currentTarget } = event;
       this.setState(state => ({
@@ -47,6 +54,7 @@ class Poster extends Component {
     };
 
     handleDelete = (userId, postId) => {
+
       this.props.deletePost(userId, postId);
     };
 
@@ -57,6 +65,13 @@ class Poster extends Component {
       };
       this.props.updateComments(object);
       this.setState({ disableComments: !this.state.disableComments})
+    };
+
+    getUserMarketRating = () => {
+      let averageRating = 0;
+      this.props.auth.user.marketRating.forEach((rate) => {averageRating += rate});
+      averageRating /= this.props.auth.user.marketRating.length;
+      this.setState({ averageRating: averageRating.toFixed(1)});
     };
 
     render() {
@@ -72,7 +87,8 @@ class Poster extends Component {
             <div>
                 <Card style={styles.card}>
                     <CardHeader
-                        avatar={
+                      avatar={this.props.auth.user.marketRating.length !== 0 ?
+                        <Badge badgeContent={this.state.averageRating} color={'primary'}>
                           <Avatar
                             style={styles.avatar}
                             src={this.props.post.creator.avatar
@@ -80,7 +96,16 @@ class Poster extends Component {
                               : "https://res.cloudinary.com/exabook/image/upload/v1533390048/nophoto_profile_xucgsa.jpg"}
                           >
                           </Avatar>
-                        }
+                        </Badge>
+                        :
+                        <Avatar
+                          style={styles.avatar}
+                          src={this.props.post.creator.avatar
+                            ? this.props.post.creator.avatar
+                            : "https://res.cloudinary.com/exabook/image/upload/v1533390048/nophoto_profile_xucgsa.jpg"}
+                        >
+                        </Avatar>
+                      }
                         action={
                           <IconButton onClick={this.handlePopperClick}>
                             <MoreVertIcon />
