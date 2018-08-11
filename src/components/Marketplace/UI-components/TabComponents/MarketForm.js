@@ -51,7 +51,6 @@ class MarketForm extends Component {
             location: this.state.location
         };
         this.props.createPost(newPost);
-        this.props.getMarketPosts();
         this.setState({
             title: '',
             category: '',

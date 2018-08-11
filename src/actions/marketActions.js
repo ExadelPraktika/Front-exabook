@@ -80,10 +80,10 @@ export const updateRates = postData => dispatch => {
 };
 
 // Get users market
-export const getUserPosts = (id) => dispatch => {
+export const getUserPosts = postData => dispatch => {
   console.log('got user posts');
   axios
-    .get(`http://localhost:3001/marketplace/my/${id}`)
+    .post(`http://localhost:3001/marketplace/myPosts`, postData)
     .then(res =>
       dispatch({
         type: GET_USER_POSTS,
@@ -97,11 +97,13 @@ export const createPost = postData => dispatch => {
   console.log('created a new post');
   axios
     .post('http://localhost:3001/marketplace/', postData)
-    .then(res =>
+    .then(res => {
       dispatch({
         type: CREATE_POST,
         payload: res.data
-      })
+      });
+      dispatch(getMarketPosts());
+    }
     );
 };
 
@@ -148,7 +150,7 @@ export const deleteComment = postData => dispatch => {
 export const deletePost = (userId, postId) => dispatch => {
   console.log('deleting post');
   axios
-    .delete(`http://localhost:3001/marketplace/${userId}/${postId}`)
+    .delete(`http://localhost:3001/marketplace/delete/${postId}`, {data: { userId: userId }})
     .then(res =>
       dispatch({
         type: DELETE_MARKET_POST,

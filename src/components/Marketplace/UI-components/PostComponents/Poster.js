@@ -54,7 +54,6 @@ class Poster extends Component {
     };
 
     handleDelete = (userId, postId) => {
-
       this.props.deletePost(userId, postId);
     };
 
