@@ -128,7 +128,7 @@ class Chat extends React.Component {
   }
 
   validateForm() {
-    return this.state.message.length > 0;
+    return this.state.message != '';
   }
   componentDidMount() {
     var objDiv = document.getElementById("autoScroll");

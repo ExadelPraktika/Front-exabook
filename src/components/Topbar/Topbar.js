@@ -23,6 +23,9 @@ const styles = {
     home: {
         marginLeft: 60,
         marginRight: 250
+    },
+    topbar: {
+        position: 'fixed',
     }
 };
 
@@ -31,7 +34,7 @@ class TopBar extends Component {
       const {classes} = this.props;
       return (
         <div className={classes.root}>
-          <AppBar position="static">
+          <AppBar  style={styles.topbar}>
             <Toolbar>
               <Button color="inherit" className={classes.home} component={Link} to="/dashboard">Home</Button>
               <Button color="inherit" className={classes.button} component={Link} to="/events">Events</Button>

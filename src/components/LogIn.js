@@ -14,17 +14,33 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormGroup from '@material-ui/core/FormGroup';
 import PropTypes from 'prop-types';
 import { setCurrent, logoutUser } from '../actions/authActions'
+import { Grid } from "../../node_modules/@material-ui/core";
 
 const styles = {
   card: {
     minWidth: 275,
-    maxWidth: 350,
-    textAlign: "center"
-  },
-  button: {
-    minWidth: 200,
     maxWidth: 300,
-    margin: 20
+    textAlign: "center",
+    margin: "auto",
+    display: "flex",
+    justifyContent: "center"
+  },
+  root: {
+    textAlign: "center",
+    margin: "auto"
+  },
+  google: {
+    display: "inline-block",
+    background: 'rgb(209, 72, 54)',
+    color: 'rgb(255, 255, 255)',
+    width: 'auto',
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderRadius: 1,
+    border: "1px solid transparent",
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontFamily: 'Roboto'
   }
 };
 
@@ -35,16 +51,12 @@ class LoginForm extends Component {
       name: '',
       email: '',
       password: '',
-      formErrors: { email: '', password: '' },
-      emailValid: false,
-      passwordValid: false,
-      formValid: false,
       errorText: ''
-
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleErr = this.handleErr.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,55 +66,38 @@ class LoginForm extends Component {
     }
   }
 
-  validateField(fieldName, value) {
-    let fieldValidationErrors = this.state.formErrors;
-    let emailValid = this.state.emailValid;
-    let passwordValid = this.state.passwordValid;
-
-    switch(fieldName) {
-      case 'email':
-        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        fieldValidationErrors.email = emailValid ? '' : 'Email is invalid';
-        break;
-      case 'password':
-        passwordValid = value.length >= 6;
-        fieldValidationErrors.password = passwordValid ? '': 'Password is too short';
-        break;
-      default:
-        break;
-    }
-
-    this.setState({
-      formErrors: fieldValidationErrors,
-      emailValid: emailValid,
-      passwordValid: passwordValid
-    }, this.validateForm);
-  }
-
   validateForm() {
-    this.setState({ formValid: this.state.emailValid && this.state.passwordValid });
+    var re = (/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+    return (
+      re.test(String(this.state.email).toLowerCase()) &&
+      this.state.password != ''
+    );
   }
 
-  handleChange(evt) {
-    const name = evt.target.name;
-    const value = evt.target.value;
-
-    this.setState({ [name]: value }, () => { this.validateField(name, value) });
+  handleChange(e) {
+    this.setState({
+      [e.target.id]: e.target.value
+    });
+  }
+  handleErr(){
+    this.setState({
+      errorText: 'Wrong Email or Password'
+    })
   }
 
-  handleSubmit(event) {
+  handleSubmit(err) {
     axios
       .post('http://localhost:3001/users/signin', {
         email: this.state.email,
-        password: this.state.password,
-        name: this.state.name
+        password: this.state.password
       })
       .then(response => {
         console.log(response)
         this.props.setCurrent(response.data.token)
-      }).catch(error => {
-        console.log(error.response.data);
+      }).catch(err => {
+        console.log(err.response.data);
       })
+      if(err) this.handleErr();
   }
   responseFacebook = (response) => {
     console.log(response);
@@ -139,50 +134,57 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <div>
+      <div style={styles.root}>
+              <h1>Exabook!</h1>
+        <Grid container spacing={8} style={styles.card}>
+          <Grid item xs>
+            <h2>Login</h2>
+          </Grid>
+          <Grid item xs>
         <Card className="login-card" style={styles.card}>
           <CardContent>
             <FormGroup>
-              <FormLabel>Login</FormLabel>
               <FormControl>
                 <InputLabel>Email</InputLabel>
                 <Input 
-                  name="email"
+                  id="email"
+                  value={this.state.email}
                   onChange={this.handleChange}
                 />
-                <FormHelperText error id="name-helper-text">{this.state.formErrors.email}</FormHelperText>
               </FormControl>
 
               <FormControl> 
               <InputLabel>Password</InputLabel>
-
               <Input 
-                name="password"
-                placeholder="Password"
+                id="password"
+                value={this.state.password}
                 onChange={this.handleChange}
                 type="password"  
               />
-              <FormHelperText error id="name-helper-text">{this.state.formErrors.password}</FormHelperText>
               </FormControl>
-              <Input 
-                  name="name"
-                  onChange={this.handleChange}
-                />
+              <FormHelperText error id="login-helper-text">
+                      {this.state.errorText}
+                    </FormHelperText>
+                <br />
+                <br />
               <Button 
-                style={styles.button}
-                variant="contained"
-                onClick={this.handleSubmit}
+                disabled={!this.validateForm()}
                 type="submit"
-                disabled={!this.state.formValid}
+                onClick={this.handleSubmit}
+                variant="contained"
+                color="secondary"
               >
                 Login
               </Button>
+              <br />
               <GoogleLogin
                 clientId="890644813294-bvuq6cf7lsilohneqvov28oi60sfdmig.apps.googleusercontent.com"
                 buttonText="LOGIN WITH GOOGLE"
                 onSuccess={response => this.responseGoogle(response)}
                 onFailure={response => this.responseGoogle(response)}
+                style={styles.google}
               />
+              <br />
               <FacebookLogin
                 appId="485850475180066"
                 autoLoad={false}
@@ -190,13 +192,11 @@ class LoginForm extends Component {
                 //onClick={componentClicked}
                 callback={response => this.responseFacebook(response)}
               />
-              <Button onClick={this.onLogoutClick.bind(this)} >
-                Logout
-            </Button>
           </FormGroup>
-
           </CardContent>
         </Card>
+        </Grid>
+        </Grid>
       </div>
     );
   }

@@ -14,13 +14,13 @@ const styles = theme => ({
     height: "100%",
     zIndex: 1,
     overflow: "hidden",
-    position: "relative",
+    position: "fixed",
     display: "flex"
   },
   drawerPaper: {
     position: "static",
     width: drawerWidth,
-    marginTop: 100
+    //marginTop: 100
   },
   avatar: {
     height: "50px"
@@ -37,9 +37,9 @@ class ClippedDrawer extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <div className={classes.test}>
+        {/*<div className={classes.test}>
           <p>UserName</p>
-        </div>
+        </div>*/}
         <div>
           <Drawer
             variant="permanent"
