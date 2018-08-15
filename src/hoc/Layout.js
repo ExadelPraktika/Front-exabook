@@ -8,24 +8,15 @@ class Layout extends Component {
 
   render() {
     const styles = {
-      topbar: {
-        position: 'fixed',
-        top: 0
-      },
-      root: {
-        height: '100vh',
-        minHeight: '100vh',
-        flexGrow: 1
-      },
       style: {
         marginTop: 60
       }
     };
     return (
-      <div style={styles.root}>
+      <div>
         <TopBar/>
-        <Grid container spacing={8} style={styles.style}>
-          <Grid item xs = {3}>
+        <Grid container  spacing={8} style={styles.style}>
+          <Grid item xs={3}>
             <SideBar />
           </Grid>
           <Grid item xs>

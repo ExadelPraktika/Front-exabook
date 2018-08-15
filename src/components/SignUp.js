@@ -16,6 +16,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import { Grid } from "../../node_modules/@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
+import { Link } from "react-router-dom";
 
 const styles = {
   card: {
@@ -270,6 +271,17 @@ class SignUp extends Component {
                       callback={response => this.responseFacebook(response)}
                     />
                   </FormControl>
+                  <br />
+                  <FormControl>
+              <Button 
+                component={Link}
+                to="/"
+                variant="contained"
+                color="primary"
+              >
+                Login
+              </Button>
+              </FormControl>
                 </FormGroup>
               </CardContent>
             </Card>

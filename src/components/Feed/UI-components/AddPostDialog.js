@@ -17,7 +17,9 @@ import { connect } from 'react-redux';
 const styles = theme => ({
   button: {
     marginLeft: theme.spacing.unit * 5,
-    marginTop: theme.spacing.unit * 3
+    marginTop: theme.spacing.unit * 3,
+    backgroundColor: '#d6d6d6',
+    color: '#6d6d6d'
   },
   rightIcon: {
     marginLeft: theme.spacing.unit * 30,
@@ -77,7 +79,7 @@ class AddPost extends Component {
 
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={this.handleClickOpen} className={classes.button}>
+        <Button variant="contained"  onClick={this.handleClickOpen} className={classes.button}>
           <Avatar className={classes.orangeAvatar}>N</Avatar>
           What's new with you?
           <AddAPhoto className={classes.rightIcon} /> 

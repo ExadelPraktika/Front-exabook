@@ -49,7 +49,7 @@ class ClippedDrawer extends React.Component {
           >
             <Tab1 />
 
-            <Tab2 />
+            {/*<Tab2 />*/}
           </Drawer>
         </div>
       </div>

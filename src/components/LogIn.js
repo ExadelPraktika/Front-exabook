@@ -15,6 +15,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import PropTypes from 'prop-types';
 import { setCurrent, logoutUser } from '../actions/authActions'
 import { Grid } from "../../node_modules/@material-ui/core";
+import { Link } from "react-router-dom";
 
 const styles = {
   card: {
@@ -96,8 +97,9 @@ class LoginForm extends Component {
         this.props.setCurrent(response.data.token)
       }).catch(err => {
         console.log(err.response.data);
+        this.handleErr();
       })
-      if(err) this.handleErr();
+      
   }
   responseFacebook = (response) => {
     console.log(response);
@@ -192,6 +194,15 @@ class LoginForm extends Component {
                 //onClick={componentClicked}
                 callback={response => this.responseFacebook(response)}
               />
+              <br />
+              <Button 
+                component={Link}
+                to="/register"
+                variant="contained"
+                color="primary"
+              >
+                Signup
+              </Button>
           </FormGroup>
           </CardContent>
         </Card>
