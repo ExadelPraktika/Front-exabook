@@ -10,8 +10,12 @@ import { Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import UserAvatar from "react-user-avatar";
-import { getConversations, sendReply, newConversation } from '../../actions/chatActions'
-import { ECANCELED } from "constants";
+import {
+  getConversations,
+  sendReply,
+  newConversation
+} from "../../actions/chatActions";
+import IconButton from "@material-ui/core/IconButton";
 
 var uniqid = require("uniqid");
 
@@ -27,8 +31,11 @@ const styles = theme => ({
   },
   messagesContainer: {
     width: 300,
-    height: 250,
+    height: 450,
     overflowY: "auto"
+  },
+  inputContainer: {
+    display: "inline"
   },
   title: {
     textAlign: "center",
@@ -84,13 +91,13 @@ class Chat extends React.Component {
 
     //this.socket = io("localhost:3001");
 
- //   this.socket.on("output", function(data) {
-   //   addMessage(data);
-   // });
+    //   this.socket.on("output", function(data) {
+    //   addMessage(data);
+    // });
 
     const addMessage = data => {
       //console.log(data);
-      
+
       this.setState({ messages: [...this.state.messages, data] });
       console.log(this.state.messages);
     };
@@ -98,8 +105,8 @@ class Chat extends React.Component {
     this.sendMessage = ev => {
       ev.preventDefault();
       //this.socket.emit("input", {
-       // author: this.state.username,
-       // message: this.state.message
+      // author: this.state.username,
+      // message: this.state.message
       //});
       /*this.props.newConversation({
         author: this.state.username,
@@ -108,13 +115,13 @@ class Chat extends React.Component {
       const newMsg = {
         author: this.state.username,
         message: this.state.message
-      }
+      };
 
       this.props.sendReply(newMsg);
       this.setState({ message: "" });
     };
 
-   /* this.onKeyDown = ev => {
+    /* this.onKeyDown = ev => {
       if (ev.keyCode === 13 && this.validateForm()) {
         ev.preventDefault();
         this.socket.emit("input", {
@@ -127,7 +134,7 @@ class Chat extends React.Component {
   }
 
   validateForm() {
-    return this.state.message.length > 0;
+    return this.state.message != "";
   }
   componentDidMount() {
     var objDiv = document.getElementById("autoScroll");
@@ -179,7 +186,7 @@ class Chat extends React.Component {
                           src=""
                         />
                       )}*/}
-                      
+
                       <Paper
                         className={
                           message.author === nick
@@ -191,22 +198,23 @@ class Chat extends React.Component {
                           <Grid item xs zeroMinWidth>
                             <Typography style={{ color: "White" }}>
                               {this.props.getConversations({})}
-                              
                             </Typography>
                           </Grid>
                         </Grid>
                       </Paper>
                     </div>
-                    );
-                  })}
+                  );
+                })}
               </div>
             </div>
-            <div className="card-footer">
+            <hr />
+            <div className={classes.inputContainer}>
               <FormHelperText id="message-helper-text">Message</FormHelperText>
               <Input
                 id="message"
                 multiline
-                margin="none"
+                rowsMax="3"
+                style={{ width: 230 }}
                 value={this.state.message}
                 onChange={ev =>
                   this.setState({ message: ev.target.value, username: nick })
@@ -214,17 +222,18 @@ class Chat extends React.Component {
                 onKeyDown={this.onKeyDown}
               />
 
-              <Button
-                variant="contained"
+              <IconButton
+                variant="fab"
                 color="primary"
+                aria-label="Send"
+                // /mini
                 type="submit"
                 className={classes.button}
                 onClick={this.sendMessage}
                 disabled={!this.validateForm()}
               >
-                Send
                 <Icon className={classes.rightIcon}>send</Icon>
-              </Button>
+              </IconButton>
             </div>
           </div>
         </div>
@@ -242,7 +251,10 @@ Chat.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  auth: state.auth
 });
 
-export default connect(mapStateToProps, { getConversations, sendReply, newConversation })(withStyles(styles)(Chat));
+export default connect(
+  mapStateToProps,
+  { getConversations, sendReply, newConversation }
+)(withStyles(styles)(Chat));

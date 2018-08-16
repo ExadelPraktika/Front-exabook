@@ -67,6 +67,7 @@
     "redux-form-material-ui": "^4.3.4",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "socket.io-client": "^2.1.1",
     "styled-components": "^3.3.3",
     "uniqid": "^5.0.3"
   },

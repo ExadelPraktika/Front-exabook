@@ -40,7 +40,8 @@ import {
 const styles = theme => ({
   card: {
     width: 500,
-    margin: theme.spacing.unit * 5
+    margin: theme.spacing.unit * 5,
+    backgroundColor: '#e8e8e8'
   },
   media: {
     height: 0,

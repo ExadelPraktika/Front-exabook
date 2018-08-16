@@ -23,6 +23,7 @@ const styles = {
     card: {
         maxWidth: 400,
         margin: 20,
+        backgroundColor: '#e8e8e8'
     },
     avatar: {
       color: '#fff',
@@ -84,7 +85,7 @@ class Poster extends Component {
             creatorName = this.props.post.creator.local.name;
 
         return (
-            <div>
+            <div >
                 <Card style={styles.card}>
                     <CardHeader
                       avatar={(this.props.post.creator.marketRating !== undefined && this.props.post.creator.marketRating.length !== 0) ?

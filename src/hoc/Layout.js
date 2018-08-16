@@ -7,14 +7,16 @@ import Grid from '@material-ui/core/Grid';
 class Layout extends Component {
 
   render() {
-    const style = {
-
+    const styles = {
+      style: {
+        marginTop: 60
+      }
     };
     return (
       <div>
-        <TopBar />
-        <Grid container spacing={8} style={style}>
-          <Grid item xs = {3}>
+        <TopBar/>
+        <Grid container  spacing={8} style={styles.style}>
+          <Grid item xs={3}>
             <SideBar />
           </Grid>
           <Grid item xs>

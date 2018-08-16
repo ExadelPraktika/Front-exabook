@@ -37,7 +37,8 @@ const styles = theme => ({
     maxWidth: 420,
     minWidth: 330,
     float: "right",
-    margin: "1%"
+    margin: "1%",
+    backgroundColor: '#e8e8e8'
   },
   media: {
     height: 0,

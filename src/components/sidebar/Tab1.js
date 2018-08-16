@@ -11,6 +11,8 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import List from "@material-ui/core/List";
 import FriendContainer from "../FriendList/TabContainer";
+import Chat from '../Chat/Chat';
+
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper
@@ -19,12 +21,13 @@ const styles = theme => ({
     borderBottom: "1px solid #e8e8e8"
   },
   tabsIndicator: {
-    backgroundColor: "#1890ff"
+    backgroundColor: "#3f51b5"
   },
   tabRoot: {
     textTransform: "initial",
     minWidth: 72,
-    fontWeight: theme.typography.fontWeightRegular,
+    backgroundColor: "#d6d6d6",
+    fontWeight: theme.typography.fontWeightMedium,
     marginRight: "auto",
     fontFamily: [
       "-apple-system",
@@ -39,15 +42,15 @@ const styles = theme => ({
       '"Segoe UI Symbol"'
     ].join(","),
     "&:hover": {
-      color: "#40a9ff",
+      color: "#3f51b5",
       opacity: 1
     },
     "&$tabSelected": {
-      color: "#1890ff",
-      fontWeight: theme.typography.fontWeightMedium
+      color: "#3f51b5",
+      fontWeight: theme.typography.fontWeightMedium,
     },
     "&:focus": {
-      color: "#40a9ff"
+      color: "#3f51b5"
     }
   },
   tabSelected: {},
@@ -108,13 +111,13 @@ class Tab1 extends React.Component {
             <Tab
               disableRipple
               classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-              label="Groups"
+              label="Chat"
             />
 
           </Tabs>
         </AppBar>
         {this.state.value === 0 && <div><FriendContainer/></div>}
-        {this.state.value === 1 &&  <div />}
+        {this.state.value === 1 &&  <div><Chat /></div>}
       </div>
     );
   }

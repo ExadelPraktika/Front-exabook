@@ -9,13 +9,13 @@ import LocationOnIcon from '@material-ui/icons/Add';
 import AlertDialog from './AlertDialog'
 const styles = {
   root: {
-    width: 500,
-    marginTop: '2%',
-    marginBottom: '2%',
+    //width: 500,
+    marginTop: 5,
+    marginBottom: 15,
     textAlign: 'center',
     marginLeft: 'auto',
-    marginRight: 'auto'
-
+    marginRight: 'auto',
+    backgroundColor: '#d6d6d6'
   },
 };
 
@@ -42,7 +42,7 @@ class SimpleBottomNavigation extends React.Component {
       
         <BottomNavigationAction label="Upcoming events" onClick={this.props.action2}icon={<RestoreIcon />} />
         <BottomNavigationAction label="Events Calender" onClick={this.props.action} icon={<FavoriteIcon />} />
-        <AlertDialog  label="Add event"/> 
+        <AlertDialog label="Add event"/> 
       </BottomNavigation>
     );
   }
