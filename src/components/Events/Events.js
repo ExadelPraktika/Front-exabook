@@ -56,7 +56,7 @@ class Events extends Component {
       <div>
       
         <Grid container spacing={16} >
-        <Paper style={{marginBottom: 10, width: 1000, backgroundColor: '#d6d6d6'}}>
+        <Paper style={{marginBottom: 10, width: 1090, marginTop: 15, backgroundColor: '#d6d6d6'}}>
           <Grid item xs={12} style={{display: 'flex', justifyContent: 'center'}}>
           <div>
             <EventsMenu

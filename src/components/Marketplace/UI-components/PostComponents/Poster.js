@@ -18,11 +18,12 @@ import Menu from "@material-ui/core/es/Menu/Menu";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import { deletePost, updateComments } from "../../../../actions/marketActions";
 import Badge from "@material-ui/core/es/Badge/Badge";
+import Moment from "react-moment";
 
 const styles = {
     card: {
-        maxWidth: 400,
-        margin: 20,
+        maxWidth: 350,
+        margin: 10,
         backgroundColor: '#e8e8e8'
     },
     avatar: {
@@ -139,7 +140,7 @@ class Poster extends Component {
                           </IconButton>
                         }
                         title={creatorName}
-                        subheader={this.props.post.timePosted}
+                      subheader={<Moment fromNow>{this.props.post.timePosted}</Moment>}
                     />
                     <CardContent>
                         <Typography component="p" variant={'headline'}>

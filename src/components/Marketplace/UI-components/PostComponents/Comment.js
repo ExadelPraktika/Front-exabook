@@ -14,14 +14,13 @@ import { connect } from "react-redux";
 const styles = theme => ({
   root: {
     width: "100%",
-    maxWidth: 400,
-    minWidth: 300,
-    backgroundColor: theme.palette.background.paper,
+    maxWidth: 350,
+    minWidth: 250,
     wordBreak: "break-all",
     wordWrap: "break-word",
   },
   paper: {
-    width: 280,
+    width: 250,
     backgroundColor: theme.palette.background.paper,
     wordBreak: "break-all",
     wordWrap: "break-word"
@@ -145,7 +144,7 @@ class Comment extends Component {
             ? <Button
               size={'small'}
               color="secondary"
-              style={{marginLeft: 150}}
+              style={{marginLeft: 120}}
               onClick={this.deleteComment}
             >Delete</Button>
             : null}
