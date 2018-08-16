@@ -13,6 +13,7 @@ import {
   DELETE_MARKET_COMMENT,
   LIKE_MARKET_COMMENT
 } from './types';
+import {refreshUser} from "./authActions";
 
 // Get market
 export const getMarketPosts = () => dispatch => {
@@ -147,16 +148,16 @@ export const deleteComment = postData => dispatch => {
 };
 
 // Delete market post
-export const deletePost = (userId, postId) => dispatch => {
+export const deletePost = (userId, postId, refreshData) => dispatch => {
   console.log('deleting post');
   axios
     .delete(`http://localhost:3001/marketplace/delete/${postId}`, {data: { userId: userId }})
-    .then(res =>
+    .then(res => {
       dispatch({
         type: DELETE_MARKET_POST,
         payload: postId
-      })
-    );
+      });
+    });
 };
 
 

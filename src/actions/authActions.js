@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER } from './types';
+import {REFRESH_USER, SET_CURRENT_USER} from './types';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
@@ -33,6 +33,17 @@ export const addAvatar = (id, data) => dispatch => {
       dispatch(getEvents())
    })
   };
+
+/*export const refreshUser = postData => dispatch => {
+  axios
+    .post('http://localhost:3001/users/refresh', postData)
+    .then(res =>
+      dispatch({
+        type: REFRESH_USER,
+        payload: res.data
+      })
+    )
+};*/
 
 //Log user out
 export const logoutUser = () => dispatch => {

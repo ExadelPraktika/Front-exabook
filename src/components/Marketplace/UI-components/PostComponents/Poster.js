@@ -42,6 +42,7 @@ class Poster extends Component {
     }
 
     componentDidMount(){
+      if (this.props.post.creator.marketRating !== undefined && this.props.post.creator.marketRating.length !== 0)
       this.getUserMarketRating();
     }
 
@@ -67,10 +68,10 @@ class Poster extends Component {
     };
 
     getUserMarketRating = () => {
-      let averageRating = 0;
-      this.props.auth.user.marketRating.forEach((rate) => {averageRating += rate});
-      averageRating /= this.props.auth.user.marketRating.length;
-      this.setState({ averageRating: averageRating.toFixed(1)});
+        let averageRating = 0;
+        this.props.post.creator.marketRating.forEach((rate) => {averageRating += rate});
+        averageRating /= this.props.post.creator.marketRating.length;
+        this.setState({ averageRating: averageRating.toFixed(1)});
     };
 
     render() {
@@ -86,7 +87,7 @@ class Poster extends Component {
             <div>
                 <Card style={styles.card}>
                     <CardHeader
-                      avatar={this.props.auth.user.marketRating.length !== 0 ?
+                      avatar={(this.props.post.creator.marketRating !== undefined && this.props.post.creator.marketRating.length !== 0) ?
                         <Badge badgeContent={this.state.averageRating} color={'primary'}>
                           <Avatar
                             style={styles.avatar}
