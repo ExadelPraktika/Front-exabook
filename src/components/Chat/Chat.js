@@ -16,6 +16,7 @@ import {
   newConversation
 } from "../../actions/chatActions";
 import IconButton from "@material-ui/core/IconButton";
+import io from "socket.io-client";
 
 var uniqid = require("uniqid");
 
@@ -89,14 +90,14 @@ class Chat extends React.Component {
       messages: []
     };
 
-    //this.socket = io("localhost:3001");
+    this.socket = io("localhost:3001");
 
-    //   this.socket.on("output", function(data) {
-    //   addMessage(data);
-    // });
+       this.socket.on("RECEIVE_MESSAGE", function(data) {
+       addMessage(data);
+     });
 
     const addMessage = data => {
-      //console.log(data);
+      console.log(data);
 
       this.setState({ messages: [...this.state.messages, data] });
       console.log(this.state.messages);
@@ -104,33 +105,23 @@ class Chat extends React.Component {
 
     this.sendMessage = ev => {
       ev.preventDefault();
-      //this.socket.emit("input", {
-      // author: this.state.username,
-      // message: this.state.message
-      //});
-      /*this.props.newConversation({
-        author: this.state.username,
-        message: this.state.message
-      });*/
-      const newMsg = {
-        author: this.state.username,
-        message: this.state.message
-      };
-
-      this.props.sendReply(newMsg);
+      this.socket.emit("SEND_MESSAGE", {
+       author: this.state.username,
+       message: this.state.message
+      });
       this.setState({ message: "" });
     };
 
-    /* this.onKeyDown = ev => {
+     this.onKeyDown = ev => {
       if (ev.keyCode === 13 && this.validateForm()) {
         ev.preventDefault();
-        this.socket.emit("input", {
+        this.socket.emit("SEND_MESSAGE", {
           author: this.state.username,
           message: this.state.message
         });
         this.setState({ message: "" });
       }
-    };*/
+    };
   }
 
   validateForm() {
@@ -178,14 +169,14 @@ class Chat extends React.Component {
                           : classes.messagesThem
                       }
                     >
-                      {/*{this.state.messages.author === nick ? null : (
+                      {message.author === nick ? null : (
                         <UserAvatar
                           size="36"
                           className={classes.avatar}
-                          name={this.state.messages.author}
+                          name={message.author}
                           src=""
                         />
-                      )}*/}
+                      )}
 
                       <Paper
                         className={
@@ -197,7 +188,7 @@ class Chat extends React.Component {
                         <Grid container>
                           <Grid item xs zeroMinWidth>
                             <Typography style={{ color: "White" }}>
-                              {this.props.getConversations({})}
+                              {message.message}
                             </Typography>
                           </Grid>
                         </Grid>
