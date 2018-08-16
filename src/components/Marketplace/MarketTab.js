@@ -10,8 +10,9 @@ import { getMarketPosts, getUserPosts } from '../../actions/marketActions';
 
 const styles = {
   root: {
-    width: 1000,
-    marginTop: 5,
+    width: 1090,
+    marginTop: 15,
+    marginLeft: 5,
     backgroundColor: '#d6d6d6'
   },
 };

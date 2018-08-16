@@ -220,7 +220,7 @@ class Footer extends Component{
                             value={this.state.text}
                             autoFocus={true}
                             multiline={true}
-                            style = {{width: 330}}
+                            style = {{width: 280}}
                             onChange={(e) => this.handleChange(e)}
                         />
                         <IconButton onClick={this.createComment}>
