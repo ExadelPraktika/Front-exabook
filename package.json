@@ -27,6 +27,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "classnames": "latest",
     "cloudinary-react": "^1.0.6",
+    "constants": "0.0.2",
     "dateformat": "^3.0.3",
     "downshift": "^2.0.10",
     "extract-loader": "^2.0.1",

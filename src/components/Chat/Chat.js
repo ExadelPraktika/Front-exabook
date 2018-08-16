@@ -1,5 +1,4 @@
 import React from "react";
-import io from "socket.io-client";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import FormHelperText from "@material-ui/core/FormHelperText";

@@ -5,7 +5,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { addAvatar } from "../actions/authActions";
+import { addAvatar, logoutUser } from "../actions/authActions";
+import {Link} from "react-router-dom";
 class profileOptions extends React.Component {
   state = {
     anchorEl: null,
@@ -15,6 +16,11 @@ class profileOptions extends React.Component {
 
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleLogout = () => {
+    this.setState({ anchorEl: null });
+    this.props.logoutUser();
   };
 
   handleClose = () => {
@@ -79,7 +85,7 @@ class profileOptions extends React.Component {
             Upload avatar
           </MenuItem>
           <MenuItem onClick={this.handleClose}>My account</MenuItem>
-          <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+          <MenuItem onClick={this.handleLogout} component={Link} to="/" >Logout</MenuItem>
         </Menu>
       </div>
     );
@@ -93,5 +99,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { addAvatar }
+  { addAvatar, logoutUser }
 )(profileOptions);

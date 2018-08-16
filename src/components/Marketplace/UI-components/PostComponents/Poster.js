@@ -17,6 +17,7 @@ import Paper from "@material-ui/core/es/Paper/Paper";
 import Menu from "@material-ui/core/es/Menu/Menu";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import { deletePost, updateComments } from "../../../../actions/marketActions";
+import Badge from "@material-ui/core/es/Badge/Badge";
 
 const styles = {
     card: {
@@ -35,9 +36,16 @@ class Poster extends Component {
       this.state = {
         anchorEl: null,
         open: false,
-        disableComments: this.props.post.disableComments
+        disableComments: this.props.post.disableComments,
+        averageRating: '0'
       };
     }
+
+    componentDidMount(){
+      if (this.props.post.creator.marketRating !== undefined && this.props.post.creator.marketRating.length !== 0)
+      this.getUserMarketRating();
+    }
+
     handlePopperClick = event => {
       const { currentTarget } = event;
       this.setState(state => ({
@@ -59,6 +67,13 @@ class Poster extends Component {
       this.setState({ disableComments: !this.state.disableComments})
     };
 
+    getUserMarketRating = () => {
+        let averageRating = 0;
+        this.props.post.creator.marketRating.forEach((rate) => {averageRating += rate});
+        averageRating /= this.props.post.creator.marketRating.length;
+        this.setState({ averageRating: averageRating.toFixed(1)});
+    };
+
     render() {
         let creatorName;
         if(this.props.post.creator.method === 'google')
@@ -72,7 +87,8 @@ class Poster extends Component {
             <div>
                 <Card style={styles.card}>
                     <CardHeader
-                        avatar={
+                      avatar={(this.props.post.creator.marketRating !== undefined && this.props.post.creator.marketRating.length !== 0) ?
+                        <Badge badgeContent={this.state.averageRating} color={'primary'}>
                           <Avatar
                             style={styles.avatar}
                             src={this.props.post.creator.avatar
@@ -80,7 +96,16 @@ class Poster extends Component {
                               : "https://res.cloudinary.com/exabook/image/upload/v1533390048/nophoto_profile_xucgsa.jpg"}
                           >
                           </Avatar>
-                        }
+                        </Badge>
+                        :
+                        <Avatar
+                          style={styles.avatar}
+                          src={this.props.post.creator.avatar
+                            ? this.props.post.creator.avatar
+                            : "https://res.cloudinary.com/exabook/image/upload/v1533390048/nophoto_profile_xucgsa.jpg"}
+                        >
+                        </Avatar>
+                      }
                         action={
                           <IconButton onClick={this.handlePopperClick}>
                             <MoreVertIcon />
