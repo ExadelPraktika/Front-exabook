@@ -12,7 +12,6 @@ import Events from './Events/Events';
 import Layout from "../hoc/Layout";
 import Posts from './Feed/Posts';
 
-
 if(localStorage.jwtToken) {
   // Set auth token header auth
   setAuthToken(localStorage.jwtToken);

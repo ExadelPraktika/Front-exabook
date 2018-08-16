@@ -11,6 +11,27 @@ import EventFeed from './EventFeed';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AlertDialog from './UI-components/AlertDialog';
 import Calender from './EventsCalender/Calender'
+import io from 'socket.io-client';
+// var socket = io.connect('http://localhost:3001');
+
+
+
+// var socket = io.connect('http://localhost', {port: 3001});
+
+// socket.on('connect', function (data) {
+//     socket.emit('storeClientInfo', { customId:"000CustomIdHere0000" });
+// });
+// socket.emit('join', {email: 'vaflis'});
+
+// socket.on("new_msg", function(data) {
+//   alert(data.msg);
+//   console.log(data.msg)
+// })
+
+// window.addEventListener('scroll', function(event){
+//   //you may want to add some conditions first...
+//   socket.emit('chat message', 'content');
+// })
 class Events extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +45,7 @@ class Events extends Component {
   }
   componentDidMount() {
     this.props.getEvents();
+
   }
   handler() {
     console.log('clicked')

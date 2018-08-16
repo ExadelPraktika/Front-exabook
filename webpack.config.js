@@ -26,20 +26,14 @@ module.exports = {
           }
         ]
       },
-      {
-        test: /\.css$/,
+      { 
+        test: /\.css$/, 
         use: [
-               { loader: 'style-loader' },
-               { loader: 'css-loader' }
-             ],
-      }, {
-        test: /\.css$/,
-        loader: 'css-loader',
-        query: {
-          modules: true,
-          localIdentName: '[name]__[local]___[hash:base64:5]'
-        }
-      }
+          'style-loader',
+          { loader: 'css-loader', options: { modules: true, importLoaders: 1 } },
+          { loader: 'postcss-loader', options: { plugins: () => [...plugins] } },
+        ]
+      },
     ]
   },
   plugins: [
