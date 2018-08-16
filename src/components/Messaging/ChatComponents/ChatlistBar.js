@@ -24,7 +24,7 @@ class Chips extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-       {this.props.msg.chatList.map(friend =>  <ChatRoom  key={friend._id} friend={friend}/> )}   
+       {this.props.msg.chatList.map(friend =>  <ChatRoom  key={friend.email} friend={friend}/> )}   
       </div>
     );
   }
