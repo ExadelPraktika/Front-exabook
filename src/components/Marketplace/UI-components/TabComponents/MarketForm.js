@@ -6,6 +6,8 @@ import Input from "@material-ui/core/es/Input/Input";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/es/Button/Button";
+import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete';
+import renderFunc from "../PlacesAuto";
 
 const dateFormat = require('dateformat');
 
@@ -29,6 +31,12 @@ class MarketForm extends Component {
             location: ''
         }
     }
+
+  handleChange1 = address => {
+    this.setState({
+      location: address
+    });
+  };
 
     createMarketPost = () =>{
         let time = new Date();
@@ -110,13 +118,14 @@ class MarketForm extends Component {
                     />
                 </div>
                 <div>
-                   <Input
-                      name={'location'}
-                      placeholder={"Location"}
-                      style={styles.comments}
-                      value={this.state.location}
-                      onChange={(e) => {this.handleChange(e)}}
-                    />
+                  <PlacesAutocomplete
+                  value={this.state.location}
+                  onChange={this.handleChange1}
+                  style={styles.comments}
+                  placeholder={"Location"}
+                  >
+                    {renderFunc}
+                  </PlacesAutocomplete>
                 </div>
                 <div>
                     <Input

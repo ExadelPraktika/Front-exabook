@@ -73,7 +73,13 @@ class Poster extends Component {
                 <Card style={styles.card}>
                     <CardHeader
                         avatar={
-                          <Avatar style={styles.avatar}>{creatorName === undefined ? null : creatorName[0].toUpperCase()}</Avatar>
+                          <Avatar
+                            style={styles.avatar}
+                            src={this.props.post.creator.avatar
+                              ? this.props.post.creator.avatar
+                              : "https://res.cloudinary.com/exabook/image/upload/v1533390048/nophoto_profile_xucgsa.jpg"}
+                          >
+                          </Avatar>
                         }
                         action={
                           <IconButton onClick={this.handlePopperClick}>
@@ -132,6 +138,9 @@ class Poster extends Component {
                       _id={this.props.post._id}
                       currentUser={this.props.auth.user._id}
                       postCreator={this.props.post.creator._id}
+                      //for comments
+                      comments={this.props.post.comments}
+                      User={this.props.auth.user}
                     />
                 </Card>
             </div>

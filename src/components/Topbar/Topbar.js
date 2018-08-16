@@ -33,15 +33,14 @@ class TopBar extends Component {
         <div className={classes.root}>
           <AppBar position="static">
             <Toolbar>
-              <Button color="inherit" style={styles.home} component={Link} to="/dashboard">Home</Button>
-              <Button color="inherit" style={styles.button} component={Link} to="/events">Events</Button>
-              <Button color="inherit" style={styles.button}>Groups</Button>
-              <Button color="inherit" style={styles.button} component={Link} to="/marketplace">Market</Button>
-              <Button color="inherit" style={styles.button}>Map</Button>
-              <div className={classes.row}>
+              <Button color="inherit" className={classes.home} component={Link} to="/dashboard">Home</Button>
+              <Button color="inherit" className={classes.button} component={Link} to="/events">Events</Button>
+              <Button color="inherit" className={classes.button}>Groups</Button>
+              <Button color="inherit" className={classes.button} component={Link} to="/marketplace">Market</Button>
+              <Button color="inherit" className={classes.button}>Map</Button>
+              <div style={{marginLeft: 30}}>
                 <ProfileOptions className={classes.avatar} />
               </div>
-              <Button color="inherit">Logout</Button>
             </Toolbar>
           </AppBar>
         </div>
