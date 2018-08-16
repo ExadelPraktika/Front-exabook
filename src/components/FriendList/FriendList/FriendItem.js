@@ -16,6 +16,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Moment from 'react-moment';
 
 import { deleteFriend, sendFriendReq } from '../../../actions/friendActions'
+import { addtoChatArrray } from '../../../actions/messageActions'
+
 class FriendList extends Component {
   render() {
     return (
@@ -53,7 +55,7 @@ class FriendList extends Component {
           </Button>           <Button mini onClick={() => this.props.deleteFriend(this.props.userID, this.props.friend._id)} >
           <Clear color="secondary"/>
           </Button></div> ) : this.props.friend.status === 'accepted' ? <Button mini >
-          <Textsms color="primary"/>
+           <Textsms onClick={()=>this.props.addtoChatArrray(this.props.friend.friend)} color="primary" disabled={this}/>
           </Button> : null}
           {/* <Button mini >
           <Clear color="secondary"/>
@@ -75,8 +77,9 @@ FriendList.propTypes = {
 };
 
 const mapStateToProps = state => ({
+msg: state.msg
 });
 export default connect(
   mapStateToProps,
-  { deleteFriend, sendFriendReq }
+  { deleteFriend, sendFriendReq, addtoChatArrray }
 )(FriendList);

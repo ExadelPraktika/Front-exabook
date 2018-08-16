@@ -26,6 +26,7 @@ class Events extends Component {
   }
   componentDidMount() {
     this.props.getEvents();
+
   }
   handler() {
     console.log('clicked')
