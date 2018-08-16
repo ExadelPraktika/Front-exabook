@@ -51,7 +51,7 @@ const styles = theme => ({
 
 class NestedList extends React.Component {
   state = {
-    open: true,
+    open: false,
     open1: false,
     open2: false,
     open3: false

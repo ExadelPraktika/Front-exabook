@@ -7,14 +7,16 @@ import ChatList from '../components/Messaging/ChatComponents/ChatlistBar'
 class Layout extends Component {
 
   render() {
-    const style = {
-
+    const styles = {
+      style: {
+        marginTop: 60
+      }
     };
     return (
       <div>
-        <TopBar />
-        <Grid container spacing={8} style={style}>
-          <Grid item xs = {3}>
+        <TopBar/>
+        <Grid container  spacing={8} style={styles.style}>
+          <Grid item xs={3}>
             <SideBar />
           </Grid>
           <Grid item xs>

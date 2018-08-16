@@ -18,14 +18,14 @@ class Marketplace extends Component {
             marketContent = null;
         }
         else
-            marketContent = <MarketFeed marketFeed={marketFeed}/>;
+            marketContent = <MarketFeed marketFeed={marketFeed} />;
         return (
-            <div>
+            <Grid container spacing = {16}>
                 <MarketTab/>
-                    <Grid container spacing = {16}>
+                    <Grid container spacing = {8} >
                         {marketContent}
                     </Grid>
-            </div>
+            </Grid>
         )
   }
 }

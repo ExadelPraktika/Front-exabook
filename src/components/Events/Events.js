@@ -11,27 +11,8 @@ import EventFeed from './EventFeed';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AlertDialog from './UI-components/AlertDialog';
 import Calender from './EventsCalender/Calender'
-import io from 'socket.io-client';
-// var socket = io.connect('http://localhost:3001');
+import Paper from '@material-ui/core/Paper';
 
-
-
-// var socket = io.connect('http://localhost', {port: 3001});
-
-// socket.on('connect', function (data) {
-//     socket.emit('storeClientInfo', { customId:"000CustomIdHere0000" });
-// });
-// socket.emit('join', {email: 'vaflis'});
-
-// socket.on("new_msg", function(data) {
-//   alert(data.msg);
-//   console.log(data.msg)
-// })
-
-// window.addEventListener('scroll', function(event){
-//   //you may want to add some conditions first...
-//   socket.emit('chat message', 'content');
-// })
 class Events extends Component {
   constructor(props) {
     super(props);
@@ -70,27 +51,34 @@ class Events extends Component {
     if (events === null || loading) {
       eventContent = <Spinner />
     } else {
-      eventContent = <EventFeed events={events} />
+      eventContent = <EventFeed events={events}/>
     }
     return (
       <div>
-
-        <Grid container spacing={8} >
-          <Grid item xs={12}>
+      
+        <Grid container spacing={16} >
+        <Paper style={{marginBottom: 10, width: 1000, backgroundColor: '#d6d6d6'}}>
+          <Grid item xs={12} style={{display: 'flex', justifyContent: 'center'}}>
+          <div>
             <EventsMenu
               action={this.handler}
               action2={this.handler2} />
-            <Button variant="outlined" color="primary" className="upload-button" onClick={this.getmyevents.bind(this, this.props.auth.user._id)} >
+              </div>
+              <div style={{marginTop: 20}}>
+            <Button color="primary" className="upload-button" onClick={this.getmyevents.bind(this, this.props.auth.user._id)} >
               Get my events
         </Button>
-            <Button variant="outlined" color="primary" className="upload-button" onClick={() => this.props.getEvents()} >
+            <Button color="primary" className="upload-button" onClick={() => this.props.getEvents()} >
               Get All events
         </Button>
+        </div>
           </Grid>
+          </Paper>
           <Grid container spacing={8}>
             {!this.state.messageShown ? eventContent : calender}
           </Grid>
         </Grid>
+        
       </div>
     )
   }
