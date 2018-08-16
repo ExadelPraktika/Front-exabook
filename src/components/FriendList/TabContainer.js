@@ -35,7 +35,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { getPeopleList, getUserFriends } from '../../actions/friendActions'
 import FriendList from '../FriendList/FriendList/FriendList'
 import SearchFriends from './SearchList/SearchFriends'
-
+import Spinner from '../../utils/Spinner';
 const styles = theme => ({
   root: {
     maxWidth: 360,
@@ -51,7 +51,7 @@ const styles = theme => ({
 
 class NestedList extends React.Component {
   state = {
-    open: true,
+    open: false,
     open1: false,
     open2: false,
     open3: false
@@ -80,8 +80,11 @@ class NestedList extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { loading } = this.props.friends;
+   
 
     return (
+      !loading ? 
       <div className={classes.root}>
         <List
           component="nav"
@@ -103,30 +106,7 @@ class NestedList extends React.Component {
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
           {this.props.friends.friends.length > 0 ? <FriendList friends={this.props.friends.friends} userID={this.props.auth.user._id} /> : <p style={{ marginLeft: "30px" }}>friend list is empty</p>}
-            {/* <List
-              component="div"
-              disablePadding
-              style={{ maxHeight: "200px", overflowY: "scroll" }}
-            >
-              <ListItem button className={classes.nested}>
-                <Avatar
-                  style={{
-                    width: "30px",
-                    height: "30px"
-                  }}
-                >
-                  <FolderIcon />
-                </Avatar>
-                <Typography
-                  style={{ paddingLeft: "10px" }}
-                  component="span"
-                  color="inherit"
-                  noWrap={true}
-                >
-                  Rytis Cicinas
-                </Typography>
-              </ListItem>
-            </List> */}
+
           </Collapse>
           <ListItem button onClick={this.handleClick2}>
             <ListItemIcon>
@@ -163,8 +143,9 @@ class NestedList extends React.Component {
       
           </Collapse>
         </List>
-      </div>
+      </div> : <Spinner/>
     );
+    
   }
 }
 NestedList.propTypes = {

@@ -39,19 +39,16 @@ class MarketForm extends Component {
   };
 
     createMarketPost = () =>{
-        let time = new Date();
-        let fullTime = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, ") + (time.getHours() < 10 ? "0" + time.getHours() : time.getHours()) + ":" + (time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes());
         const newPost = {
             category: this.state.category,
             description: this.state.description,
             title: this.state.title,
-            timePosted: fullTime,
+            timePosted: Date.now,
             images: this.state.images,
             price: this.state.price,
             location: this.state.location
         };
         this.props.createPost(newPost);
-        this.props.getMarketPosts();
         this.setState({
             title: '',
             category: '',

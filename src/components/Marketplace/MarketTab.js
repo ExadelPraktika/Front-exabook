@@ -8,6 +8,15 @@ import SearchDialog from './UI-components/TabComponents/SearchDialog';
 import { connect } from 'react-redux'
 import { getMarketPosts, getUserPosts } from '../../actions/marketActions';
 
+const styles = {
+  root: {
+    width: 1090,
+    marginTop: 15,
+    marginLeft: 5,
+    backgroundColor: '#d6d6d6'
+  },
+};
+
 class CenteredTabs extends React.Component {
   constructor(props){
     super(props);
@@ -22,13 +31,14 @@ class CenteredTabs extends React.Component {
   };
 
   getUserposts = (id) => {
-    this.props.getUserPosts(id);
+    let object = { id: id };
+    this.props.getUserPosts(object);
   };
 
   render() {
     const { classes } = this.props;
     return (
-        <Paper style={{margin: 10, width: 1000}}>
+        <Paper style={styles.root}>
           <Tabs
             value={this.state.value}
             onChange={this.handleChange}

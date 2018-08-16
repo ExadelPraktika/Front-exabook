@@ -7,9 +7,11 @@ import errorReducer from './errorReducer';
 import { filterReducer } from '../components/Events/Filter/index';
 import { reducer as formReducer } from 'redux-form';
 import friendReducer from './friendReducer';
+import messagingReducer from './messagingReducer';
 
 export default combineReducers({
   auth: authReducer,
+  msg: messagingReducer,
   friends: friendReducer,
   errors: errorReducer,
   market: marketReducer,

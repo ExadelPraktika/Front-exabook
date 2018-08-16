@@ -6,8 +6,9 @@ import { withStyles } from "@material-ui/core/es/styles";
 
 const styles = theme => ({
     img: {
-        width: 400,
-        height: 225,
+        width: 350,
+        minHeight: 225,
+        maxHeight: 450
     },
 });
 

@@ -4,11 +4,13 @@ import {
   GET_PEOPLE,
   SEND_REQUEST,
   GET_FRIENDS,
-  DELETE_FRIEND
+  DELETE_FRIEND,
+  FRIEND_LOADING
 } from './types';
 
 // Get list of users, where user is not in a friend list
 export const getPeopleList = (id) => dispatch => {
+  dispatch(setLoading())
   axios
     .get(`http://localhost:3001/users/friends/search/${id}`)
     .then(res => 
@@ -21,6 +23,7 @@ export const getPeopleList = (id) => dispatch => {
 
 // Get user friend list accepted/pending
 export const getUserFriends = (id) => dispatch => {
+  dispatch(setLoading())
   axios
     .get(`http://localhost:3001/users/friends/${id}`)
     .then(res => 
@@ -50,4 +53,11 @@ export const deleteFriend = (id, id2) => dispatch => {
       dispatch(getUserFriends(id))
       dispatch(getPeopleList(id))}
     );
+};
+
+// Set loading state
+export const setLoading = () => {
+  return {
+    type: FRIEND_LOADING
+  };
 };
