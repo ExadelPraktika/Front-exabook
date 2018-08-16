@@ -30,7 +30,8 @@ class CenteredTabs extends React.Component {
   };
 
   getUserposts = (id) => {
-    this.props.getUserPosts(id);
+    let object = { id: id };
+    this.props.getUserPosts(object);
   };
 
   render() {

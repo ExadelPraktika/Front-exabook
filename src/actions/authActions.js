@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER } from './types';
+import {REFRESH_USER, SET_CURRENT_USER} from './types';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
@@ -25,14 +25,25 @@ export const setCurrentUser = (user) => {
 };
 
 export const addAvatar = (id, data) => dispatch => {
-  console.log('suveike')
+  console.log('suveike');
   axios
     .put(`http://localhost:3001/users/avatar/${id}`, data)
     .then(res => {
-      dispatch(setCurrentUser(res.data.user))
+      dispatch(setCurrentUser(res.data.user));
       dispatch(getEvents())
    })
   };
+
+/*export const refreshUser = postData => dispatch => {
+  axios
+    .post('http://localhost:3001/users/refresh', postData)
+    .then(res =>
+      dispatch({
+        type: REFRESH_USER,
+        payload: res.data
+      })
+    )
+};*/
 
 //Log user out
 export const logoutUser = () => dispatch => {
@@ -42,4 +53,4 @@ export const logoutUser = () => dispatch => {
   setAuthToken(false);
   //Set current user to {} which will also set isAuthenticated to false
   dispatch(setCurrentUser({}));
-}
+};
