@@ -148,7 +148,7 @@ export const deleteComment = postData => dispatch => {
 };
 
 // Delete market post
-export const deletePost = (userId, postId, refreshData) => dispatch => {
+export const deletePost = (userId, postId) => dispatch => {
   console.log('deleting post');
   axios
     .delete(`http://localhost:3001/marketplace/delete/${postId}`, {data: { userId: userId }})

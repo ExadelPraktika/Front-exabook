@@ -48,7 +48,7 @@ export const getuserEvents = (id) => dispatch => {
   console.log('suveike get user');
   dispatch(setEventLoading());
   axios
-    .get(`http://localhost:3001/events/my/${id}`)
+    .post(`http://localhost:3001/events/myEvents`, { id: id })
     .then(res => 
       dispatch({
         type: GET_USER_EVENTS,
@@ -60,7 +60,7 @@ export const getuserEvents = (id) => dispatch => {
 // Get single event
 export const getEvent = (id) => dispatch => {
   axios
-    .get(`http://localhost:3001/events/${id}`)
+    .post(`http://localhost:3001/events/getEvent`, { id: id })
     .then(res => 
       dispatch({
         type: GET_EVENT,
@@ -74,7 +74,7 @@ export const getEvent = (id) => dispatch => {
 export const deleteEvent = (id, idas) => dispatch => {
   console.log('daejo');
   axios
-    .delete(`http://localhost:3001/events/${id}/${idas}`)
+    .delete(`http://localhost:3001/events/${idas}`, {data: { id: id, idas: idas } })
     .then(res => 
       dispatch({
         type: DELETE_EVENT,
@@ -87,12 +87,12 @@ export const deleteEvent = (id, idas) => dispatch => {
 export const goingEvent = (id, idas, l) => dispatch => {
   if(!l){
   axios
-    .post(`http://localhost:3001/events/going/${id}/${idas}`)
+    .post(`http://localhost:3001/events/going/${idas}`, { idas: idas, id: id })
     .then(res => 
       dispatch(getEvents())
     );}else {
       axios
-    .post(`http://localhost:3001/events/going/${id}/${idas}`)
+    .post(`http://localhost:3001/events/going/${idas}`, { idas: idas, id: id })
     .then(res => 
       dispatch(getEvent(idas))
     )
@@ -102,12 +102,12 @@ export const goingEvent = (id, idas, l) => dispatch => {
 export const ungoingEvent = (id, idas, l) => dispatch => {
   if(!l){
     axios
-      .post(`http://localhost:3001/events/ungoing/${id}/${idas}`)
+      .post(`http://localhost:3001/events/ungoing/${idas}`, { idas: idas, id: id })
       .then(res => 
         dispatch(getEvents())
       );}else {
         axios
-      .post(`http://localhost:3001/events/ungoing/${id}/${idas}`)
+      .post(`http://localhost:3001/events/ungoing/${idas}`, { idas: idas, id: id })
       .then(res => 
         dispatch(getEvent(idas))
       )
@@ -142,7 +142,7 @@ export const deleteComment = (eventID, commentID) => dispatch => {
 
 export const addLike = (userID, eventID, commentID) => dispatch => {
   axios
-    .post(`http://localhost:3001/events/comments/like/${userID}/${eventID}/${commentID}`)
+    .post(`http://localhost:3001/events/comments/like/${eventID}/${commentID}`, { userID: userID, eventID: eventID, commentID: commentID })
     .then(res => 
       dispatch(getEvent(eventID))
       // dispatch({
@@ -154,7 +154,7 @@ export const addLike = (userID, eventID, commentID) => dispatch => {
 
 export const deleteLike = (userID, eventID, commentID) => dispatch => {
   axios
-    .post(`http://localhost:3001/events/comments/unlike/${userID}/${eventID}/${commentID}`)
+    .post(`http://localhost:3001/events/comments/unlike/${eventID}/${commentID}` , { userID: userID, eventID: eventID, commentID: commentID })
     .then(res => 
       dispatch(getEvent(eventID))
       // dispatch({
