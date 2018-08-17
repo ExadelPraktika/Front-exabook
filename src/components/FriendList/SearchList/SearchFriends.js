@@ -107,14 +107,14 @@ constructor(props){
           PopperProps={{
             disablePortal: true
           }}
-          style={{ height: "250", marginTop: "50px", zIndex: '3000', minWidth: '200px' }}
+          style={{ height: "250", marginTop: "50px", zIndex: '3000', width: '200px' }}
           onClose={this.handleTooltipClose}
           open={this.state.open1}
           disableFocusListener
           disableHoverListener
           disableTouchListener
           title={
-            list.length < 0 ? <div>no users to show</div> :
+            list.length == 0 ? <div style={{width: '200px', textAlign: 'center', fontSize: 15}}>no users to show</div> :
             <List
               style={{ maxHeight: "200px", overflowY: "scroll" }}
             >
