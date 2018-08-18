@@ -105,8 +105,11 @@ class NestedList extends React.Component {
             {this.state.open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-          {this.props.friends.friends.length > 0 ? <FriendList friends={this.props.friends.friends} userID={this.props.auth.user._id} /> : <p style={{ marginLeft: "30px" }}>friend list is empty</p>}
-
+          {this.props.friends.friends.length > 0
+            ?
+            <FriendList friends={this.props.friends.friends} userID={this.props.auth.user._id} />
+            :
+            <p style={{ marginLeft: "30px" }}>friend list is empty</p>}
           </Collapse>
           <ListItem button onClick={this.handleClick2}>
             <ListItemIcon>

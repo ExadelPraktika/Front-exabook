@@ -19,6 +19,7 @@ import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import { deletePost, updateComments } from "../../../../actions/marketActions";
 import Badge from "@material-ui/core/es/Badge/Badge";
 import Moment from "react-moment";
+import { addtoChatArrray } from "../../../../actions/messageActions";
 
 const styles = {
     card: {
@@ -67,6 +68,10 @@ class Poster extends Component {
       };
       this.props.updateComments(object);
       this.setState({ disableComments: !this.state.disableComments})
+    };
+
+    handleBuyItem = () => {
+      this.props.addtoChatArrray(this.props.post.creator);
     };
 
     getUserMarketRating = () => {
@@ -124,7 +129,7 @@ class Poster extends Component {
                                           ?
                                           <MenuItem onClick={this.handleDelete.bind(this, this.props.auth.user._id, this.props.post._id)}>Delete</MenuItem>
                                           :
-                                          <MenuItem onClick={this.handleClose}>Buy</MenuItem> }
+                                          <MenuItem onClick={this.handleBuyItem.bind(this)}>Buy</MenuItem> }
                                         {this.props.auth.user._id === this.props.post.creator._id
                                           ?
                                           <MenuItem onClick={this.handleDisableComments.bind(this)}>
@@ -177,9 +182,11 @@ class Poster extends Component {
 
 Poster.propTypes = {
   deletePost: PropTypes.func.isRequired,
-  updateComments: PropTypes.func.isRequired
+  updateComments: PropTypes.func.isRequired,
+  addtoChatArrray: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  msg: state.msg
 });
-export default connect(mapStateToProps, { deletePost, updateComments })(Poster);
+export default connect(mapStateToProps, { deletePost, updateComments, addtoChatArrray })(Poster);
