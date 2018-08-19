@@ -48,7 +48,7 @@ class FriendList extends Component {
           noWrap={true}
         >
           {this.props.friend.status === 'requested' ? this.props.friend.friend.name : this.props.friend.friend.name}
-          {this.props.friend.status === 'requested' ?           <Button mini  onClick={() => this.props.deleteFriend(this.props.userID, this.props.friend._id)}>
+          {this.props.friend.status === 'requested' ? <Button mini  onClick={() => this.props.deleteFriend(this.props.userID, this.props.friend._id)}>
           <Clear color="secondary"/>
           </Button> : this.props.friend.status === 'pending' ? (<div><Button mini onClick={() => this.props.sendFriendReq(this.props.userID, this.props.friend._id)}>
           <Done color="primary"/>

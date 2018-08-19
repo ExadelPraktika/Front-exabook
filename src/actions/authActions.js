@@ -34,16 +34,17 @@ export const addAvatar = (id, data) => dispatch => {
    })
   };
 
-/*export const refreshUser = postData => dispatch => {
+export const refreshUser = userId => dispatch => {
+  console.log('refreshing user');
   axios
-    .post('http://localhost:3001/users/refresh', postData)
+    .post('http://localhost:3001/users/refresh', { userId: userId })
     .then(res =>
       dispatch({
         type: REFRESH_USER,
         payload: res.data
       })
     )
-};*/
+};
 
 //Log user out
 export const logoutUser = () => dispatch => {

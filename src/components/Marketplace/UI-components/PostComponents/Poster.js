@@ -16,7 +16,7 @@ import Fade from "@material-ui/core/es/Fade/Fade";
 import Paper from "@material-ui/core/es/Paper/Paper";
 import Menu from "@material-ui/core/es/Menu/Menu";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
-import { deletePost, updateComments } from "../../../../actions/marketActions";
+import { deletePost, updateComments, buyingItem } from "../../../../actions/marketActions";
 import Badge from "@material-ui/core/es/Badge/Badge";
 import Moment from "react-moment";
 import { addtoChatArrray } from "../../../../actions/messageActions";
@@ -71,6 +71,9 @@ class Poster extends Component {
     };
 
     handleBuyItem = () => {
+      let buyer = { ...this.props.auth.user, buyingItem: this.props.post._id};
+      let seller = { ...this.props.post.creator, sellingItem: this.props.post._id };
+      this.props.buyingItem(buyer, seller, this.props.post._id);
       this.props.addtoChatArrray(this.props.post.creator);
     };
 
@@ -129,7 +132,12 @@ class Poster extends Component {
                                           ?
                                           <MenuItem onClick={this.handleDelete.bind(this, this.props.auth.user._id, this.props.post._id)}>Delete</MenuItem>
                                           :
-                                          <MenuItem onClick={this.handleBuyItem.bind(this)}>Buy</MenuItem> }
+                                          (this.props.post.creator.sellingTo.find( sellingTo => ( sellingTo._id === this.props.auth.user._id
+                                            && sellingTo.buyingItem === this.props.post._id ) ) === undefined ?
+                                              <MenuItem onClick={this.handleBuyItem.bind(this)}>Buy</MenuItem>
+                                              :
+                                              <MenuItem disabled={true}>Buying...</MenuItem>
+                                          ) }
                                         {this.props.auth.user._id === this.props.post.creator._id
                                           ?
                                           <MenuItem onClick={this.handleDisableComments.bind(this)}>
@@ -183,10 +191,11 @@ class Poster extends Component {
 Poster.propTypes = {
   deletePost: PropTypes.func.isRequired,
   updateComments: PropTypes.func.isRequired,
-  addtoChatArrray: PropTypes.func.isRequired
+  addtoChatArrray: PropTypes.func.isRequired,
+  buyingItem: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth,
   msg: state.msg
 });
-export default connect(mapStateToProps, { deletePost, updateComments, addtoChatArrray })(Poster);
+export default connect(mapStateToProps, { deletePost, updateComments, buyingItem,  addtoChatArrray })(Poster);

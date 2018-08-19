@@ -41,7 +41,9 @@ class MarketItem extends Component {
         >
           {this.props.user.name}
         </Typography>
-
+        <Button mini >
+          <Textsms  color="primary" onClick={() => { this.props.addtoChatArrray(this.props.user)}}/>
+        </Button>
       </ListItem>
     );
   }

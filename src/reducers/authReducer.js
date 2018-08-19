@@ -14,12 +14,11 @@ export default function(state = initialState, action) {
         isAuthenticated: !isEmpty(action.payload),
         user: action.payload
       };
-    /*case REFRESH_USER:
+    case REFRESH_USER:
       return {
-        ...state,
         isAuthenticated: !isEmpty(action.payload),
         user: action.payload
-      };*/
+      };
     default:
       return state;
   }
