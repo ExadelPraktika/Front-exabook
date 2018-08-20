@@ -76,16 +76,6 @@ class TopBar extends Component {
                 <div className={classes.avatar}>
                 <ProfileOptions  />
                 </div>
-
-                <Button
-                  color="inherit"
-                  className={classes.button}
-                  component={Link}
-                  to="/"
-                >
-                  Logout
-                </Button>
-
           </Toolbar>
         </AppBar>
       </div>
