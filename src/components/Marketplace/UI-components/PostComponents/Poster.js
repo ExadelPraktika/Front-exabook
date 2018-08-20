@@ -17,6 +17,7 @@ import Paper from "@material-ui/core/es/Paper/Paper";
 import Menu from "@material-ui/core/es/Menu/Menu";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import { deletePost, updateComments, buyingItem } from "../../../../actions/marketActions";
+import { removeBoughtItems } from "../../../../actions/authActions";
 import Badge from "@material-ui/core/es/Badge/Badge";
 import Moment from "react-moment";
 import { addtoChatArrray } from "../../../../actions/messageActions";
@@ -58,6 +59,8 @@ class Poster extends Component {
     };
 
     handleDelete = (userId, postId) => {
+      let sellingTo = this.props.auth.user.sellingTo.filter( user => user.buyingItem !== postId);
+      this.props.removeBoughtItems(userId, sellingTo);
       this.props.deletePost(userId, postId);
     };
 
@@ -192,10 +195,11 @@ Poster.propTypes = {
   deletePost: PropTypes.func.isRequired,
   updateComments: PropTypes.func.isRequired,
   addtoChatArrray: PropTypes.func.isRequired,
-  buyingItem: PropTypes.func.isRequired
+  buyingItem: PropTypes.func.isRequired,
+  removeBoughtItems: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth,
   msg: state.msg
 });
-export default connect(mapStateToProps, { deletePost, updateComments, buyingItem,  addtoChatArrray })(Poster);
+export default connect(mapStateToProps, { deletePost, updateComments, buyingItem, addtoChatArrray, removeBoughtItems })(Poster);

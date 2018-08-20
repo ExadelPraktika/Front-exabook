@@ -71,7 +71,7 @@ class MarketTabContainer extends React.Component {
             <Collapse in={this.state.open} timeout="auto" unmountOnExit>
               {this.props.auth.user.buyingFrom.length > 0
                 ?
-                <MarketList users={this.props.auth.user.buyingFrom} userID={this.props.auth.user._id} />
+                <MarketList users={this.props.auth.user.buyingFrom} userID={this.props.auth.user._id} state={'buying'}/>
                 :
                 <p style={{ marginLeft: "30px" }}>Not buying anything right now</p>}
             </Collapse>
@@ -90,7 +90,7 @@ class MarketTabContainer extends React.Component {
             <Collapse in={this.state.open2} timeout="auto" unmountOnExit>
               {this.props.auth.user.sellingTo.length > 0
                 ?
-                <MarketList users={this.props.auth.user.sellingTo} userID={this.props.auth.user._id}/>
+                <MarketList users={this.props.auth.user.sellingTo} userID={this.props.auth.user._id} state={'selling'}/>
                 :
                 <p style={{ marginLeft: "30px" }}>Not selling anything to anyone</p>}
             </Collapse>

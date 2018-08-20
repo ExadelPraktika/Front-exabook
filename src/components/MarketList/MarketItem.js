@@ -4,13 +4,22 @@ import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import ListItem from "@material-ui/core/ListItem";
-import Typography from "@material-ui/core/Typography";
-import Clear from '@material-ui/icons/Clear';
-import Done from '@material-ui/icons/Done';
 import Textsms from '@material-ui/icons/Textsms';
-import { addtoChatArrray } from '../../actions/messageActions'
+import CheckCircle from '@material-ui/icons/CheckCircle';
+import { addtoChatArrray } from '../../actions/messageActions';
+import { deletePost } from '../../actions/marketActions';
+import { removeBoughtItems, removeSoldItem } from "../../actions/authActions";
 
 class MarketItem extends Component {
+
+  handleBuying = (userId, postId) => {
+    console.log(`User ${this.props.user.name} has bought an item`);
+    let sellingTo = this.props.auth.user.sellingTo.filter( user => user.buyingItem !== postId);
+    this.props.removeSoldItem(postId);
+    this.props.removeBoughtItems(userId, sellingTo);
+    this.props.deletePost(userId, postId);
+  };
+
   render() {
     return (
       <ListItem >
@@ -33,28 +42,39 @@ class MarketItem extends Component {
           </Avatar>
         )}
 
-        <Typography
+        <Button
           style={{ paddingLeft: "10px" }}
           component="span"
           color="inherit"
-          noWrap={true}
+          size={'small'}
+          onClick={() => { this.props.addtoChatArrray(this.props.user)}}
         >
           {this.props.user.name}
-        </Typography>
-        <Button mini >
-          <Textsms  color="primary" onClick={() => { this.props.addtoChatArrray(this.props.user)}}/>
+          <Textsms color="primary"/>
         </Button>
+
+        {this.props.state === 'selling'
+          ?
+          <Button mini >
+            <CheckCircle  color="primary" onClick={this.handleBuying.bind(this, this.props.auth.user._id, this.props.user.buyingItem)}/>
+          </Button>
+          :
+          null}
       </ListItem>
     );
   }
 }
 MarketItem.propTypes = {
   user: PropTypes.object.isRequired,
-  userID: PropTypes.string.isRequired
+  userID: PropTypes.string.isRequired,
+  removeBoughtItems: PropTypes.func.isRequired,
+  deletePost: PropTypes.func.isRequired,
+  removeSoldItem: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  msg: state.msg
+  msg: state.msg,
+  auth: state.auth
 });
 
-export default connect(mapStateToProps, {addtoChatArrray})(MarketItem);
+export default connect(mapStateToProps, {addtoChatArrray, removeBoughtItems, deletePost, removeSoldItem})(MarketItem);

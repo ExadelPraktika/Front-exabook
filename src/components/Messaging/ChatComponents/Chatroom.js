@@ -92,7 +92,6 @@ class ChatRoom extends React.Component {
         disableFocusListener
         disableHoverListener
         disableTouchListener
-        className="card"
         title={
           <div className="card">
             <div className="card-body">

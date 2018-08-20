@@ -14,9 +14,10 @@ class MarketList extends Component {
           disablePadding
           style={{ maxHeight: "200px", overflowY: "scroll" }}
         >
-          {this.props.users.map(user => (
+          {this.props.users.map((user, index) => (
             <MarketItem
-              key={user._id} // TO DO gali but problemu cia
+              state={this.props.state}
+              key={index}
               user={user}
               userID={this.props.userID}
             />
