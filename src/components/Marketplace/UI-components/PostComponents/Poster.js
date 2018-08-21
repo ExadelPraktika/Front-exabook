@@ -41,7 +41,8 @@ class Poster extends Component {
         anchorEl: null,
         open: false,
         disableComments: this.props.post.disableComments,
-        averageRating: '0'
+        averageRating: '0',
+        buying: ''
       };
     }
 
@@ -65,9 +66,12 @@ class Poster extends Component {
     };
 
     handleDisableComments = () => {
+      let postIds = [];
+      this.props.market.marketFeed.forEach( post => { postIds.push(post._id) });
       let object = {
         disableComments: !this.state.disableComments,
         _id: this.props.post._id,
+        postIds: postIds
       };
       this.props.updateComments(object);
       this.setState({ disableComments: !this.state.disableComments})
@@ -78,6 +82,7 @@ class Poster extends Component {
       let seller = { ...this.props.post.creator, sellingItem: this.props.post._id };
       this.props.buyingItem(buyer, seller, this.props.post._id);
       this.props.addtoChatArrray(this.props.post.creator);
+      this.setState({ buying: 'buying' });
     };
 
     getUserMarketRating = () => {
@@ -135,11 +140,13 @@ class Poster extends Component {
                                           ?
                                           <MenuItem onClick={this.handleDelete.bind(this, this.props.auth.user._id, this.props.post._id)}>Delete</MenuItem>
                                           :
-                                          (this.props.post.creator.sellingTo.find( sellingTo => ( sellingTo._id === this.props.auth.user._id
-                                            && sellingTo.buyingItem === this.props.post._id ) ) === undefined ?
-                                              <MenuItem onClick={this.handleBuyItem.bind(this)}>Buy</MenuItem>
+                                          ( ( this.props.post.creator.sellingTo.find( sellingTo =>
+                                              ( sellingTo._id === this.props.auth.user._id && sellingTo.buyingItem === this.props.post._id ))
+                                            !== undefined ) || this.state.buying === 'buying'
+                                              ?
+                                            <MenuItem disabled={true}>Buying...</MenuItem>
                                               :
-                                              <MenuItem disabled={true}>Buying...</MenuItem>
+                                            <MenuItem onClick={this.handleBuyItem.bind(this)}>Buy</MenuItem>
                                           ) }
                                         {this.props.auth.user._id === this.props.post.creator._id
                                           ?
@@ -200,6 +207,7 @@ Poster.propTypes = {
 };
 const mapStateToProps = state => ({
   auth: state.auth,
-  msg: state.msg
+  msg: state.msg,
+  market: state.market
 });
 export default connect(mapStateToProps, { deletePost, updateComments, buyingItem, addtoChatArrray, removeBoughtItems })(Poster);

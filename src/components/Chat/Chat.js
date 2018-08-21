@@ -343,15 +343,12 @@ class Chat extends React.Component {
 
     this.socket = io("localhost:3001");
 
-       this.socket.on("add-message", function(data) {
+    this.socket.on("add-message", function(data) {
        addMessage(data);
-     });
+    });
 
     const addMessage = data => {
-      console.log(data);
-
       this.setState({ messages: [...this.state.messages, data] });
-      console.log(this.state.messages);
     };
 
     this.sendMessage = ev => {

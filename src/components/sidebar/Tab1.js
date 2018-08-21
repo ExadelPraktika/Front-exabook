@@ -81,12 +81,7 @@ class Tab1 extends React.Component {
   componentDidMount(){
     console.log(this.state.msg !== undefined ? this.state.msg.chatList : null)
   }
-  componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps);
-    if (this.props !== nextProps) {
-      this.setState({value: 1})
-    }
-   }
+
   getData =(val)=>{
     // do not forget to bind getData in constructor
     console.log(val);
