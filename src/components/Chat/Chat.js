@@ -194,7 +194,7 @@ class Chat extends React.Component {
         <div>
           <div>
             <div>
-              <div className={classes.title}>Global Chat</div>
+              <div className={classes.title}>{this.props.msg.chatList[0].name}</div>
               <hr />
               <div className={classes.messagesContainer} id="autoScroll">
                 {this.state.messages.map(message => {
@@ -212,7 +212,7 @@ class Chat extends React.Component {
                           size="36"
                           className={classes.avatar}
                           name={message.author}
-                          src=""
+                          src={this.props.msg.chatList[0].avatar != undefined ? this.props.msg.chatList[0].avatar : ""}
                         />
                       )}
 

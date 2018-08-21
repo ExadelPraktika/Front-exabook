@@ -7,6 +7,7 @@ import ListItem from "@material-ui/core/ListItem";
 import Textsms from '@material-ui/icons/Textsms';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import { addtoChatArrray } from '../../actions/messageActions';
+import { clearChatList } from '../../actions/chatActions';
 import { deletePost } from '../../actions/marketActions';
 import { removeBoughtItems, removeSoldItem } from "../../actions/authActions";
 
@@ -18,6 +19,7 @@ class MarketItem extends Component {
     this.props.removeSoldItem(postId);
     this.props.removeBoughtItems(userId, sellingTo);
     this.props.deletePost(userId, postId);
+    this.props.clearChatList();
   };
 
   render() {
@@ -77,4 +79,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, {addtoChatArrray, removeBoughtItems, deletePost, removeSoldItem})(MarketItem);
+export default connect(mapStateToProps, { addtoChatArrray, removeBoughtItems, deletePost, removeSoldItem, clearChatList })(MarketItem);

@@ -3,6 +3,7 @@ import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 import {getEvents} from './eventActions';
+import {clearChatList} from './chatActions';
 // Get  Current User
 export const setCurrent = userToken => dispatch => {
 
@@ -78,4 +79,6 @@ export const logoutUser = () => dispatch => {
   setAuthToken(false);
   //Set current user to {} which will also set isAuthenticated to false
   dispatch(setCurrentUser({}));
+  //Set msg state to {} which will make sure that if a new user logs in he wont be redirected to a chat
+  dispatch(clearChatList());
 };
