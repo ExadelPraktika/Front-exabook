@@ -1,27 +1,24 @@
 import {
   ADD_POST,
   GET_FEED,
-  FEED_LOADING,
   DELETE_POST,
   EDIT_POST,
-  UPDATE_POST
+  UPDATE_POST,
+  UPDATE_POST_LIKES,
+  ADD_POST_COMMENT,
+  LIKE_POST_COMMENT,
+  DELETE_POST_COMMENT,
+  UPDATE_POST_COMMENTS
 } from "../actions/types";
 
 const initialState = {
   postFeed: [],
-  post: {},
-  loading: false
+  post: {}
 };
 export default function(state = initialState, action) {
   switch (action.type) {
-    case FEED_LOADING:
-      return {
-        ...state,
-        loading: true
-      };
     case GET_FEED:
       return {
-        ...state,
         postFeed: action.payload
       };
     case ADD_POST:
@@ -37,9 +34,7 @@ export default function(state = initialState, action) {
     case EDIT_POST:
       return {
         ...state,
-        postFeed: state.postFeed.map(
-          post => (post._id === action._id ? { ...post } : post)
-        )
+        postFeed: action.payload
       };
 
     case UPDATE_POST:
@@ -51,6 +46,28 @@ export default function(state = initialState, action) {
           };
         } else return post;
       });
+
+    case UPDATE_POST_LIKES:
+      return {
+        postFeed: action.payload
+      };
+    case ADD_POST_COMMENT:
+      return {
+        postFeed: action.payload
+      };
+    case LIKE_POST_COMMENT:
+      return {
+        postFeed: action.payload
+      };
+    case DELETE_POST_COMMENT:
+      return {
+        postFeed: action.payload
+      };
+
+    case UPDATE_POST_COMMENTS:
+      return {
+        postFeed: action.payload
+      };
     default:
       return state;
   }
