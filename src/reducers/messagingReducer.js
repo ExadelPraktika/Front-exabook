@@ -15,7 +15,7 @@ export default function(state = initialState, action) {
     else {
       return {
         ...state,
-        chatList: [action.payload, ...state.chatList]
+        chatList: [action.payload]
       };
     }
 
