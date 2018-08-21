@@ -97,7 +97,7 @@ class Chat extends React.Component {
     });
 
     const addMessage = data => {
-      this.setState({ messages: [...this.state.messages, data] });
+      this.setState({ messages: [data, ...this.state.messages] });
     };
 
     this.sendMessage = ev => {
@@ -151,7 +151,7 @@ class Chat extends React.Component {
     return this.state.message != "";
   }
   componentDidMount() {
-    var objDiv = document.getElementById("autoScroll");
+    const objDiv = document.getElementById("autoScroll");
     objDiv.scrollTop = objDiv.scrollHeight;
     this.socket.emit("add-user", { email: this.props.auth.user.email });
     if(this.props.msg.chatList.length > 0) {
@@ -161,7 +161,7 @@ class Chat extends React.Component {
         senderID: this.props.auth.user._id
       })
       .then(response => {
-        this.setState({ messages: [...this.state.messages, ...response.data.messages] });
+        this.setState({ messages: [...response.data.messages, ...this.state.messages] });
         console.log(response);
       })
       .catch(err => {});
@@ -169,7 +169,7 @@ class Chat extends React.Component {
 
   }
   componentDidUpdate() {
-    var objDiv = document.getElementById("autoScroll");
+    const objDiv = document.getElementById("autoScroll");
     objDiv.scrollTop = objDiv.scrollHeight;
 
   }
