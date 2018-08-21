@@ -9,7 +9,7 @@ class Layout extends Component {
     const styles = {
       style: {
         marginTop: 60,
-        overflow: 'hidden',
+        overflow: 'hidden'
       }
     };
     return (

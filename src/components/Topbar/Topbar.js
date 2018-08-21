@@ -76,7 +76,7 @@ class TopBar extends Component {
               </Grid>
               <div className={classes.avatar}>
                 <ProfileOptions  />
-              </div>
+                </div>
           </Toolbar>
         </AppBar>
       </div>
