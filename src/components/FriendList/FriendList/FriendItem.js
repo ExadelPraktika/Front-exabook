@@ -36,7 +36,7 @@ class FriendList extends Component {
               width: "30px",
               height: "30px"
             }}
-          >dasdsa
+          >
             {this.props.friend.friend.name.charAt(0)}
           </Avatar>
         )}
@@ -48,14 +48,14 @@ class FriendList extends Component {
           noWrap={true}
         >
           {this.props.friend.status === 'requested' ? this.props.friend.friend.name : this.props.friend.friend.name}
-          {this.props.friend.status === 'requested' ?           <Button mini  onClick={() => this.props.deleteFriend(this.props.userID, this.props.friend._id)}>
+          {this.props.friend.status === 'requested' ? <Button mini  onClick={() => this.props.deleteFriend(this.props.userID, this.props.friend._id)}>
           <Clear color="secondary"/>
           </Button> : this.props.friend.status === 'pending' ? (<div><Button mini onClick={() => this.props.sendFriendReq(this.props.userID, this.props.friend._id)}>
           <Done color="primary"/>
           </Button>           <Button mini onClick={() => this.props.deleteFriend(this.props.userID, this.props.friend._id)} >
           <Clear color="secondary"/>
           </Button></div> ) : this.props.friend.status === 'accepted' ? <Button mini >
-           <Textsms onClick={()=>this.props.addtoChatArrray(this.props.friend.friend)} color="primary" disabled={this}/>
+           <Textsms  color="primary" disabled={this} onClick={() => { this.props.addtoChatArrray(this.props.friend.friend)}}/>
           </Button> : null}
           {/* <Button mini >
           <Clear color="secondary"/>

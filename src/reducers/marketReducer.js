@@ -9,7 +9,7 @@ import {
   UPDATE_MARKET_LIKES,
   UPDATE_MARKET_RATES,
   DELETE_MARKET_COMMENT,
-  LIKE_MARKET_COMMENT
+  LIKE_MARKET_COMMENT, BUYING_ITEM
 } from '../actions/types';
 
 const initialState = {
@@ -38,6 +38,10 @@ export default function(state = initialState, action) {
             return {
               marketFeed: state.marketFeed.filter(post => post._id !== action.payload)
             };
+      case BUYING_ITEM:
+          return {
+            ...state
+          };
         case UPDATE_MARKET_RATES:
           return {
             marketFeed: action.payload

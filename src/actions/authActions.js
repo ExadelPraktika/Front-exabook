@@ -1,4 +1,4 @@
-import {REFRESH_USER, SET_CURRENT_USER} from './types';
+import {REFRESH_USER, SET_CURRENT_USER, REMOVE_BOUGHT_ITEMS, REMOVE_SOLD_ITEM} from './types';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
@@ -34,16 +34,41 @@ export const addAvatar = (id, data) => dispatch => {
    })
   };
 
-/*export const refreshUser = postData => dispatch => {
+export const refreshUser = userId => dispatch => {
+  console.log('refreshing user');
   axios
-    .post('http://localhost:3001/users/refresh', postData)
+    .post('http://localhost:3001/users/refresh', { userId: userId })
     .then(res =>
       dispatch({
         type: REFRESH_USER,
         payload: res.data
       })
     )
-};*/
+};
+
+export const removeBoughtItems = (userId, sellingTo) => dispatch => {
+  console.log('removing bought items');
+  axios
+    .post('http://localhost:3001/users/remove/boughtItems', { userId: userId, sellingTo: sellingTo })
+    .then(res =>
+      dispatch({
+        type: REMOVE_BOUGHT_ITEMS,
+        payload: res.data
+      })
+    )
+};
+
+export const removeSoldItem = postId => dispatch => {
+  console.log('removing sold item');
+  axios
+    .post('http://localhost:3001/users/remove/soldItem', { postId: postId })
+    .then(res =>
+      dispatch({
+        type: REMOVE_SOLD_ITEM,
+        payload: res.data
+      })
+    )
+};
 
 //Log user out
 export const logoutUser = () => dispatch => {

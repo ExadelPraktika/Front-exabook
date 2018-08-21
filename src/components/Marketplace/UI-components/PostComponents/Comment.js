@@ -68,6 +68,7 @@ class Comment extends Component {
    const object = { _id: this.props._id, comments: newComments};
    this.props.deleteComment(object);
   };
+
   likedComment = () => {
     const comments = this.props.comments;
     comments.forEach((Comment) => {

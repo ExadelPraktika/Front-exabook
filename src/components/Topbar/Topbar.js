@@ -18,7 +18,8 @@ const styles = {
     //justifyContent: "center"
   },
   avatar: {
-    marginLeft: '30%'
+    marginLeft: '5%',
+    marginRight: '25%'
   },
   button: {
     marginLeft: '3%'
@@ -72,8 +73,8 @@ class TopBar extends Component {
                 >
                   Feed
                 </Button>
-                </Grid>
-                <div className={classes.avatar}>
+              </Grid>
+              <div className={classes.avatar}>
                 <ProfileOptions  />
                 </div>
           </Toolbar>

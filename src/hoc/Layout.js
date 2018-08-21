@@ -15,11 +15,11 @@ class Layout extends Component {
     return (
       <div>
         <TopBar/>
-        <Grid container spacing={6} style={styles.style}>
+        <Grid container spacing={0} style={styles.style}>
           <Grid item xs={3} >
             <SideBar />
           </Grid>
-          <Grid item xs>
+          <Grid item xs style={{paddingBottom: 30}}>
             {this.props.children}
           </Grid>
         </Grid>

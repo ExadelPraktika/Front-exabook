@@ -4,6 +4,10 @@ import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Tab1 from "./Tab1";
 import Tab2 from "./Tab2";
+import Toolbar from "@material-ui/core/es/Toolbar/Toolbar";
+import Typography from "@material-ui/core/es/Typography/Typography";
+import AppBar from "@material-ui/core/es/AppBar/AppBar";
+import Chat from "../Chat/Chat";
 
 const drawerWidth = 300;
 const avatarPic = "https://api.adorable.io/avatars/50/abott@adorable.png";
@@ -48,8 +52,6 @@ class ClippedDrawer extends React.Component {
             }}
           >
             <Tab1 />
-
-            {/*<Tab2 />*/}
           </Drawer>
         </div>
       </div>
