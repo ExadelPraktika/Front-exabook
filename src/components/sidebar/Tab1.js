@@ -14,6 +14,7 @@ import List from "@material-ui/core/List";
 import FriendContainer from "../FriendList/TabContainer";
 import Chat from '../Chat/Chat';
 import MarketTabContainer from "../MarketList/MarketTabContainer";
+import Toolbar from "@material-ui/core/es/Toolbar/Toolbar";
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper
@@ -128,6 +129,14 @@ class Tab1 extends React.Component {
         </AppBar>
         {this.state.value === 0 && <div><FriendContainer/></div>}
         {this.state.value === 1 &&  <div><MarketTabContainer/></div>}
+        <AppBar position="static" color="inherit">
+          <Toolbar>
+            <Typography variant="title" color="inherit" align="center">
+              Chat
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        {this.props.msg.chatList.length > 0 ? <Chat/> : null}
       </div>
     );
   }
@@ -139,7 +148,6 @@ Tab1.propTypes = {
 
 const mapStateToProps = state => ({
   msg: state.msg
- 
   });
 
 export default connect(
