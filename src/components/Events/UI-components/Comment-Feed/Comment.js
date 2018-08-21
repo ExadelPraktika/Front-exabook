@@ -283,8 +283,10 @@ class Comment extends Component {
     showLike: {}
   };
   componentDidMount() {
-    const result = this.props.comment.likes.find( e => e.user === this.props.auth.user._id );
-    console.log('result', result)
+    const result = this.props.comment.likes.find(
+      e => e.user === this.props.auth.user._id
+    );
+    console.log("result", result);
     this.setState({
       showLike: result
     });
@@ -305,35 +307,35 @@ class Comment extends Component {
       this.props.auth.user._id,
       this.props.eventID,
       this.props.comment._id
-    )
-    this.setState({showLike: 'undefined'})
-  }
+    );
+    this.setState({ showLike: "undefined" });
+  };
   callFuncs2 = () => {
     this.props.deleteLike(
       this.props.auth.user._id,
       this.props.eventID,
       this.props.comment._id
-    )
-    this.setState({showLike: undefined})
-  }
+    );
+    this.setState({ showLike: undefined });
+  };
   render() {
-    console.log('aaaa', this.state.showLike);
+    console.log("aaaa", this.state.showLike);
     //console.log(this.props.comment.likes.some(e => e.user.toString() !== this.props.auth.user._id))
-    console.log('comentaras', this.state.rend)
+    console.log("comentaras", this.state.rend);
     const { classes } = this.props;
     return (
       <ListItem className={classes.root}>
         <div className={classes.margin1}>
-        {this.props.comment.user.avatar ? <Avatar src={this.props.comment.user.avatar}/> : (<Avatar >
-            {this.props.comment.name.charAt(0)}
-        </Avatar>)}
-          
+          {this.props.comment.user.avatar ? (
+            <Avatar src={this.props.comment.user.avatar} />
+          ) : (
+            <Avatar>{this.props.comment.name.charAt(0)}</Avatar>
+          )}
         </div>
         <div>
           <div>
             <Typography component="p">
               <b>
-              
                 {this.props.comment.user._id !== this.props.userID
                   ? this.props.comment.name
                   : "Me"}
@@ -354,7 +356,8 @@ class Comment extends Component {
                 }
                 component="p"
               >
-                {this.props.comment.text}<br/>
+                {this.props.comment.text}
+                <br />
                 <img className={classes.img} src={this.props.comment.photo} />
               </Typography>
             </Paper>
@@ -362,27 +365,28 @@ class Comment extends Component {
           <div>
             {/* {this.props.comment.likes.some(
               e => e.user.toString() !== this.props.auth.user._id)} */}
-              
-            {this.state.showLike === undefined ? <Typography
+
+            {this.state.showLike === undefined ? (
+              <Typography
                 component="p"
                 color="primary"
                 className={classes.text}
-                onClick={ this.callFuncs
-                  
-                }
+                onClick={this.callFuncs}
               >
                 Like
-              </Typography> : <Typography
+              </Typography>
+            ) : (
+              <Typography
                 component="p"
                 color="primary"
                 className={classes.text}
-                onClick={ this.callFuncs2
-                }
+                onClick={this.callFuncs2}
               >
                 Dislike
-              </Typography> }
-              
-              {/* {Object.keys(this.state.rend).length > 0 ?
+              </Typography>
+            )}
+
+            {/* {Object.keys(this.state.rend).length > 0 ?
               <Typography
                 component="p"
                 color="primary"
@@ -397,7 +401,6 @@ class Comment extends Component {
               >
                 Dislike
               </Typography>: null} */}
-            
 
             {this.props.comment.user._id !== this.props.userID ? null : (
               <Typography

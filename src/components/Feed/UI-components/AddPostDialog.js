@@ -20,8 +20,8 @@ const styles = theme => ({
   button: {
     marginLeft: theme.spacing.unit * 5,
     marginTop: theme.spacing.unit * 3,
-    backgroundColor: '#d6d6d6',
-    color: '#6d6d6d'
+    backgroundColor: "#d6d6d6",
+    color: "#6d6d6d"
   },
   rightIcon: {
     marginLeft: theme.spacing.unit * 30
@@ -73,7 +73,7 @@ class AddPost extends Component {
     const { user } = this.props.auth;
 
     const newPost = {
-      author: user._id,
+      creator: user._id,
       postBody: this.state.postBody,
       photo: this.state.photo
     };
@@ -94,7 +94,6 @@ class AddPost extends Component {
         max_image_height: "900"
       },
       (error, result) => {
-        console.log(result[0].secure_url);
         this.setState({ photo: result[0].secure_url });
       }
     );
@@ -102,11 +101,17 @@ class AddPost extends Component {
 
   render() {
     const { classes } = this.props;
-
     return (
       <div>
-        <Button variant="contained"  onClick={this.handleClickOpen} className={classes.button}>
-          <Avatar className={classes.orangeAvatar}>N</Avatar>
+        {console.log()}
+        <Button
+          variant="contained"
+          onClick={this.handleClickOpen}
+          className={classes.button}
+        >
+          <Avatar className={classes.orangeAvatar}>
+            {this.props.auth.user.name.charAt(0)}
+          </Avatar>
           What's new with you?
           <AddAPhoto className={classes.rightIcon} />
         </Button>
