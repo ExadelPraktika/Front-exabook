@@ -259,6 +259,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import axios from "axios";
 import Paper from "@material-ui/core/Paper";
 import UserAvatar from "react-user-avatar";
 import {
@@ -338,13 +339,13 @@ class Chat extends React.Component {
     this.state = {
       username: "sss",
       message: "",
-      messages: [],
+      messages: []
     };
 
     this.socket = io("localhost:3001");
 
     this.socket.on("add-message", function(data) {
-       addMessage(data);
+      addMessage(data);
     });
 
     const addMessage = data => {
@@ -357,21 +358,43 @@ class Chat extends React.Component {
         author: this.state.username,
         message: this.state.message,
         email: this.props.msg.chatList[0].email,
-        email1:  this.props.auth.user.email
+        email1: this.props.auth.user.email
       });
       this.setState({ message: "" });
+      axios
+          .post("http://localhost:3001/messages/chat", {
+            authorName: this.state.username,
+            message: this.state.message,
+            recieverID: this.props.msg.chatList[0]._id,
+            senderID: this.props.auth.user._id
+          })
+          .then(response => {
+            console.log(response);
+          })
+          .catch(err => {});
     };
 
-     this.onKeyDown = ev => {
+    this.onKeyDown = ev => {
       if (ev.keyCode === 13 && this.validateForm()) {
         ev.preventDefault();
         this.socket.emit("private-message", {
           author: this.state.username,
-          message: this.state.message, 
+          message: this.state.message,
           email: this.props.msg.chatList[0].email,
-          email1: this.props.auth.user.email,
+          email1: this.props.auth.user.email
         });
         this.setState({ message: "" });
+        axios
+          .post("http://localhost:3001/messages/chat", {
+            authorName: this.state.username,
+            message: this.state.message,
+            recieverID: this.props.msg.chatList[0]._id,
+            senderID: this.props.auth.user._id
+          })
+          .then(response => {
+            console.log(response);
+          })
+          .catch(err => {});
       }
     };
   }
@@ -383,10 +406,24 @@ class Chat extends React.Component {
     var objDiv = document.getElementById("autoScroll");
     objDiv.scrollTop = objDiv.scrollHeight;
     this.socket.emit("add-user", { email: this.props.auth.user.email });
+    if(this.props.msg.chatList.length > 0) {
+      axios
+      .post("http://localhost:3001/messages/chat/get/", {
+        recieverID: this.props.msg.chatList[0]._id,
+        senderID: this.props.auth.user._id
+      })
+      .then(response => {
+        this.setState({ messages: [...this.state.messages, ...response.data.messages] });
+        console.log(response);
+      })
+      .catch(err => {});
+    }
+
   }
   componentDidUpdate() {
     var objDiv = document.getElementById("autoScroll");
     objDiv.scrollTop = objDiv.scrollHeight;
+
   }
 
   render() {
@@ -401,10 +438,10 @@ class Chat extends React.Component {
     }
     if (auth.user.method === "facebook") {
       nick = auth.user.facebook.name;
-    }console.log(this.props.msg.chatList[0])
+    }
+    console.log(this.props.msg.chatList[0]);
 
     return (
-      
       <div className={classes.root}>
         <div>
           <div>

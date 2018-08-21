@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import SideBar from '../components/sidebar/SideBar';
 import TopBar from '../components/Topbar/Topbar'
 import Grid from '@material-ui/core/Grid';
-import ChatList from '../components/Messaging/ChatComponents/ChatlistBar'
 
 class Layout extends Component {
 
