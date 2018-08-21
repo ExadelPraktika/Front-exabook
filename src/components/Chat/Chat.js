@@ -284,7 +284,7 @@ const styles = theme => ({
   },
   messagesContainer: {
     width: 300,
-    height: 450,
+    height: 190,
     overflowY: "auto"
   },
   inputContainer: {
@@ -346,14 +346,10 @@ class Chat extends React.Component {
 
     this.socket.on("add-message", function(data) {
       addMessage(data);
-      console.log(data);
     });
 
     const addMessage = data => {
-      console.log(data);
-
       this.setState({ messages: [...this.state.messages, data] });
-      console.log(this.state.messages);
     };
 
     this.sendMessage = ev => {
@@ -454,7 +450,6 @@ class Chat extends React.Component {
               <hr />
               <div className={classes.messagesContainer} id="autoScroll">
                 {this.state.messages.map(message => {
-                  console.log();
                   return (
                     <div
                       key={uniqid()}

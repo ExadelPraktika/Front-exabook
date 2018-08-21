@@ -83,6 +83,7 @@ class Footer extends Component{
           name = this.props.User.facebook.name;
         else if (this.props.User.method === 'local')
           name = this.props.User.local.name;
+
         const comment = {
           text: this.state.text,
           name: name,
@@ -91,7 +92,11 @@ class Footer extends Component{
           likes: [],
         };
         lastComments.push(comment);
-        const comments = {_id: this.props._id, comments: lastComments};
+
+        let postIds = [];
+        this.props.market.marketFeed.forEach( post => { postIds.push(post._id) });
+
+        const comments = {_id: this.props._id, comments: lastComments, postIds: postIds};
         this.props.addComment(comments);
         this.setState({text: ''});
       }
@@ -99,6 +104,8 @@ class Footer extends Component{
 
     handleLikeClick = () => {
         let userLikes = this.props.liked;
+        let postIds = [];
+        this.props.market.marketFeed.forEach( post => { postIds.push(post._id) });
         if (userLikes.indexOf(this.props.currentUser) === -1) {
             userLikes.push(this.props.currentUser);
         }
@@ -108,6 +115,7 @@ class Footer extends Component{
         let object = {
             liked: userLikes,
             _id: this.props._id,
+            postIds: postIds
         };
         this.props.updateLikes(object);
         this.setState({ liked: this.props.liked});
@@ -118,8 +126,11 @@ class Footer extends Component{
     };
 
     handleRated = (rate) => {
+        let postIds = [];
+        this.props.market.marketFeed.forEach( post => { postIds.push(post._id) });
         let object = {
             _id: this.props._id,
+            postIds: postIds,
             rating: {
             ...this.state.rate,
             [this.props.currentUser]: rate
@@ -147,13 +158,7 @@ class Footer extends Component{
     };
 
     handleDescriptionButton = () => {
-        this.setState(() => {
-                if (this.state.descriptionOpened) {
-                    return {descriptionOpened: false}
-                }
-                return {descriptionOpened: true}
-            }
-        );
+        this.setState({ descriptionOpened: !this.state.descriptionOpened });
     };
 
     render(){
@@ -213,7 +218,7 @@ class Footer extends Component{
                         <ExpandMoreIcon/>
                     </IconButton>
                 </CardActions>
-                <Collapse in={this.state.comments} timeout="auto" unmountOnExit>
+                <Collapse in={this.state.comments && !this.props.disableComments} timeout="auto" unmountOnExit>
                     <div className={classes.comments}>
                         <Input
                             id='text'
@@ -227,8 +232,8 @@ class Footer extends Component{
                             <Icon>send</Icon>
                         </IconButton>
                       <div>
-                        {this.props.comments.map( (comment) => <Comment
-                          key={comment._id}
+                        {this.props.comments.map( (comment, index) => <Comment
+                          key={index}
                           comment={comment}
                           postCreator={this.props.postCreator}
                           comments={this.props.comments}

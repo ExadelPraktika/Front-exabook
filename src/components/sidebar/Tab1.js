@@ -13,6 +13,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import List from "@material-ui/core/List";
 import FriendContainer from "../FriendList/TabContainer";
 import Chat from '../Chat/Chat';
+import MarketTabContainer from "../MarketList/MarketTabContainer";
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper
@@ -80,12 +81,7 @@ class Tab1 extends React.Component {
   componentDidMount(){
     console.log(this.state.msg !== undefined ? this.state.msg.chatList : null)
   }
-  componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps);
-    if (this.props !== nextProps) {
-      this.setState({value: 1})
-    }
-   }
+
   getData =(val)=>{
     // do not forget to bind getData in constructor
     console.log(val);
@@ -125,13 +121,13 @@ class Tab1 extends React.Component {
             <Tab
               disableRipple
               classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-              label="Chat"
+              label="Market"
             />
 
           </Tabs>
         </AppBar>
         {this.state.value === 0 && <div><FriendContainer/></div>}
-        {this.state.value === 1 &&  <div><Chat /></div>}
+        {this.state.value === 1 &&  <div><MarketTabContainer/></div>}
       </div>
     );
   }

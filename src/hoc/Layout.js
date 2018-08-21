@@ -8,19 +8,19 @@ class Layout extends Component {
   render() {
     const styles = {
       style: {
-        marginTop: 60
+        marginTop: 60,
+        overflow: 'hidden',
       }
     };
     return (
       <div>
         <TopBar/>
-        <Grid container spacing={8} style={styles.style}>
+        <Grid container spacing={0} style={styles.style}>
           <Grid item xs={3} >
             <SideBar />
           </Grid>
-          <Grid item xs>
+          <Grid item xs style={{paddingBottom: 30}}>
             {this.props.children}
-            
           </Grid>
         </Grid>
       </div>

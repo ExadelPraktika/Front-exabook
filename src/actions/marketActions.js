@@ -11,7 +11,7 @@ import {
   UPDATE_MARKET_RATES,
   ADD_MARKET_COMMENT,
   DELETE_MARKET_COMMENT,
-  LIKE_MARKET_COMMENT
+  LIKE_MARKET_COMMENT, BUYING_ITEM
 } from './types';
 import {refreshUser} from "./authActions";
 
@@ -157,6 +157,21 @@ export const deletePost = (userId, postId) => dispatch => {
         type: DELETE_MARKET_POST,
         payload: postId
       });
+      dispatch(refreshUser(userId));
+    });
+};
+
+// Delete market post
+export const buyingItem = (buyer, seller, postId) => dispatch => {
+  console.log(`buying item with id ${postId} from ${seller.name}`);
+  axios
+    .post(`http://localhost:3001/marketplace/buying/${postId}`, { buyer: buyer, seller: seller })
+    .then(res => {
+      dispatch({
+        type: BUYING_ITEM,
+        payload: postId
+      });
+      dispatch(refreshUser(buyer._id));
     });
 };
 
