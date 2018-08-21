@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import SideBar from '../components/sidebar/SideBar';
 import TopBar from '../components/Topbar/Topbar'
 import Grid from '@material-ui/core/Grid';
-import ChatList from '../components/Messaging/ChatComponents/ChatlistBar'
 
 class Layout extends Component {
 
@@ -23,8 +22,6 @@ class Layout extends Component {
             {this.props.children}
             
           </Grid>
-          <ChatList styles={{  position: 'sticky',
-  bottom: 0, width: '40%'}}/>
         </Grid>
       </div>
     )
