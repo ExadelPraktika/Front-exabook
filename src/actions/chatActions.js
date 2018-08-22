@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-import { 
-    GET_CONVERSATIONS, 
-    NEW_CONVERSATION, 
-    LEAVE_CONVERSATION, 
-    SEND_REPLY, 
-    GET_PRIVATE_MESSAGES, 
-    GET_CHANNEL_CONVERSATION, 
-    POST_TO_CHANNEL 
+import {
+  GET_CONVERSATIONS,
+  NEW_CONVERSATION,
+  LEAVE_CONVERSATION,
+  SEND_REPLY,
+  GET_PRIVATE_MESSAGES,
+  GET_CHANNEL_CONVERSATION,
+  POST_TO_CHANNEL, CLEAR_CHAT_LIST
 } from './types';
 
 export const newConversation = () => dispatch => {
@@ -88,4 +88,10 @@ export const getChannelConversations = (id) => dispatch => {
         
       })
     )
+};
+
+export const clearChatList = () => dispatch => {
+  dispatch({
+    type: CLEAR_CHAT_LIST,
+  })
 };

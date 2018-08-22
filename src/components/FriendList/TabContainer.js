@@ -142,8 +142,7 @@ class NestedList extends React.Component {
             {this.state.open3 ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={this.state.open3} timeout="auto" unmountOnExit>
-          <FriendList friends={this.props.friends.requestedFriends} userID={this.props.auth.user._id} />
-      
+           <FriendList friends={this.props.friends.requestedFriends} userID={this.props.auth.user._id} />
           </Collapse>
         </List>
       </div> : <Spinner/>

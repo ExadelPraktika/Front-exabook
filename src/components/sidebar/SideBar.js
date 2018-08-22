@@ -52,14 +52,6 @@ class ClippedDrawer extends React.Component {
             }}
           >
             <Tab1 />
-            <AppBar position="static" color="inherit">
-              <Toolbar>
-                <Typography variant="title" color="inherit" align="center">
-                  Chat
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <Chat/>
           </Drawer>
         </div>
       </div>

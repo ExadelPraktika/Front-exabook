@@ -73,7 +73,7 @@ class FriendList extends Component {
   }
 }
 FriendList.propTypes = {
-  events: PropTypes.array.isRequired
+  events: PropTypes.array
 };
 
 const mapStateToProps = state => ({

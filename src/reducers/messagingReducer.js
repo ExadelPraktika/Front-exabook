@@ -1,4 +1,4 @@
-import { ADD_USER_TO_CHAT } from '../actions/types';
+import { ADD_USER_TO_CHAT, CLEAR_CHAT_LIST } from '../actions/types';
 
 const initialState = {
   chatList: []
@@ -18,7 +18,10 @@ export default function(state = initialState, action) {
         chatList: [action.payload]
       };
     }
-
+    case CLEAR_CHAT_LIST:
+      return {
+        chatList: []
+      };
     default:
       return state;
   }

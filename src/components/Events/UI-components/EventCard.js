@@ -34,8 +34,8 @@ const dateFormat = require("dateformat");
 import EventDisplay from "./EventDisplay";
 const styles = theme => ({
   card: {
-    maxWidth: 420,
-    minWidth: 330,
+    maxWidth: 355,
+    minWidth: 355,
     float: "right",
     margin: "1%",
     backgroundColor: '#e8e8e8'
