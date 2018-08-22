@@ -126,6 +126,15 @@ class EventForm extends Component {
       coordLng: this.state.coordLng
     };
     this.props.addEvent(newEvent);
+    if(Object.keys(this.state.errors).length !== 0 
+    && this.state.description.length > 0 
+    && this.state.title.length > 0
+    && this.state.location.length > 0
+    && this.state.start.length > 0
+    && this.state.end.length > 0
+  ){
+    this.props.handleClose()
+  }
   };
 
   handleSelect = address => {
@@ -231,20 +240,16 @@ class EventForm extends Component {
               multiline
               error={errors.description}
               helperText={errors.description}
-              //className={classes.textField}
               margin="normal"
             />
 
             <Button
               style={styles.button}
-              //style={styles.button}
               variant="contained"
               onClick={event => {
                 this.onSubmit(event);
-                // this.props.handleClose()
               }}
               type="submit"
-              //disabled={!this.state.formValid}
             >
               Create event
             </Button>

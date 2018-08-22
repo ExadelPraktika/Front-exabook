@@ -63,12 +63,14 @@ class NestedList extends React.Component {
 
   handleClick = () => {
     this.setState(state => ({ open: !state.open }));
+    this.props.getUserFriends(this.props.auth.user._id);
   };
   handleClick2 = () => {
     this.setState(state => ({ open2: !state.open2 }));
   };
   handleClick3 = () => {
     this.setState(state => ({ open3: !state.open3 }));
+    
   };
   handleTooltipClose = () => {
     this.setState({ open1: false });
@@ -84,7 +86,6 @@ class NestedList extends React.Component {
    
 
     return (
-      !loading ? 
       <div className={classes.root}>
         <List
           component="nav"
@@ -145,7 +146,7 @@ class NestedList extends React.Component {
            <FriendList friends={this.props.friends.requestedFriends} userID={this.props.auth.user._id} />
           </Collapse>
         </List>
-      </div> : <Spinner/>
+      </div> 
     );
     
   }

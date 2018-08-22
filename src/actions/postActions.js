@@ -7,19 +7,23 @@ import {
   GET_FEED,
   FEED_LOADING,
   EDIT_POST,
-  LIKE_POST,
-  UNLIKE_POST
+  UPDATE_POST_LIKES,
+  ADD_POST_COMMENT,
+  LIKE_POST_COMMENT,
+  DELETE_POST_COMMENT,
+  UPDATE_POST_COMMENTS
 } from "./types";
 
 //ADD POST
 export const addPost = postData => dispatch => {
-  console.log(postData);
-  axios.post("http://localhost:3001/posts/", postData).then(res =>
+  console.log("post added");
+  axios.post("http://localhost:3001/posts/", postData).then(res => {
     dispatch({
       type: ADD_POST,
       payload: res.data
-    })
-  );
+    });
+    dispatch(getFeed());
+  });
 };
 
 export const getPost = id => dispatch => {
@@ -33,8 +37,6 @@ export const getPost = id => dispatch => {
 
 //GET FEED
 export const getFeed = () => dispatch => {
-  dispatch(setFeedLoading());
-  console.log("suveike get feed");
   axios.get("http://localhost:3001/posts/").then(res => {
     //console.log(res.data);
     dispatch({
@@ -55,9 +57,9 @@ export const deletePost = id => dispatch => {
 };
 
 //EDIT POST
-export const editPost = (id, postData) => dispatch => {
-  console.log(id, postData);
-  axios.post(`http://localhost:3001/posts/edit/${id}/`, postData).then(res =>
+export const editPost = postData => dispatch => {
+  console.log(postData);
+  axios.post(`http://localhost:3001/posts/edit/`, postData).then(res =>
     dispatch({
       type: EDIT_POST,
       payload: res.data
@@ -65,36 +67,50 @@ export const editPost = (id, postData) => dispatch => {
   );
 };
 
-// Add user to going list
-export const likePost = (id, idas, l) => dispatch => {
-  if (!l) {
-    axios
-      .post(`http://localhost:3001/posts/like/${id}/${idas}`)
-      .then(res => dispatch(getEvents()));
-  } else {
-    axios
-      .post(`http://localhost:3001/posts/like/${id}/${idas}`)
-      .then(res => dispatch(getEvent(idas)));
-  }
+export const likePost = postData => dispatch => {
+  axios.post("http://localhost:3001/posts/like", postData).then(res =>
+    dispatch({
+      type: UPDATE_POST_LIKES,
+      payload: res.data
+    })
+  );
 };
 
-export const unlikePost = (id, idas, l) => dispatch => {
-  if (!l) {
-    axios
-      .post(`http://localhost:3001/posts/unlike/${id}/${idas}`)
-      .then(res => dispatch(getEvents()));
-  } else {
-    axios
-      .post(`http://localhost:3001/posts/unlike/${id}/${idas}`)
-      .then(res => dispatch(getEvent(idas)));
-  }
+export const addComment = postData => dispatch => {
+  axios.post("http://localhost:3001/posts/comment", postData).then(res =>
+    dispatch({
+      type: ADD_POST_COMMENT,
+      payload: res.data
+    })
+  );
 };
 
-export const addComment = (eventID, commentData) => dispatch => {
-  console.log(commentData);
-  axios
-    .post(`http://localhost:3001/posts/comment/${eventID}`, commentData)
-    .then(res => dispatch(getPost(eventID)));
+export const updateComments = postData => dispatch => {
+  axios.post("http://localhost:3001/posts/comment/update", postData).then(res =>
+    dispatch({
+      type: UPDATE_POST_COMMENTS,
+      payload: res.data
+    })
+  );
+};
+
+export const likeComment = postData => dispatch => {
+  axios.post("http://localhost:3001/posts/comment/like", postData).then(res =>
+    dispatch({
+      type: LIKE_POST_COMMENT,
+      payload: res.data
+    })
+  );
+};
+
+// Delete market comment
+export const deleteComment = postData => dispatch => {
+  axios.post("http://localhost:3001/posts/comment/delete", postData).then(res =>
+    dispatch({
+      type: DELETE_POST_COMMENT,
+      payload: res.data
+    })
+  );
 };
 
 export const setFeedLoading = () => {

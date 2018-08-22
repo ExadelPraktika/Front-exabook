@@ -10,11 +10,16 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { getPost } from "../../../actions/postActions";
+import AddAPhoto from "@material-ui/icons/AddAPhoto";
 
 const styles = theme => ({
   card: {
     width: 500,
     margin: theme.spacing.unit * 5
+  },
+  photo: {
+    maxWidth: 320,
+    maxHeight: 250
   }
 });
 
@@ -23,20 +28,12 @@ class EditPostDialog extends Component {
     super(props);
     this.state = {
       open: false,
-      post: {},
-      postBody: ""
+      post: this.props.value,
+      postBody: this.props.value.postBody,
+      photo: this.props.value.photo
     };
 
     this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  componentWillMount() {
-    this.setState(state => ({
-      postBody: this.props.value.postBody,
-      post: this.props.value
-    }));
-    //console.log(this.props.post);
   }
 
   handleChange = evt => {
@@ -44,20 +41,44 @@ class EditPostDialog extends Component {
   };
 
   handleUpdate = (id, postBody) => {
-    //this.props.editPost(id, postBody);
-    console.log(id, postBody);
-
     const { user } = this.props.auth;
 
     const editedPost = {
-      postBody: this.state.postBody
+      postBody: this.state.postBody,
+      _id: this.props.value._id,
+      photo: this.state.photo
     };
 
     this.props.editPost(editedPost);
-    //this.setState({ open: false, postBody: "" });
+    this.props.handleClose();
   };
 
+  handleRemovePhoto = () => {
+    this.setState(state => ({
+      photo: ""
+    }));
+  };
+
+  uploadWidget() {
+    cloudinary.openUploadWidget(
+      {
+        cloud_name: "exabook",
+        upload_preset: "n1jdzlyw",
+        multiple: true,
+        show_powered_by: false,
+        tags: ["xmas"],
+        max_image_width: "1600",
+        max_image_height: "900"
+      },
+      (error, result) => {
+        this.setState({ photo: result[0].secure_url });
+      }
+    );
+  }
+
   render() {
+    const { classes } = this.props;
+
     if (!this.props.show) {
       return null;
     }
@@ -80,6 +101,19 @@ class EditPostDialog extends Component {
               multiline
               rowsMax="4"
             />
+            <div>
+              <img src={this.state.photo} className={classes.photo} />
+            </div>
+            {this.state.photo === "" ? (
+              <Button
+                //className={classes.addPhotoButton}
+                onClick={this.uploadWidget.bind(this)}
+              >
+                <AddAPhoto />
+              </Button>
+            ) : (
+              <Button onClick={this.handleRemovePhoto}>Remove photo</Button>
+            )}
           </DialogContent>
 
           <DialogActions>
@@ -88,7 +122,7 @@ class EditPostDialog extends Component {
             </Button>
             <Button
               onClick={() =>
-                this.handleUpdate(this.state.post._id, this.state.postBody)
+                this.handleUpdate(this.state.post._id, this.state.post.postBody)
               }
               color="primary"
             >

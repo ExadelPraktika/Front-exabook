@@ -110,16 +110,16 @@ class Chat extends React.Component {
       });
       this.setState({ message: "" });
       axios
-          .post("http://localhost:3001/messages/chat", {
-            authorName: this.state.username,
-            message: this.state.message,
-            recieverID: this.props.msg.chatList[0]._id,
-            senderID: this.props.auth.user._id
-          })
-          .then(response => {
-            console.log(response);
-          })
-          .catch(err => {});
+        .post("http://localhost:3001/messages/chat", {
+          authorName: this.state.username,
+          message: this.state.message,
+          recieverID: this.props.msg.chatList[0]._id,
+          senderID: this.props.auth.user._id
+        })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(err => {});
     };
 
     this.onKeyDown = ev => {
@@ -154,24 +154,24 @@ class Chat extends React.Component {
     const objDiv = document.getElementById("autoScroll");
     objDiv.scrollTop = objDiv.scrollHeight;
     this.socket.emit("add-user", { email: this.props.auth.user.email });
-    if(this.props.msg.chatList.length > 0) {
+    if (this.props.msg.chatList.length > 0) {
       axios
-      .post("http://localhost:3001/messages/chat/get/", {
-        recieverID: this.props.msg.chatList[0]._id,
-        senderID: this.props.auth.user._id
-      })
-      .then(response => {
-        this.setState({ messages: [...response.data.messages, ...this.state.messages] });
-        console.log(response);
-      })
-      .catch(err => {});
+        .post("http://localhost:3001/messages/chat/get/", {
+          recieverID: this.props.msg.chatList[0]._id,
+          senderID: this.props.auth.user._id
+        })
+        .then(response => {
+          this.setState({
+            messages: [...response.data.messages, ...this.state.messages]
+          });
+          console.log(response);
+        })
+        .catch(err => {});
     }
-
   }
   componentDidUpdate() {
     const objDiv = document.getElementById("autoScroll");
     objDiv.scrollTop = objDiv.scrollHeight;
-
   }
 
   render() {
@@ -194,46 +194,56 @@ class Chat extends React.Component {
         <div>
           <div>
             <div>
-              <div className={classes.title}>{this.props.msg.chatList[0].name}</div>
+              <div className={classes.title}>
+                {this.props.msg.chatList[0] !== undefined
+                  ? this.props.msg.chatList[0].name
+                  : ""}
+              </div>
               <hr />
               <div className={classes.messagesContainer} id="autoScroll">
-                {this.state.messages.map(message => {
-                  return (
-                    <div
-                      key={uniqid()}
-                      className={
-                        message.author === nick
-                          ? classes.messagesMe
-                          : classes.messagesThem
-                      }
-                    >
-                      {message.author === nick ? null : (
-                        <UserAvatar
-                          size="36"
-                          className={classes.avatar}
-                          name={message.author}
-                          src={this.props.msg.chatList[0].avatar != undefined ? this.props.msg.chatList[0].avatar : ""}
-                        />
-                      )}
-
-                      <Paper
+                {this.state.messages
+                  .map(message => {
+                    return (
+                      <div
+                        key={uniqid()}
                         className={
                           message.author === nick
-                            ? classes.paperMe
-                            : classes.paperThem
+                            ? classes.messagesMe
+                            : classes.messagesThem
                         }
                       >
-                        <Grid container>
-                          <Grid item xs zeroMinWidth>
-                            <Typography style={{ color: "White" }}>
-                              {message.message}
-                            </Typography>
+                        {message.author === nick ? null : (
+                          <UserAvatar
+                            size="36"
+                            className={classes.avatar}
+                            name={message.author}
+                            src={
+                              this.props.msg.chatList[0].avatar != undefined
+                                ? this.props.msg.chatList[0].avatar
+                                : ""
+                            }
+                          />
+                        )}
+
+                        <Paper
+                          className={
+                            message.author === nick
+                              ? classes.paperMe
+                              : classes.paperThem
+                          }
+                        >
+                          <Grid container>
+                            <Grid item xs zeroMinWidth>
+                              <Typography style={{ color: "White" }}>
+                                {message.message}
+                              </Typography>
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      </Paper>
-                    </div>
-                  );
-                }).reverse()}
+                        </Paper>
+                      </div>
+                    );
+                  })
+                  .reverse()}
               </div>
             </div>
             <hr />
