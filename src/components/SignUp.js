@@ -68,7 +68,7 @@ class SignUp extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
       // if isauth true which means user is loged in redirect
-      // this.props.history.push('/dashboard')
+       this.props.history.push('/dashboard')
     }
   }
 
@@ -153,6 +153,8 @@ class SignUp extends Component {
       .catch(function(error) {
         console.log(error);
       });
+
+      this.props.history.push('/')
   }
 
   responseFacebook = response => {

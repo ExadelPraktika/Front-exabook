@@ -29,7 +29,7 @@ class FriendList extends Component {
   }
 }
 FriendList.propTypes = {
-  events: PropTypes.array.isRequired
+  events: PropTypes.array
 };
 
 export default FriendList;

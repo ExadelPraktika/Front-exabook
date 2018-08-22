@@ -36,7 +36,6 @@ class CenteredTabs extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
     return (
         <Paper style={styles.root}>
           <Tabs

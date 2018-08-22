@@ -1,6 +1,5 @@
 import React from "react";
 import Input from "@material-ui/core/Input";
-import Button from "@material-ui/core/Button";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Icon from "@material-ui/core/Icon";
 import PropTypes from "prop-types";
@@ -8,6 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import axios from "axios";
 import Paper from "@material-ui/core/Paper";
 import UserAvatar from "react-user-avatar";
 import {
@@ -32,7 +32,7 @@ const styles = theme => ({
   },
   messagesContainer: {
     width: 300,
-    height: 450,
+    height: 190,
     overflowY: "auto"
   },
   inputContainer: {
@@ -85,41 +85,64 @@ class Chat extends React.Component {
     super(props);
 
     this.state = {
-      username: "",
+      username: "sss",
       message: "",
       messages: []
     };
 
     this.socket = io("localhost:3001");
 
-       this.socket.on("RECEIVE_MESSAGE", function(data) {
-       addMessage(data);
-     });
+    this.socket.on("add-message", function(data) {
+      addMessage(data);
+    });
 
     const addMessage = data => {
-      console.log(data);
-
-      this.setState({ messages: [...this.state.messages, data] });
-      console.log(this.state.messages);
+      this.setState({ messages: [data, ...this.state.messages] });
     };
 
     this.sendMessage = ev => {
       ev.preventDefault();
-      this.socket.emit("SEND_MESSAGE", {
-       author: this.state.username,
-       message: this.state.message
+      this.socket.emit("private-message", {
+        author: this.state.username,
+        message: this.state.message,
+        email: this.props.msg.chatList[0].email,
+        email1: this.props.auth.user.email
       });
       this.setState({ message: "" });
+      axios
+        .post("http://localhost:3001/messages/chat", {
+          authorName: this.state.username,
+          message: this.state.message,
+          recieverID: this.props.msg.chatList[0]._id,
+          senderID: this.props.auth.user._id
+        })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(err => {});
     };
 
-     this.onKeyDown = ev => {
+    this.onKeyDown = ev => {
       if (ev.keyCode === 13 && this.validateForm()) {
         ev.preventDefault();
-        this.socket.emit("SEND_MESSAGE", {
+        this.socket.emit("private-message", {
           author: this.state.username,
-          message: this.state.message
+          message: this.state.message,
+          email: this.props.msg.chatList[0].email,
+          email1: this.props.auth.user.email
         });
         this.setState({ message: "" });
+        axios
+          .post("http://localhost:3001/messages/chat", {
+            authorName: this.state.username,
+            message: this.state.message,
+            recieverID: this.props.msg.chatList[0]._id,
+            senderID: this.props.auth.user._id
+          })
+          .then(response => {
+            console.log(response);
+          })
+          .catch(err => {});
       }
     };
   }
@@ -128,11 +151,26 @@ class Chat extends React.Component {
     return this.state.message != "";
   }
   componentDidMount() {
-    var objDiv = document.getElementById("autoScroll");
+    const objDiv = document.getElementById("autoScroll");
     objDiv.scrollTop = objDiv.scrollHeight;
+    this.socket.emit("add-user", { email: this.props.auth.user.email });
+    if (this.props.msg.chatList.length > 0) {
+      axios
+        .post("http://localhost:3001/messages/chat/get/", {
+          recieverID: this.props.msg.chatList[0]._id,
+          senderID: this.props.auth.user._id
+        })
+        .then(response => {
+          this.setState({
+            messages: [...response.data.messages, ...this.state.messages]
+          });
+          console.log(response);
+        })
+        .catch(err => {});
+    }
   }
   componentDidUpdate() {
-    var objDiv = document.getElementById("autoScroll");
+    const objDiv = document.getElementById("autoScroll");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
 
@@ -149,53 +187,63 @@ class Chat extends React.Component {
     if (auth.user.method === "facebook") {
       nick = auth.user.facebook.name;
     }
+    console.log(this.props.msg.chatList[0]);
 
     return (
       <div className={classes.root}>
         <div>
           <div>
             <div>
-              <div className={classes.title}>Global Chat</div>
+              <div className={classes.title}>
+                {this.props.msg.chatList[0] !== undefined
+                  ? this.props.msg.chatList[0].name
+                  : ""}
+              </div>
               <hr />
               <div className={classes.messagesContainer} id="autoScroll">
-                {this.state.messages.map(message => {
-                  console.log();
-                  return (
-                    <div
-                      key={uniqid()}
-                      className={
-                        message.author === nick
-                          ? classes.messagesMe
-                          : classes.messagesThem
-                      }
-                    >
-                      {message.author === nick ? null : (
-                        <UserAvatar
-                          size="36"
-                          className={classes.avatar}
-                          name={message.author}
-                          src=""
-                        />
-                      )}
-
-                      <Paper
+                {this.state.messages
+                  .map(message => {
+                    return (
+                      <div
+                        key={uniqid()}
                         className={
                           message.author === nick
-                            ? classes.paperMe
-                            : classes.paperThem
+                            ? classes.messagesMe
+                            : classes.messagesThem
                         }
                       >
-                        <Grid container>
-                          <Grid item xs zeroMinWidth>
-                            <Typography style={{ color: "White" }}>
-                              {message.message}
-                            </Typography>
+                        {message.author === nick ? null : (
+                          <UserAvatar
+                            size="36"
+                            className={classes.avatar}
+                            name={message.author}
+                            src={
+                              this.props.msg.chatList[0].avatar != undefined
+                                ? this.props.msg.chatList[0].avatar
+                                : ""
+                            }
+                          />
+                        )}
+
+                        <Paper
+                          className={
+                            message.author === nick
+                              ? classes.paperMe
+                              : classes.paperThem
+                          }
+                        >
+                          <Grid container>
+                            <Grid item xs zeroMinWidth>
+                              <Typography style={{ color: "White" }}>
+                                {message.message}
+                              </Typography>
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      </Paper>
-                    </div>
-                  );
-                })}
+                        </Paper>
+                      </div>
+                    );
+                  })
+                  .reverse()}
               </div>
             </div>
             <hr />
@@ -242,7 +290,8 @@ Chat.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  msg: state.msg
 });
 
 export default connect(

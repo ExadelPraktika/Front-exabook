@@ -46,7 +46,7 @@ class MarketForm extends Component {
             timePosted: Date.now,
             images: this.state.images,
             price: this.state.price,
-            location: this.state.location
+            location: this.state.location,
         };
         this.props.createPost(newPost);
         this.setState({

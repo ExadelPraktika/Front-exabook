@@ -12,9 +12,9 @@ class Marketplace extends Component {
     this.props.getMarketPosts();
   }
   render() {
-        const { marketFeed, loading } = this.props.market;
+        const { marketFeed } = this.props.market;
         let marketContent;
-        if(marketFeed === null || loading){
+        if( marketFeed === null ){
             marketContent = null;
         }
         else

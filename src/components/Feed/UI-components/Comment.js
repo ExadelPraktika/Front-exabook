@@ -8,7 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import "moment-timezone";
-import { deleteComment, likeComment } from "../../../../actions/marketActions";
+import { likeComment, deleteComment } from "../../../actions/postActions";
 import { connect } from "react-redux";
 
 const styles = theme => ({
@@ -17,7 +17,7 @@ const styles = theme => ({
     maxWidth: 350,
     minWidth: 250,
     wordBreak: "break-all",
-    wordWrap: "break-word",
+    wordWrap: "break-word"
   },
   paper: {
     width: 250,
@@ -62,93 +62,111 @@ const styles = theme => ({
 });
 
 class Comment extends Component {
-
   deleteComment = () => {
-   const newComments = this.props.comments.filter(Comment => Comment._id !== this.props.comment._id);
-   const object = { _id: this.props._id, comments: newComments};
-   this.props.deleteComment(object);
+    const newComments = this.props.comments.filter(
+      Comment => Comment._id !== this.props.comment._id
+    );
+    const object = { _id: this.props._id, comments: newComments };
+    this.props.deleteComment(object);
   };
-
   likedComment = () => {
     const comments = this.props.comments;
-    comments.forEach((Comment) => {
-      if( Comment._id === this.props.comment._id){
+    comments.forEach(Comment => {
+      if (Comment._id === this.props.comment._id) {
         Comment.likes.push(this.props.auth.user._id);
       }
     });
-    const object = { _id: this.props._id, comments: comments};
+    const object = { _id: this.props._id, comments: comments };
     this.props.likeComment(object);
   };
 
   unlikedComment = () => {
     const comments = this.props.comments;
-    comments.forEach((Comment) => {
-      if( Comment._id === this.props.comment._id){
-        Comment.likes.splice(Comment.likes.indexOf(this.props.auth.user._id), 1);
+    comments.forEach(Comment => {
+      if (Comment._id === this.props.comment._id) {
+        Comment.likes.splice(
+          Comment.likes.indexOf(this.props.auth.user._id),
+          1
+        );
       }
     });
-    const object = { _id: this.props._id, comments: comments};
+    const object = { _id: this.props._id, comments: comments };
     this.props.likeComment(object);
   };
 
   render() {
     const { classes } = this.props;
+
+    let name;
+    if (this.props.auth.user.method === "google")
+      name = this.props.auth.user.google.name;
+    else if (this.props.auth.user.method === "facebook")
+      name = this.props.auth.user.facebook.name;
+    else if (this.props.auth.user.method === "local")
+      name = this.props.auth.user.local.name;
+
     return (
       <ListItem className={classes.root}>
         <div className={classes.margin1}>
-          {this.props.comment.avatar ? <Avatar src={this.props.comment.avatar}/> : (<Avatar >
-            {this.props.comment.name.charAt(0)}
-          </Avatar>)}
+          {this.props.comment.avatar ? (
+            <Avatar src={this.props.comment.avatar} />
+          ) : (
+            <Avatar>{this.props.comment.name.charAt(0)}</Avatar>
+          )}
         </div>
         <div>
           <div>
             <Typography component="p">
               <b>
-
                 {this.props.comment.user !== this.props.auth.user._id
                   ? this.props.comment.name
                   : "Me"}
               </b>
             </Typography>
           </div>
-          {this.props.comment.likes.length !== 0
-            ?
+          {this.props.comment.likes.length !== 0 ? (
             <Badge
               className={classes.text}
               badgeContent={this.props.comment.likes.length}
-              color={"primary"}>
+              color={"primary"}
+            >
               <Paper className={classes.paper} elevation={3}>
-                <Typography
-                  className={classes.padding}
-                  component="p"
-                >
+                <Typography className={classes.padding} component="p">
                   {this.props.comment.text}
                 </Typography>
               </Paper>
             </Badge>
-            :
+          ) : (
             <Paper className={classes.paper} elevation={3}>
-              <Typography
-                className={classes.padding}
-                component="p"
-              >
+              <Typography className={classes.padding} component="p">
                 {this.props.comment.text}
               </Typography>
-            </Paper> }
-          {this.props.comment.likes.indexOf(this.props.auth.user._id) === -1
-            ?
-            <Button size={'small'} color="primary" onClick={this.likedComment} >Like</Button>
-            :
-            <Button size={'small'} color="primary" onClick={this.unlikedComment} >Unlike</Button>
-          }
-          {(this.props.comment.user === this.props.auth.user._id || this.props.postCreator === this.props.auth.user._id)
-            ? <Button
-              size={'small'}
+            </Paper>
+          )}
+          {this.props.comment.likes.indexOf(this.props.auth.user._id) === -1 ? (
+            <Button size={"small"} color="primary" onClick={this.likedComment}>
+              Like
+            </Button>
+          ) : (
+            <Button
+              size={"small"}
+              color="primary"
+              onClick={this.unlikedComment}
+            >
+              Unlike
+            </Button>
+          )}
+          {this.props.comment.user === this.props.auth.user._id ||
+          this.props.postCreator === name ? (
+            <Button
+              size={"small"}
               color="secondary"
-              style={{marginLeft: 120}}
+              style={{ marginLeft: 120 }}
               onClick={this.deleteComment}
-            >Delete</Button>
-            : null}
+            >
+              Delete
+            </Button>
+          ) : null}
         </div>
       </ListItem>
     );
@@ -166,4 +184,7 @@ const mapStateToProps = state => ({
   auth: state.auth,
   market: state.market
 });
-export default connect(mapStateToProps, { deleteComment, likeComment })(withStyles(styles)(Comment));
+export default connect(
+  mapStateToProps,
+  { deleteComment, likeComment }
+)(withStyles(styles)(Comment));

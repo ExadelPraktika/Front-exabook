@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -12,7 +13,8 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import List from "@material-ui/core/List";
 import FriendContainer from "../FriendList/TabContainer";
 import Chat from '../Chat/Chat';
-
+import MarketTabContainer from "../MarketList/MarketTabContainer";
+import Toolbar from "@material-ui/core/es/Toolbar/Toolbar";
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper
@@ -77,6 +79,14 @@ class Tab1 extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
+  componentDidMount(){
+    console.log(this.state.msg !== undefined ? this.state.msg.chatList : null)
+  }
+
+  getData =(val)=>{
+    // do not forget to bind getData in constructor
+    console.log(val);
+}
 
   handleChange(event, value) {
     this.setState({ value: value });
@@ -90,6 +100,7 @@ class Tab1 extends React.Component {
     const { classes } = this.props;
 
     return (
+      
       <div className={classes.root}>
         <AppBar position="static" color="default">
           <Tabs
@@ -111,13 +122,21 @@ class Tab1 extends React.Component {
             <Tab
               disableRipple
               classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-              label="Chat"
+              label="Market"
             />
 
           </Tabs>
         </AppBar>
         {this.state.value === 0 && <div><FriendContainer/></div>}
-        {this.state.value === 1 &&  <div><Chat /></div>}
+        {this.state.value === 1 &&  <div><MarketTabContainer/></div>}
+        <AppBar position="static" color="inherit">
+          <Toolbar>
+            <Typography variant="title" color="inherit" align="center">
+              Chat
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        {this.props.msg.chatList.length > 0 ? <Chat/> : null}
       </div>
     );
   }
@@ -127,4 +146,11 @@ Tab1.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Tab1);
+const mapStateToProps = state => ({
+  msg: state.msg
+  });
+
+export default connect(
+  mapStateToProps,
+  {  }
+)(withStyles(styles)(Tab1));
