@@ -20,16 +20,16 @@ class Posts extends Component {
   }
 
   render() {
-    const { postFeed } = this.props.feed;
+    const { postFeed, classes } = this.props.feed;
     return (
       <div>
-        <Grid container spacing={16}>
+        <Grid container spacing={16} style={{ marginLeft: "20%" }}>
           <Grid item xs={12}>
             <AddPost />
           </Grid>
         </Grid>
 
-        <Grid container spacing={16}>
+        <Grid container spacing={16} style={{ marginLeft: "20%" }}>
           <Grid item xs={12}>
             <PostFeed feed={postFeed} />
           </Grid>
