@@ -154,7 +154,7 @@ class SignUp extends Component {
         console.log(error);
       });
 
-      this.props.history.push('/dashboard')
+      this.props.history.push('/')
   }
 
   responseFacebook = response => {
