@@ -129,9 +129,9 @@ class Tab1 extends React.Component {
         </AppBar>
         {this.state.value === 0 && <div><FriendContainer/></div>}
         {this.state.value === 1 &&  <div><MarketTabContainer/></div>}
-        <AppBar position="static" color="inherit">
+        <AppBar position="static"  style={{height: 40, backgroundColor: "#d6d6d6"}}>
           <Toolbar>
-            <Typography variant="title" color="inherit" align="center">
+            <Typography variant="subheading" style={{color: "#6d6d6d", margin: 110, paddingBottom: 25}}>
               Chat
             </Typography>
           </Toolbar>

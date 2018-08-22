@@ -32,7 +32,7 @@ const styles = theme => ({
   },
   messagesContainer: {
     width: 300,
-    height: 190,
+    height: 200,
     overflowY: "auto"
   },
   inputContainer: {
