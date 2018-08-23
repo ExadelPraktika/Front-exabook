@@ -82,7 +82,7 @@ export class SearchField extends Component {
       );
     }
 
-    else {  //string
+    else {
 
       return (
         <Toolbar>

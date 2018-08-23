@@ -92,7 +92,6 @@ class EditPostDialog extends Component {
 
           <DialogContent>
             <TextField
-              //className={classes.addPostTextBar}
               autoFocus
               name="postBody"
               value={this.state.postBody}
@@ -106,7 +105,6 @@ class EditPostDialog extends Component {
             </div>
             {this.state.photo === "" ? (
               <Button
-                //className={classes.addPhotoButton}
                 onClick={this.uploadWidget.bind(this)}
               >
                 <AddAPhoto />

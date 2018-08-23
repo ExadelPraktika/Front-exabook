@@ -10,7 +10,6 @@ const styles = theme => ({
   addPostButton: {
     width: "100%",
     maxWidth: 500
-    //backgroundColor: theme.palette.background.paper,
   }
 });
 

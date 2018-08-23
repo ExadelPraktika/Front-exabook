@@ -31,7 +31,7 @@ const styles = theme => ({
     position: "relative",
     height: 200,
     [theme.breakpoints.down("xs")]: {
-      width: "100% !important", // Overrides inline-style
+      width: "100% !important",
       height: 100
     },
     "&:hover, &$focusVisible": {
@@ -43,7 +43,6 @@ const styles = theme => ({
         opacity: 0
       },
       "& $imageTitle": {
-        //border: '4px solid currentColor',
       }
     }
   },
@@ -159,18 +158,6 @@ class EventCard extends Component {
               {this.getComponent()}
               <GridListTileBar
                 title={this.props.title}
-                // subtitle={
-                //   <span>
-                //     by:{" "}
-                //     {this.props.creator.method == "google"
-                //       ? this.props.google.name
-                //       : this.props.creator.method == "facebook"
-                //         ? this.props.facebook.name
-                //         : this.props.creator.method == "local"
-                //           ? this.props.local.name
-                //           : null}
-                //   </span>
-                // }
                 actionIcon={
                   <IconButton className={classes.icon} onClick={this.handleClick}>
                     <InfoIcon  />

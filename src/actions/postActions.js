@@ -14,9 +14,7 @@ import {
   UPDATE_POST_COMMENTS
 } from "./types";
 
-//ADD POST
 export const addPost = postData => dispatch => {
-  console.log("post added");
   axios.post("http://localhost:3001/posts/", postData).then(res => {
     dispatch({
       type: ADD_POST,
@@ -35,10 +33,8 @@ export const getPost = id => dispatch => {
   );
 };
 
-//GET FEED
 export const getFeed = () => dispatch => {
   axios.get("http://localhost:3001/posts/").then(res => {
-    //console.log(res.data);
     dispatch({
       type: GET_FEED,
       payload: res.data
@@ -46,7 +42,6 @@ export const getFeed = () => dispatch => {
   });
 };
 
-//DELETE POST
 export const deletePost = id => dispatch => {
   axios.get(`http://localhost:3001/posts/delete/${id}/`).then(res =>
     dispatch({
@@ -56,9 +51,7 @@ export const deletePost = id => dispatch => {
   );
 };
 
-//EDIT POST
 export const editPost = postData => dispatch => {
-  console.log(postData);
   axios.post(`http://localhost:3001/posts/edit/`, postData).then(res =>
     dispatch({
       type: EDIT_POST,
@@ -103,7 +96,6 @@ export const likeComment = postData => dispatch => {
   );
 };
 
-// Delete market comment
 export const deleteComment = postData => dispatch => {
   axios.post("http://localhost:3001/posts/comment/delete", postData).then(res =>
     dispatch({

@@ -113,7 +113,6 @@ class EventForm extends Component {
   onSubmit = e => {
     e.preventDefault();
     const { user } = this.props.auth;
-    console.log(user._id);
     const newEvent = {
       creator: user._id,
       title: this.state.title,
@@ -156,7 +155,6 @@ class EventForm extends Component {
         max_image_height: "900"
       },
       (error, result) => {
-        console.log(result[0].secure_url);
         this.setState({ photo: result[0].secure_url });
       }
     );

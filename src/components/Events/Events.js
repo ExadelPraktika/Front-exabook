@@ -29,13 +29,11 @@ class Events extends Component {
 
   }
   handler() {
-    console.log('clicked')
     this.setState({
       messageShown: true
     });
   }
   handler2() {
-    console.log('clicked antras')
     this.setState({
       messageShown: false
     });
@@ -44,7 +42,6 @@ class Events extends Component {
     this.props.getuserEvents(id)
   }
   render() {
-    //this.props.getuserEvents(this.props.auth.user._id)
     const { events, loading } = this.props.event;
     let calender = <Calender style={{ marginLeft: '20%' }} />;
     let eventContent;

@@ -8,7 +8,6 @@ import {
   FRIEND_LOADING
 } from './types';
 
-// Get list of users, where user is not in a friend list
 export const getPeopleList = (id) => dispatch => {
   dispatch(setLoading())
   axios
@@ -21,7 +20,6 @@ export const getPeopleList = (id) => dispatch => {
     );
 };
 
-// Get user friend list accepted/pending
 export const getUserFriends = (id) => dispatch => {
   dispatch(setLoading())
   axios
@@ -35,7 +33,6 @@ export const getUserFriends = (id) => dispatch => {
 };
 
 export const sendFriendReq = (id, id2) => dispatch => {
-  console.log('suveike?')
   axios
     .put(`http://localhost:3001/users/friends/add/${id}/${id2}`)
     .then(res => {
@@ -44,9 +41,7 @@ export const sendFriendReq = (id, id2) => dispatch => {
     );
 };
 
-// Delete from friend list pending list request list
 export const deleteFriend = (id, id2) => dispatch => {
-  console.log('suveike?')
   axios
     .put(`http://localhost:3001/users/friends/delete/${id}/${id2}`)
     .then(res => {
@@ -55,7 +50,6 @@ export const deleteFriend = (id, id2) => dispatch => {
     );
 };
 
-// Set loading state
 export const setLoading = () => {
   return {
     type: FRIEND_LOADING

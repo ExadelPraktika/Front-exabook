@@ -7,12 +7,9 @@ import {
   EVENT_LOADING,
   DELETE_EVENT,
   GET_USER_EVENTS,
-  GET_ERRORS,
-  GOING_EVENT,
-  UNGOING_EVENT
+  GET_ERRORS
 } from './types';
 
-// Add event
 export const addEvent = eventData => dispatch => {
   axios
     .post('http://localhost:3001/events/', eventData)
@@ -30,7 +27,6 @@ export const addEvent = eventData => dispatch => {
     )
 };
 
-// Get events
 export const getEvents = () => dispatch => {
   dispatch(setEventLoading());
   axios
@@ -43,9 +39,7 @@ export const getEvents = () => dispatch => {
     );
 };
 
-//Get users events
 export const getuserEvents = (id) => dispatch => {
-  console.log('suveike get user');
   dispatch(setEventLoading());
   axios
     .post(`http://localhost:3001/events/myEvents`, { id: id })
@@ -57,7 +51,6 @@ export const getuserEvents = (id) => dispatch => {
     );
 };
 
-// Get single event
 export const getEvent = (id) => dispatch => {
   axios
     .post(`http://localhost:3001/events/getEvent`, { id: id })
@@ -70,9 +63,7 @@ export const getEvent = (id) => dispatch => {
     )
 };
 
-// Delete posts
 export const deleteEvent = (id, idas) => dispatch => {
-  console.log('daejo');
   axios
     .delete(`http://localhost:3001/events/${idas}`, {data: { id: id, idas: idas } })
     .then(res => 
@@ -83,7 +74,6 @@ export const deleteEvent = (id, idas) => dispatch => {
     );
 };
 
-// Add user to going list
 export const goingEvent = (id, idas, l) => dispatch => {
   if(!l){
   axios
@@ -114,29 +104,19 @@ export const ungoingEvent = (id, idas, l) => dispatch => {
       }
 };
 
-// Add comment
 export const addComment = (eventID, commentData) => dispatch => {
   axios
     .post(`http://localhost:3001/events/comment/${eventID}`, commentData)
     .then(res => 
       dispatch(getEvent(eventID))
-      // dispatch({
-      //   type: GET_EVENT,
-      //   payload: res.data,
-      // })
     );
 };
 
-// Add comment
 export const deleteComment = (eventID, commentID) => dispatch => {
   axios
     .delete(`http://localhost:3001/events/comment/${eventID}/${commentID}`)
     .then(res => 
       dispatch(getEvent(eventID))
-      // dispatch({
-      //   type: GET_EVENT,
-      //   payload: res.data,
-      // })
     );
 };
 
@@ -145,10 +125,6 @@ export const addLike = (userID, eventID, commentID) => dispatch => {
     .post(`http://localhost:3001/events/comments/like/${eventID}/${commentID}`, { userID: userID, eventID: eventID, commentID: commentID })
     .then(res => 
       dispatch(getEvent(eventID))
-      // dispatch({
-      //   type: GET_EVENT,
-      //   payload: res.data,
-      // })
     );
 };
 
@@ -157,14 +133,9 @@ export const deleteLike = (userID, eventID, commentID) => dispatch => {
     .post(`http://localhost:3001/events/comments/unlike/${eventID}/${commentID}` , { userID: userID, eventID: eventID, commentID: commentID })
     .then(res => 
       dispatch(getEvent(eventID))
-      // dispatch({
-      //   type: GET_EVENT,
-      //   payload: res.data,
-      // })
     );
 };
 
-// Set loading state
 export const setEventLoading = () => {
   return {
     type: EVENT_LOADING

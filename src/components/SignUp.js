@@ -24,8 +24,6 @@ const styles = {
     maxWidth: 300,
     textAlign: "center",
     margin: "auto",
-    //display: "flex",
-    //justifyContent: "center"
   },
   root: {
     textAlign: "center",
@@ -147,7 +145,6 @@ class SignUp extends Component {
         password: this.state.password
       })
       .then(response => {
-        console.log(response);
         //this.props.setCurrent(response.data.token);
       })
       .catch(function(error) {
@@ -158,7 +155,6 @@ class SignUp extends Component {
   }
 
   responseFacebook = response => {
-    console.log(response);
     const access_token = response.accessToken;
     axios
       .post("http://localhost:3001/users/oauth/facebook", {

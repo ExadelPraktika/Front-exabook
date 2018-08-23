@@ -4,7 +4,6 @@ import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 import {getEvents} from './eventActions';
 import {clearChatList} from './chatActions';
-// Get  Current User
 export const setCurrent = userToken => dispatch => {
 
   localStorage.setItem('jwtToken', userToken);
@@ -26,7 +25,6 @@ export const setCurrentUser = (user) => {
 };
 
 export const addAvatar = (id, data) => dispatch => {
-  console.log('suveike');
   axios
     .put(`http://localhost:3001/users/avatar/${id}`, data)
     .then(res => {
@@ -36,7 +34,6 @@ export const addAvatar = (id, data) => dispatch => {
   };
 
 export const refreshUser = userId => dispatch => {
-  console.log('refreshing user');
   axios
     .post('http://localhost:3001/users/refresh', { userId: userId })
     .then(res =>
@@ -48,7 +45,6 @@ export const refreshUser = userId => dispatch => {
 };
 
 export const removeBoughtItems = (userId, sellingTo) => dispatch => {
-  console.log('removing bought items');
   axios
     .post('http://localhost:3001/users/remove/boughtItems', { userId: userId, sellingTo: sellingTo })
     .then(res =>
@@ -60,7 +56,6 @@ export const removeBoughtItems = (userId, sellingTo) => dispatch => {
 };
 
 export const removeSoldItem = postId => dispatch => {
-  console.log('removing sold item');
   axios
     .post('http://localhost:3001/users/remove/soldItem', { postId: postId })
     .then(res =>
@@ -71,14 +66,10 @@ export const removeSoldItem = postId => dispatch => {
     )
 };
 
-//Log user out
+
 export const logoutUser = () => dispatch => {
-  //Remove token from localStorage
   localStorage.removeItem('jwtToken');
-  //Remove auth header for future requests
   setAuthToken(false);
-  //Set current user to {} which will also set isAuthenticated to false
   dispatch(setCurrentUser({}));
-  //Set msg state to {} which will make sure that if a new user logs in he wont be redirected to a chat
   dispatch(clearChatList());
 };

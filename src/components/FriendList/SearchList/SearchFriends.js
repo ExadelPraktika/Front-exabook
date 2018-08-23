@@ -77,7 +77,6 @@ constructor(props){
   };
   
   render() {
-    // console.log(this.props)
     const {
       setFilterIsOpen,
       list,
@@ -170,7 +169,6 @@ Filter.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  // console.log(ownProps)
   const { filters, muiTheme } = state
   const { hasFilters } = filterSelectors.selectFilterProps('demo', filters)
   const list = filterSelectors.getFilteredList('demo', filters, ownProps.peopleList /*, fieldValue => fieldValue.val*/)

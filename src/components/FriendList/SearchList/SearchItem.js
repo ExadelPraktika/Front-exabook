@@ -28,7 +28,6 @@ class FriendList extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
-    console.log('lala')
   };
 
 handleEnter() {

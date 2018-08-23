@@ -60,7 +60,6 @@ class Filter extends Component {
   }
 
   render() {
-    console.log(this.props)
     const {
       setFilterIsOpen,
       list,
@@ -121,12 +120,6 @@ class Filter extends Component {
         <FilterDrawer
           name={'demo'}
           fields={filterFields}
-
-        //localizing the DatePicker
-        //locale={'de-DE'}
-        //DateTimeFormat={global.Intl.DateTimeFormat}
-        //okLabel="OK"
-        //cancelLabel="Abbrechen"
         />
         
         <List className={classes.over}>
@@ -151,10 +144,9 @@ Filter.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps)
   const { filters, muiTheme } = state
   const { hasFilters } = filterSelectors.selectFilterProps('demo', filters)
-  const list = filterSelectors.getFilteredList('demo', filters, ownProps.events /*, fieldValue => fieldValue.val*/)
+  const list = filterSelectors.getFilteredList('demo', filters, ownProps.events)
 
   return {
     hasFilters,

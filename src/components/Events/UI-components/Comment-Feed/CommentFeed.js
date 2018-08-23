@@ -8,7 +8,6 @@ class CommentFeed extends Component {
     if (comments < 0) {
       return <div> No comments </div>;
     } else {
-      console.log(comments, "from feed");
       return (
         <div
           style={{
