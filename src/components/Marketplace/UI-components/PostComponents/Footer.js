@@ -60,7 +60,7 @@ class Footer extends Component{
           averageRate += this.state.rate[key]
         });
         averageRate = averageRate / Object.keys(this.state.rate).length;
-        this.setState({averageRating: averageRate + '★/5★'});
+        this.setState({averageRating: averageRate.toFixed(1) + '★/5★'});
       }
       else {
         this.setState({averageRating: 'Unrated'});
@@ -146,7 +146,7 @@ class Footer extends Component{
         this.setState({
           anchorEl: null,
           rate: rating,
-          averageRating: averageRate + '★/5★'});
+          averageRating: averageRate.toFixed(1) + '★/5★'});
     };
 
     handleRateClose = () => {
