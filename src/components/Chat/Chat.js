@@ -117,7 +117,6 @@ class Chat extends React.Component {
           senderID: this.props.auth.user._id
         })
         .then(response => {
-          console.log(response);
         })
         .catch(err => {});
     };
@@ -140,7 +139,6 @@ class Chat extends React.Component {
             senderID: this.props.auth.user._id
           })
           .then(response => {
-            console.log(response);
           })
           .catch(err => {});
       }
@@ -164,7 +162,6 @@ class Chat extends React.Component {
           this.setState({
             messages: [...response.data.messages, ...this.state.messages]
           });
-          console.log(response);
         })
         .catch(err => {});
     }
@@ -187,7 +184,6 @@ class Chat extends React.Component {
     if (auth.user.method === "facebook") {
       nick = auth.user.facebook.name;
     }
-    console.log(this.props.msg.chatList[0]);
 
     return (
       <div className={classes.root}>

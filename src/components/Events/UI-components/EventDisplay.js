@@ -182,16 +182,13 @@ class EventDisplay extends React.Component {
   };
   userExists = user => {
     return this.props.event.event.going.some(function(el) {
-      console.log(el.user._id === user);
       return el.user._id === user;
     });
   };
   onGoingClick(id, idas, l) {
-    console.log("clicked", id, idas, l);
     this.props.goingEvent(id, idas, l);
   }
   onUnGoingClick(id, idas, l) {
-    console.log("clicked", id, idas, l);
     this.props.ungoingEvent(id, idas, l);
   }
   render() {
@@ -246,7 +243,6 @@ class EventDisplay extends React.Component {
       nextWeek: "dddd [at] LT",
       sameElse: "YYYY-MM-DD HH:mm"
     };
-    console.log("kooridnates", event.coordinates);
 
     let eventCreator;
     if (this.props.creator.method === "google") {

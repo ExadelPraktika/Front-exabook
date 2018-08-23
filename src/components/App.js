@@ -29,7 +29,6 @@ class App extends Component {
             <Route exact path="/register" component={SignUp} />
             <Layout>
               <Switch>
-                {/*kai "/dashboard" path, turi but {feed} bet dar nepabaigta*/}
                 <Route exact path="/dashboard" component={Posts} />
                 <Route exact path="/marketplace" component={Marketplace} />
                 <Route exact path="/events" component={Events} />

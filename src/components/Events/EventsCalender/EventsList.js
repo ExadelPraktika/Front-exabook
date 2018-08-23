@@ -31,7 +31,7 @@ const styles = theme => ({
     position: "relative",
     height: 200,
     [theme.breakpoints.down("xs")]: {
-      width: "100% !important", // Overrides inline-style
+      width: "100% !important",
       height: 100
     },
     "&:hover, &$focusVisible": {
@@ -43,7 +43,6 @@ const styles = theme => ({
         opacity: 0
       },
       "& $imageTitle": {
-        //border: '4px solid currentColor',
       }
     }
   },
@@ -125,7 +124,6 @@ class TitlebarGridList extends Component {
       );
     });
 
-    //const result = props.events.filter(event => event.end.substring(6, 7) = new Date().getMonth()+1);
     return (
       <div className={classes.root}>
         <GridList cols={4} cellHeight={180} className={classes.gridList}>

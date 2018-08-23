@@ -94,7 +94,6 @@ class CommentBox extends Component {
         max_image_height: "900"
       },
       (error, result) => {
-        console.log(result[0].secure_url);
         this.setState({ photo: result[0].secure_url });
       }
     );
@@ -215,13 +214,6 @@ class CommentBox extends Component {
     );
   }
 }
-// CommentBox.propTypes = {
-//     description: PropTypes.string.isRequired,
-//     descriptionOpened: PropTypes.bool.isRequired,
-//     comments: PropTypes.bool.isRequired,
-//     anchorEl: PropTypes.object.isRequired,
-
-// };
 const mapStateToProps = state => ({
   auth: state.auth,
   event: state.event

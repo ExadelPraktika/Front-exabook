@@ -121,7 +121,6 @@ componentDidMount() {
   };
   userExists = user => {
     return this.props.event.going.some(function(el) {
-      console.log(el.user._id === user);
       return el.user._id === user;
     });
   };
@@ -130,15 +129,12 @@ componentDidMount() {
     this.setState(state => ({ expanded: !state.expanded }));
   };
   onDeleteClick(id, idas) {
-    console.log("clicked", id, idas);
     this.props.deleteEvent(id, idas);
   }
   onGoingClick(id, idas) {
-    console.log("clicked", id, idas);
     this.props.goingEvent(id, idas);
   }
   onUnGoingClick(id, idas) {
-    console.log("clicked", id, idas);
     this.props.ungoingEvent(id, idas);
   }
   render() {
@@ -152,7 +148,6 @@ componentDidMount() {
     };
     const { event, auth } = this.props;
     const { classes } = this.props;
-    console.log(event.start);
 
 
     let goingButton;
@@ -304,7 +299,6 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-//export default withStyles(styles)(RecipeReviewCard);
 export default connect(
   mapStateToProps,
   { deleteEvent, goingEvent, ungoingEvent }

@@ -25,7 +25,6 @@ function DateAndTimePickers(props) {
         id="datetime-local"
         label={props.label}
         type="datetime-local"
-        //defaultValue={props.defaultas}
         className={classes.textField}
         onChange={props.onChange}
         value={props.value}

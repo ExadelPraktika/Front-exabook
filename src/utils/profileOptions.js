@@ -38,7 +38,6 @@ class profileOptions extends React.Component {
         max_image_height: "400"
       },
       (error, result) => {
-        console.log(result[0].secure_url);
         const data = { avatar: result[0].secure_url };
         this.props.addAvatar(this.props.auth.user._id, data);
         this.handleClose();

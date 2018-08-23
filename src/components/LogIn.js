@@ -93,16 +93,13 @@ class LoginForm extends Component {
         password: this.state.password
       })
       .then(response => {
-        console.log(response)
         this.props.setCurrent(response.data.token)
       }).catch(err => {
-        console.log(err.response.data);
         this.handleErr();
       })
       
   }
   responseFacebook = (response) => {
-    console.log(response);
     const access_token = response.accessToken
     axios
       .post('http://localhost:3001/users/oauth/facebook', {

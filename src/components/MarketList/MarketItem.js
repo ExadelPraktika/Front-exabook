@@ -14,7 +14,6 @@ import { removeBoughtItems, removeSoldItem } from "../../actions/authActions";
 class MarketItem extends Component {
 
   handleBuying = (userId, postId) => {
-    console.log(`User ${this.props.user.name} has bought an item`);
     let sellingTo = this.props.auth.user.sellingTo.filter( user => user.buyingItem !== postId);
     this.props.removeSoldItem(postId);
     this.props.removeBoughtItems(userId, sellingTo);

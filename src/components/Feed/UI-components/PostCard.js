@@ -378,16 +378,13 @@ PostCard.propTypes = {
   deletePost: PropTypes.func.isRequired,
   getPost: PropTypes.func.isRequired,
   editPost: PropTypes.func.isRequired
-  //post: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
   feed: state.feed
-  //post: state.post
 });
 
-//export default withStyles(styles)(PostCard);
 export default connect(
   mapStateToProps,
   {

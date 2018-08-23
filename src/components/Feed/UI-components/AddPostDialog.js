@@ -171,5 +171,3 @@ export default withStyles(styles)(
     { addPost }
   )(AddPost)
 );
-//export default withStyles(styles)(connect(mapStateToProps) (ButtonAppBar));
-//export default withStyles(styles)(AddPost);

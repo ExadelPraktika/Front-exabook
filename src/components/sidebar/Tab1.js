@@ -80,12 +80,10 @@ class Tab1 extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount(){
-    console.log(this.state.msg !== undefined ? this.state.msg.chatList : null)
   }
 
   getData =(val)=>{
     // do not forget to bind getData in constructor
-    console.log(val);
 }
 
   handleChange(event, value) {
